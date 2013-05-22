@@ -7,9 +7,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class ChannelDashboardController
+require_once DOCUMENT_ROOT . '/Model/ChannelDashboard_Model.php';
+
+class ChannelDashboard
 {
-    private $model;
+    public $model;
 
     public function __construct()
     {

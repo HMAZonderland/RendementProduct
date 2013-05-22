@@ -7,6 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
+require_once DOCUMENT_ROOT . '/Controller/_Template.php';
+
 class Controller
 {
     private $template;
@@ -15,11 +17,11 @@ class Controller
     {
         $controller = $this->loadController($controllername);
 
-        if ($this->hasView($controller, $action))
+        if ($this->hasView($controllername, $action))
         {
             $model = $controller->model;
             $args = get_object_vars($model);
-            $this->template = new Template($this->loadView($controller, $action), $args);
+            $this->template = new Template($this->loadView($controllername, $action), $args);
         }
     }
 
@@ -50,5 +52,10 @@ class Controller
             return $filepath;
         }
         return null;
+    }
+
+    public function render()
+    {
+        $this->template->render();
     }
 }
