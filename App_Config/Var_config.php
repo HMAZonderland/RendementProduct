@@ -7,5 +7,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-define('BASE_PATH', 'http://product.esser-emmerik.hugozonderland.nl');
-define('DOCUMENT_ROOT', '/home/ocrtxndf/domains/hugozonderland.nl/public_html/product.esser-emmerik/');
+define('WEBSITE_URL',         'http://product.esser-emmerik.hugozonderland.nl/');
+define('DOCUMENT_ROOT',     '/home/ocrtxndf/domains/hugozonderland.nl/public_html/product.esser-emmerik');
+?>

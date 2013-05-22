@@ -7,10 +7,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-require_once DOCUMENT_ROOT . 'Controller/Router.php';
-require_once DOCUMENT_ROOT . 'Model/Route.php';
+require_once DOCUMENT_ROOT . '/Controller/_Router.php';
+require_once DOCUMENT_ROOT . '/Model/_Route.php';
 
 $router = new Router();
-$router->setBasePath(BASE_PATH);
+$router->setBasePath('');
 
-$router->map('/', array('controller' => 'GoogleAuthentication_Controler', 'function' => 'CheckAuthentication'), array('methods' => 'GET'));
+$router->map('/',           array('controller' => 'GoogleAuthenticationController',   'action' => 'CheckAuthentication'),     array('methods' => 'GET'));
+$router->map('/dashboard',  array('controller' => 'ChannelDashboardController',       'action' => 'index'),                   array('methods' => 'GET'));
+
+?>

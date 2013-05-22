@@ -3,14 +3,16 @@
  * Created by JetBrains PhpStorm.
  * User: hugozonderland
  * Date: 22-05-13
- * Time: 17:29
+ * Time: 19:07
  * To change this template use File | Settings | File Templates.
  */
 
-class GoogleAuthentication
+class ChannelDashboardModel
 {
-    public function CheckAuthentication()
+    public $abc;
+
+    public function __construct()
     {
-        echo "Ik heb deze controller ingeladen, whoehoe";
+        $this->abc = "Dit is de ABC waarde van de ChannelDashboard_Model";
     }
 }
