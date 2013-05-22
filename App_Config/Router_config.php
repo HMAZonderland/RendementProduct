@@ -13,7 +13,7 @@ require_once DOCUMENT_ROOT . '/Model/_Route.php';
 $router = new Router();
 $router->setBasePath('');
 
-$router->map('/',           array('controller' => 'GoogleAuthenticationController',   'action' => 'CheckAuthentication'),     array('methods' => 'GET'));
-$router->map('/dashboard',  array('controller' => 'ChannelDashboardController',       'action' => 'index'),                   array('methods' => 'GET'));
+$router->map('/',           array('controller' => 'GoogleAuthentication',   'action' => 'CheckAuthentication'),     array('methods' => 'GET'));
+$router->map('/dashboard',  array('controller' => 'ChannelDashboard',       'action' => 'index'),                   array('methods' => 'GET'));
 
 ?>
