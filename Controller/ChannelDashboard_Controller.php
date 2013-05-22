@@ -9,15 +9,27 @@
 
 require_once DOCUMENT_ROOT . '/Model/ChannelDashboard_Model.php';
 
+/**
+ * Class ChannelDashboard
+ */
 class ChannelDashboard
 {
+    /**
+     * @var ChannelDashboardModel
+     */
     public $model;
 
+    /**
+     *
+     */
     public function __construct()
     {
-        $this->model = new ChannelDashboardModel();
+        $this->model = new ChannelDashboard_Model();
     }
 
+    /**
+     *
+     */
     public function index()
     {
 

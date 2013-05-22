@@ -6,13 +6,23 @@
  * Time: 16:16
  * To change this template use File | Settings | File Templates.
  */
-
 require_once DOCUMENT_ROOT . '/Controller/_Template.php';
 
+/**
+ * Class Controller
+ */
 class Controller
 {
+    /**
+     * @var Template
+     */
     private $template;
 
+    /**
+     * @param $controllername
+     * @param $action
+     * @param $params
+     */
     public function __construct($controllername, $action, $params)
     {
         $controller = $this->loadController($controllername);
@@ -25,6 +35,13 @@ class Controller
         }
     }
 
+    /**
+     * Includes the needed controller and creates an instance of this controller
+     *
+     * @param $controller
+     *
+     * @return mixed
+     */
     private function loadController($controller)
     {
         // Load the class needed
@@ -34,16 +51,39 @@ class Controller
         return $this->createInstance($controller);
     }
 
+    /**
+     * Creates an instance of the controller
+     *
+     * @param $controller
+     *
+     * @return mixed
+     */
     private function createInstance($controller)
     {
         return $controller = new $controller;
     }
 
+    /**
+     * Verifies if the needed view actually exsists
+     *
+     * @param $controller
+     * @param $action
+     *
+     * @return bool
+     */
     private function hasView($controller, $action)
     {
         return ($this->loadView($controller, $action) != null);
     }
 
+    /**
+     * Returns the filepath when the needed view exsists.
+     *
+     * @param $controller
+     * @param $action
+     *
+     * @return null|string
+     */
     private function loadView($controller, $action)
     {
         $filepath = DOCUMENT_ROOT . '/View/' . $controller . '/' . $action . '.html.php';
@@ -54,6 +94,9 @@ class Controller
         return null;
     }
 
+    /**
+     * Renders the page using the Template render function.
+     */
     public function render()
     {
         $this->template->render();

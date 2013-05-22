@@ -7,10 +7,21 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class ChannelDashboardModel
+/**
+ * Class ChannelDashboardModel
+ *
+ * Dummy class, for now.
+ */
+class ChannelDashboard_Model extends RedBean_SimpleModel
 {
+    /**
+     * @var string
+     */
     public $abc;
 
+    /**
+     *
+     */
     public function __construct()
     {
         $this->abc = "Dit is de ABC waarde van de ChannelDashboard_Model";

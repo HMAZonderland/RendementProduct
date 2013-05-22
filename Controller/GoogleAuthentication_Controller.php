@@ -9,6 +9,9 @@
 
 class GoogleAuthentication
 {
+    /**
+     *
+     */
     public function CheckAuthentication()
     {
         echo "Ik heb deze controller ingeladen, whoehoe";
