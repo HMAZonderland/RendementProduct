@@ -8,11 +8,11 @@
  */
 
 // Google Console Credentials
-define('ACCESS_TYPE',       'offline');
-define('APPLICATION_NAME',  'esser-emmerik Rendement berekening API');
-define('CLIENT_ID',         '460555925231.apps.googleusercontent.com');
-define('CLIENT_SECRET',     '7PVI5jc-ukcl9Kh9vAw7nLM9');
-define('REDIRECT_URI',      'http://' . $_SERVER["HTTP_HOST"] . $_SERVER['PHP_SELF']);
-define('DEVELOPER_KEY',     'AIzaSyA-hXmL-SvFwZAyLLksMn9r9AyZfPGZKH4');
+define('ACCESS_TYPE',       '');
+define('APPLICATION_NAME',  '');
+define('CLIENT_ID',         '');
+define('CLIENT_SECRET',     '');
+define('REDIRECT_URI',      '');
+define('DEVELOPER_KEY',     '');
 
 ?>
