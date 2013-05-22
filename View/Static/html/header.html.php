@@ -10,14 +10,10 @@
     <!--[if IE 8]>
     <link rel="stylesheet" href="http://www.presteren.nu/wp-content/themes/creolio/assets/core/libs/css/ie8.css">
     <![endif]-->
-    <link rel="stylesheet" id="rwcss-css"
-          href="http://www.presteren.nu/wp-content/themes/creolio-child/rw-core.css?ver=1.1"
-          type="text/css" media="all">
-    <link rel="stylesheet" id="rwcsscolor-css"
-          href="http://www.presteren.nu/wp-content/themes/creolio-child/rw-colors.css?ver=1.1" type="text/css"
-          media="all">
+    <link rel="stylesheet" id="rwcss-css" href="http://www.presteren.nu/wp-content/themes/creolio-child/rw-core.css?ver=1.1" type="text/css" media="all">
+    <link rel="stylesheet" id="rwcsscolor-css" href="http://www.presteren.nu/wp-content/themes/creolio-child/rw-colors.css?ver=1.1" type="text/css" media="all">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/script.js"></script>
-    <link rel="stylesheet" href="css/style_override.css">
+    <script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>scope.functions.js"></script>
+    <link rel="stylesheet" href="<?=CSS_ROOT?>style_override.css">
     <title>esser-emmerik | Rendements berekening</title>
 </head>
