@@ -3,7 +3,7 @@
 /**
  * Routing class to match request URL's against given routes and map them to a controller action.
  */
-class Router {
+class Route_Controller {
 
     /**
     * Array that holds all Route objects

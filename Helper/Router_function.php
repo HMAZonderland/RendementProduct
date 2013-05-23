@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 require DOCUMENT_ROOT . '/App_Config/Router_config.php';
-require DOCUMENT_ROOT . '/Controller/_Controller.php';
+require DOCUMENT_ROOT . '/Controller/Main_Controller.php';
 
 $route = $router->matchCurrentRequest();
 
@@ -19,5 +19,5 @@ if ($route)
     $controller = $target['controller'];
     $action = $target['action'];
 
-    $controller = new Controller($controller, $action, $params);
+    $main_controller = new Main_Controller($controller, $action, $params);
 }

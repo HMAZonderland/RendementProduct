@@ -12,7 +12,7 @@ require_once DOCUMENT_ROOT . '/Model/ChannelDashboard_Model.php';
 /**
  * Class ChannelDashboard
  */
-class ChannelDashboard
+class ChannelDashboard_Controller
 {
     /**
      * @var ChannelDashboardModel
@@ -30,7 +30,7 @@ class ChannelDashboard
     /**
      *
      */
-    public function index()
+    public function Index()
     {
 
     }

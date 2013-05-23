@@ -6,12 +6,12 @@
  * Time: 16:16
  * To change this template use File | Settings | File Templates.
  */
-require_once DOCUMENT_ROOT . '/Controller/_Template.php';
+require_once DOCUMENT_ROOT . '/Controller/Template_Controller.php';
 
 /**
  * Class Controller
  */
-class Controller
+class Main_Controller
 {
     /**
      * @var Template

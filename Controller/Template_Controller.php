@@ -12,19 +12,12 @@
  *
  * Template class, enables dynamic parsing of objects to *.html.php files.
  */
-class Template
+class Template_Controller
 {
     /**
-     * Object variables
-     * @var array
+     * @var Template_Model
      */
-    private $args;
-
-    /**
-     * Template file
-     * @var
-     */
-    private $file;
+    private $model;
 
     /**
      * @param       $file
@@ -32,20 +25,17 @@ class Template
      */
     public function __construct($file, $args = array())
     {
-        $this->file = $file;
-        $this->args = $args;
+        $this->model = new Template_Model($file, $args);
     }
 
     /**
-     * Gets an object variable
-     *
      * @param $name
      *
      * @return mixed
      */
     public function __get($name)
     {
-        return $this->args[$name];
+        return $this->model($name);
     }
 
     /**
@@ -53,7 +43,7 @@ class Template
      */
     public function render()
     {
-        include $this->file;
+        include $this->model->file;
     }
 }
 ?>

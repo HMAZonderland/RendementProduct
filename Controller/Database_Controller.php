@@ -10,9 +10,9 @@
 /**
  * Class DatabaseController
  *
- * Handles all database communication using RedBeansPHP library
- */
-class DatabaseController
+* Handles all database communication using RedBeansPHP library
+*/
+class Database_Controller
 {
     /**
      * Sets up the connection to the database

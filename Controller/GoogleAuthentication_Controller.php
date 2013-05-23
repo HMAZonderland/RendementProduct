@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class GoogleAuthentication
+class GoogleAuthentication_Controller
 {
     /**
      *
