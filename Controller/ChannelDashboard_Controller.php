@@ -12,7 +12,7 @@ require_once DOCUMENT_ROOT . '/Model/ChannelDashboard_Model.php';
 /**
  * Class ChannelDashboard
  */
-class ChannelDashboard_Controller
+class ChannelDashboard_Controller extends View_Controller
 {
     /**
      * @var ChannelDashboardModel
@@ -32,6 +32,6 @@ class ChannelDashboard_Controller
      */
     public function Index()
     {
-
+        return $this->parse();
     }
 }
