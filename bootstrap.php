@@ -53,21 +53,23 @@ define('JAVASCRIPT_ROOT',   WEBSITE_URL . 'View/Static/javascript/');
 // Includes made from the server/code side
 define('HTML_ROOT',         DOCUMENT_ROOT . 'Static/html/');
 
-// Include the needed config files..
-include_once(CONFIG_ROOT . 'Route_config.php');
-include_once(CONFIG_ROOT . 'Db_config.php');
-include_once(CONFIG_ROOT . 'Library_config.php');
-include_once(CONFIG_ROOT . 'Google_API_Client_config.php');
-
-// Include the helpers!
+// Load the debug helper first
 include_once(HELPER_ROOT . 'Debug_function.php');
-include_once(HELPER_ROOT . 'Route_function.php');
+
+// Load the Library config + helper
+include_once(CONFIG_ROOT . 'Library_config.php');
 include_once(HELPER_ROOT . 'Library_function.php');
 
-// Include RedBean
+// Load the Database config + load the library
+include_once(CONFIG_ROOT . 'Db_config.php');
 Library::load('RedBeanPHP');
 
-// Include Google Client Lib + helper
+// Load the route config + helper
+include_once(CONFIG_ROOT . 'Route_config.php');
+include_once(HELPER_ROOT . 'Route_function.php');
+
+// Load the Google API Client config, library and helper
+include_once(CONFIG_ROOT . 'Google_API_Client_config.php');
 Library::load('Google_API_Client');
 Library::load('Google_Analytics_Service');
 include_once(HELPER_ROOT . 'GoogleClient_function.php');
