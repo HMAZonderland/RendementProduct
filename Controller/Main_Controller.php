@@ -14,6 +14,19 @@ require_once DOCUMENT_ROOT . 'Controller/View_Controller.php';
 class Main_Controller
 {
     /**
+     * @var void
+     */
+    private $db;
+
+    /**
+     * Default constructor, loads the Database_Controller
+     */
+    public function __construct()
+    {
+        $this->db = R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME . '', '' . DB_PASS . '');
+    }
+
+    /**
      * Includes the needed controller and creates an instance of this controller
      *
      * @param $controller
