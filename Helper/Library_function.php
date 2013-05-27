@@ -24,7 +24,7 @@ class Library
             $location = $library[$lib];
             if (file_exists($location))
             {
-                Debug::s('Loaded: ' . $library . ' library.');
+                Debug::s('Loaded: ' . $lib . ' library.');
                 include $location;
             }
             else
