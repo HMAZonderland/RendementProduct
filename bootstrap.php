@@ -6,6 +6,10 @@
  * Time: 16:28
  * To change this template use File | Settings | File Templates.
  */
+// We always want logs, we LOVE logs!
+ini_set('log_errors', 'On');
+ini_set("error_log", LOG_ROOT . 'error.log');
+
 // Production/Debug
 define('STATUS', 'development');
 
@@ -49,10 +53,6 @@ define('JAVASCRIPT_ROOT',   WEBSITE_URL . 'View/Static/javascript/');
 // Includes made from the server/code side
 define('HTML_ROOT',         DOCUMENT_ROOT . 'Static/html/');
 
-// We always want logs, we LOVE logs!
-ini_set('log_errors', 'On');
-ini_set("error_log", LOG_ROOT . 'error.log');
-
 // Include the needed config files..
 include_once(CONFIG_ROOT . 'Route_config.php');
 include_once(CONFIG_ROOT . 'Db_config.php');
@@ -64,9 +64,8 @@ include_once(HELPER_ROOT . 'Debug_function.php');
 include_once(HELPER_ROOT . 'Route_function.php');
 include_once(HELPER_ROOT . 'Library_function.php');
 
-// Include RedBean + helper
+// Include RedBean
 Library::load('RedBeanPHP');
-include_once(HELPER_ROOT . 'RedBeanPHP_function.php');
 
 // Include Google Client Lib + helper
 Library::load('Google_API_Client');
