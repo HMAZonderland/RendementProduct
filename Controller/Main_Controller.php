@@ -6,12 +6,12 @@
  * Time: 16:16
  * Main controller, creates instances and loads other controllers.
  */
-require_once DOCUMENT_ROOT . 'Controller/View_Controller.php';
-
+require_once CONTROLLER_ROOT . 'View_Controller.php';
+require_once MODEL_ROOT . 'Main_Model.php';
 /**
  * Class Controller
  */
-class Main_Controller
+class Main_Controller extends View_Controller
 {
     /**
      * @var void
@@ -61,5 +61,14 @@ class Main_Controller
     private function createInstance($controller)
     {
         return $controller = new $controller();
+    }
+
+    /**
+     * Index function
+     */
+    public function index()
+    {
+        $model = new Main_Model();
+        $this->parse($model);
     }
 }

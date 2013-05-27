@@ -13,7 +13,7 @@ require_once DOCUMENT_ROOT . 'Model/ChannelDashboard_Model.php';
 /**
  * Class ChannelDashboard
  */
-class ChannelDashboard_Controller extends View_Controller
+class ChannelDashboard_Controller extends Main_Controller
 {
     /**
      * @var ChannelDashboardModel

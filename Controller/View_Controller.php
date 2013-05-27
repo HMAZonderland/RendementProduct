@@ -10,7 +10,7 @@
 /**
  * Class View_Controller
  */
-class View_Controller extends Main_Controller
+class View_Controller
 {
     /**
      * The controller to cal;
