@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-require_once DOCUMENT_ROOT . '/Model/ChannelDashboard_Model.php';
+require_once DOCUMENT_ROOT . 'Model/ChannelDashboard_Model.php';
 
 /**
  * Class ChannelDashboard
@@ -30,7 +30,7 @@ class ChannelDashboard_Controller extends View_Controller
     /**
      *
      */
-    public function Index()
+    public function index()
     {
         return $this->parse();
     }

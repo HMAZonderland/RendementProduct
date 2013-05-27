@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class View_Controller
+class View_Controller extends Main_Controller
 {
 
     private $controller;
@@ -23,7 +23,7 @@ class View_Controller
         $this->action = $debug[1]['function'];
 
         // Load main template
-        include SHARED_ROOT . '/_layout.html.php';
+        include SHARED_ROOT . '_layout.html.php';
     }
 
     /**
@@ -34,7 +34,7 @@ class View_Controller
      */
     public function renderView()
     {
-        $filepath = VIEW_ROOT . '/' . $this->controller . '/' . $this->action . '.html.php';
+        $filepath = VIEW_ROOT . $this->controller . '/' . $this->action . '.html.php';
         if (file_exists($filepath))
         {
             include $filepath;

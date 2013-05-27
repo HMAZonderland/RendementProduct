@@ -16,3 +16,4 @@ class RedBeanModelFormatter implements RedBean_IModelFormatter
 }
 
 RedBean_ModelHelper::setModelFormatter(new RedBeanModelFormatter());
+?>

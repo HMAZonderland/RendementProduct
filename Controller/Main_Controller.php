@@ -23,10 +23,20 @@ class Main_Controller
     public function loadController($controller)
     {
         // Load the class needed
-        include DOCUMENT_ROOT . '/Controller/' . $controller . ".php";
+        $filepath = CONTROLLER_ROOT . $controller . ".php";
+        if (file_exists($filepath))
+        {
+            include $filepath;
 
-        // Create an instance of this class
-        return $this->createInstance($controller);
+            // Create an instance of this class
+            return $this->createInstance($controller);
+        }
+        else
+        {
+            echo "Could not load requested Controller: " . $filepath . "<br />The controller file was not found.";
+            //return false;
+            //die();
+        }
     }
 
     /**

@@ -6,8 +6,7 @@
  * Time: 16:55
  * To change this template use File | Settings | File Templates.
  */
-require DOCUMENT_ROOT . '/App_Config/Route_config.php';
-require DOCUMENT_ROOT . '/Controller/Main_Controller.php';
+require CONTROLLER_ROOT . 'Main_Controller.php';
 
 $route = $router->matchCurrentRequest();
 
@@ -28,3 +27,5 @@ else
 $main_controller = new Main_Controller();
 $controller = $main_controller->loadController($controller_name);
 $controller->$action();
+
+?>
