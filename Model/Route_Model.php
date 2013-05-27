@@ -40,11 +40,17 @@ class Route {
 	*/
 	private $params = array();
 
-	public function getUrl() {
+    /**
+     * @return string
+     */
+    public function getUrl() {
 		return $this->url;
 	}
 
-	public function setUrl($url) {
+    /**
+     * @param $url
+     */
+    public function setUrl($url) {
 		$url = (string) $url;
 
 		// make sure that the URL is suffixed with a forward slash
@@ -53,39 +59,68 @@ class Route {
 		$this->url = $url;
 	}
 
-	public function getTarget() {
+    /**
+     * @return mixed
+     */
+    public function getTarget() {
 		return $this->target;
 	}
 
-	public function setTarget($target) {
+    /**
+     * @param $target
+     */
+    public function setTarget($target) {
 		$this->target = $target;
 	}
 
-	public function getMethods() {
+    /**
+     * @return array
+     */
+    public function getMethods() {
 		return $this->methods;
 	}
 
-	public function setMethods(array $methods) {
+    /**
+     * @param array $methods
+     */
+    public function setMethods(array $methods) {
 		$this->methods = $methods;
 	}
 
-	public function getName() {
+    /**
+     * @return string
+     */
+    public function getName() {
 		return $this->name;
 	}
 
-	public function setName($name) {
+    /**
+     * @param $name
+     */
+    public function setName($name) {
 		$this->name = (string) $name;
 	}
 
-	public function setFilters(array $filters) {
+    /**
+     * @param array $filters
+     */
+    public function setFilters(array $filters) {
 		$this->filters = $filters;
 	}
 
-	public function getRegex() {
+    /**
+     * @return mixed
+     */
+    public function getRegex() {
 		return preg_replace_callback("/:(\w+)/", array(&$this, 'substituteFilter'), $this->url);
 	}
 
-	private function substituteFilter($matches) {
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
+    private function substituteFilter($matches) {
 		if (isset($matches[1]) && isset($this->filters[$matches[1]])) {
         		return $this->filters[$matches[1]];
         	}
@@ -93,11 +128,17 @@ class Route {
         	return "([\w-]+)";
 	}
 
-	public function getParameters() {
+    /**
+     * @return mixed
+     */
+    public function getParameters() {
 		return $this->parameters;
 	}
 
-	public function setParameters(array $parameters) {
+    /**
+     * @param array $parameters
+     */
+    public function setParameters(array $parameters) {
 		$this->parameters = $parameters;
 	}
 

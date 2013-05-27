@@ -17,15 +17,22 @@ if ($route)
 
     $controller_name = $target['controller'];
     $action = $target['action'];
+
+    $main_controller = new Main_Controller();
+    $controller = $main_controller->loadController($controller_name);
+
+    Debug::p($router);
+    Debug::p($route);
 }
 else
 {
-    $controller_name = 'Main_Controller';
-    $action = 'index';
+    $controller = new Main_Controller();
+    $action = 'Index';
+
+    Debug::p($router);
+    Debug::p($route);
 }
 
-$main_controller = new Main_Controller();
-$controller = $main_controller->loadController($controller_name);
-$controller->$action();
+//$controller->$action();
 
 ?>

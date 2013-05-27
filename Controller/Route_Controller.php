@@ -62,6 +62,10 @@ class Route_Controller {
             }
         }
 
+        if(isset($args['params'])) {
+            $route->setParameters($args['params']);
+        }
+
         $this->routes[] = $route;
     }
 
@@ -110,7 +114,7 @@ class Route_Controller {
 
             }
 
-            $route->setParameters($params);
+            //$route->setParameters($params);
 
             return $route;
             
