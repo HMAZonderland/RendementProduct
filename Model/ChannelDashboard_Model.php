@@ -4,11 +4,9 @@
  * User: hugozonderland
  * Date: 22-05-13
  * Time: 19:07
- * To change this template use File | Settings | File Templates.
+ * Default model
  */
 
-//require_once HELPER_ROOT . '/ReadBeanPHP_function.php';
-//require_once LIBRARY_ROOT . '/RedBeanPHP/3.4/rb.php';
 
 /**
  * Class ChannelDashboardModel

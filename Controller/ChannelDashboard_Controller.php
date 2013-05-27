@@ -4,7 +4,8 @@
  * User: hugozonderland
  * Date: 22-05-13
  * Time: 18:59
- * To change this template use File | Settings | File Templates.
+ * This is the ChannelDashboard_Controler. It is used to show various marketingchannels and how
+ * they perform.
  */
 
 require_once DOCUMENT_ROOT . 'Model/ChannelDashboard_Model.php';
@@ -20,7 +21,8 @@ class ChannelDashboard_Controller extends View_Controller
     public $model;
 
     /**
-     *
+     * Default constructor.
+     * Create's an instance of the model
      */
     public function __construct()
     {
@@ -28,7 +30,7 @@ class ChannelDashboard_Controller extends View_Controller
     }
 
     /**
-     *
+     * Index page control
      */
     public function index()
     {

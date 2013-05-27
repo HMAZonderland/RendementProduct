@@ -10,16 +10,16 @@
 /**
  * Class DatabaseController
  *
-* Handles all database communication using RedBeansPHP library
-*/
+ * Handles all database communication using RedBeansPHP library
+ */
 class Database_Controller
 {
     /**
-     * Sets up the connection to the database
+     * Loads the required library and
+     * sets up the connection to the database
      */
     public function __construct()
     {
-        Library::load('RedBeanPHP');
         R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME . '', '' . DB_PASS . '');
     }
 }

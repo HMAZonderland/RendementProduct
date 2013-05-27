@@ -4,7 +4,8 @@
  * User: hugozonderland
  * Date: 08-05-13
  * Time: 17:30
- * To change this template use File | Settings | File Templates.
+ * Creates a Google Client instance for oauth purposes and
+ * creates a Google Analytics instance to request metrics.
  */
 
 // Setup Google Client => authentication
@@ -39,14 +40,14 @@ if (isset($_SESSION['token'])) { // extract token from session and configure cli
     // Settings object?
     if ($jsonObject->refresh_token) {
         //$settings = R::dispense('settings');
-        $settings->google_analytics_refresh_token = $jsonObject->refresh_token;
-        R::store($settings, 1);
+        //$settings->google_analytics_refresh_token = $jsonObject->refresh_token;
+        //R::store($settings, 1);
     }
 }
-if ($settings->google_analytics_refresh_token) {
-    $gClient->refreshToken($settings->google_analytics_refresh_token);
+//if ($settings->google_analytics_refresh_token) {
+//    $gClient->refreshToken($settings->google_analytics_refresh_token);
     //$gClient->setAccessToken();
-}
+//}
 
 if (!$gClient->getAccessToken()) { // auth call to google
     $authUrl = $gClient->createAuthUrl();

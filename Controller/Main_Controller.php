@@ -4,7 +4,7 @@
  * User: hugozonderland
  * Date: 22-05-13
  * Time: 16:16
- * To change this template use File | Settings | File Templates.
+ * Main controller, creates instances and loads other controllers.
  */
 require_once DOCUMENT_ROOT . 'Controller/View_Controller.php';
 
@@ -34,8 +34,7 @@ class Main_Controller
         else
         {
             echo "Could not load requested Controller: " . $filepath . "<br />The controller file was not found.";
-            //return false;
-            //die();
+            die();
         }
     }
 

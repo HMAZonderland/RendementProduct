@@ -4,7 +4,7 @@
  * User: hugozonderland
  * Date: 26-05-13
  * Time: 16:28
- * To change this template use File | Settings | File Templates.
+ * Boostrap file. Sets enviroment variables
  */
 // We always want logs, we LOVE logs!
 ini_set('log_errors', 'On');
@@ -69,6 +69,7 @@ Library::load('RedBeanPHP');
 
 // Include Google Client Lib + helper
 Library::load('Google_API_Client');
+Library::load('Google_Analytics_Service');
 include_once(HELPER_ROOT . 'GoogleClient_function.php');
 ?>
 

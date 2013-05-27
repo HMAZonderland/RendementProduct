@@ -4,15 +4,38 @@
  * User: hugozonderland
  * Date: 26-05-13
  * Time: 16:08
- * To change this template use File | Settings | File Templates.
+ * Library class, loads a library class
  */
 
+/**
+ * Class Library
+ */
 class Library
 {
+    /**
+     * Loads a library,
+     * @param string $lib
+     */
     public static function load($lib)
     {
         $library = unserialize(LIBRARY);
-        $location = $library[$lib];
-        require_once $location;
+        if (array_key_exists($lib, $library))
+        {
+            $location = $library[$lib];
+            if (file_exists($location))
+            {
+                require_once $location;
+            }
+            else
+            {
+                echo "Could not load the requested library " . $lib . ".<br />The required file is not found in the Library folder. Please check your mapping!";
+                die();
+            }
+        }
+        else
+        {
+            echo "Could not load the required library<br />Library " . $lib . " does not exsist in the library mapping.";
+            die();
+        }
     }
 }

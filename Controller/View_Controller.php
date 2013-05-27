@@ -4,13 +4,24 @@
  * User: hugozonderland
  * Date: 23-05-13
  * Time: 17:40
- * To change this template use File | Settings | File Templates.
+ * View Controller parses all models and loads the required views
  */
 
+/**
+ * Class View_Controller
+ */
 class View_Controller extends Main_Controller
 {
-
+    /**
+     * The controller to cal;
+     * @var
+     */
     private $controller;
+
+    /**
+     * Action/Method (view) to load
+     * @var
+     */
     private $action;
 
     /**

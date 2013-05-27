@@ -4,7 +4,7 @@
  * User: hugozonderland
  * Date: 22-05-13
  * Time: 16:55
- * To change this template use File | Settings | File Templates.
+ * Fetches the URL and checks if the URL matches a defined route in the Route_config.php
  */
 require CONTROLLER_ROOT . 'Main_Controller.php';
 

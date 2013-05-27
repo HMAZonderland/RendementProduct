@@ -4,7 +4,7 @@
  * User: hugozonderland
  * Date: 22-05-13
  * Time: 22:11
- * To change this template use File | Settings | File Templates.
+ * This file is used to set the Google API Console settings.
  */
 
 // Google Console Credentials
