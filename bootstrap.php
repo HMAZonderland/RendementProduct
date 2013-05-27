@@ -7,8 +7,9 @@
  * Boostrap file. Sets enviroment variables
  */
 // We always want logs, we LOVE logs!
-ini_set('log_errors', 'On');
-ini_set("error_log", LOG_ROOT . 'error.log');
+ini_set('log_errors', 1);
+ini_set('error_log', LOG_ROOT . 'error.log');
+ob_start();
 
 // Production/Debug
 define('STATUS', 'development');
@@ -17,13 +18,13 @@ define('STATUS', 'development');
 switch (STATUS)
 {
     case 'production': {
-        ini_set("display_errors", 'Off');
+        ini_set('display_errors', 0);
         define('OUTPUT_DEBUG', false);
     }
 
     case 'development': {
         error_reporting(E_ALL);
-        ini_set('display_errors','On');
+        ini_set('display_errors', 1);
         define('OUTPUT_DEBUG', true);
     }
 }
