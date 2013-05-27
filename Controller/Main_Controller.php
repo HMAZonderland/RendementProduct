@@ -6,7 +6,7 @@
  * Time: 16:16
  * To change this template use File | Settings | File Templates.
  */
-require_once DOCUMENT_ROOT . '/Controller/View_Controller.php';
+require_once DOCUMENT_ROOT . 'Controller/View_Controller.php';
 
 /**
  * Class Controller
