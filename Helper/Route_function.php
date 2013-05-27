@@ -18,21 +18,28 @@ if ($route)
     $controller_name = $target['controller'];
     $action = $target['action'];
 
+    // Create an instance of the Main_Controller
     $main_controller = new Main_Controller();
-    $controller = $main_controller->loadController($controller_name);
 
-    Debug::p($router);
-    Debug::p($route);
+    // When the request controller is NOT the Main Controller we have to load this controller
+    if ($controller_name != 'Main_Controller')
+    {
+        $controller = $main_controller->loadController($controller_name);
+    }
+    else
+    {
+        // When it is, we have to talk to the Main Controller directly
+        $controller = $main_controller;
+    }
 }
 else
 {
     $controller = new Main_Controller();
-    $action = 'Index';
-
-    Debug::p($router);
-    Debug::p($route);
+    //$controller->checkAuthentication();
+    $action = 'checkAuthentication';
+    $params = array();
 }
 
-//$controller->$action();
 
+$controller->$action($params);
 ?>

@@ -132,17 +132,13 @@ class Route {
      * @return mixed
      */
     public function getParameters() {
-		return $this->parameters;
+		return $this->params;
 	}
 
     /**
      * @param array $parameters
      */
     public function setParameters(array $parameters) {
-		$this->parameters = $parameters;
+		$this->params = $parameters;
 	}
-
-
-
-
 }

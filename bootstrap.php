@@ -65,14 +65,15 @@ include_once(HELPER_ROOT . 'Library_function.php');
 include_once(CONFIG_ROOT . 'Db_config.php');
 Library::load('RedBeanPHP');
 
-// Load the route config + helper
-include_once(CONFIG_ROOT . 'Route_config.php');
-include_once(HELPER_ROOT . 'Route_function.php');
-
 // Load the Google API Client config, library and helper
 include_once(CONFIG_ROOT . 'Google_API_Client_config.php');
 Library::load('Google_API_Client');
 Library::load('Google_Analytics_Service');
-include_once(HELPER_ROOT . 'GoogleClient_function.php');
+
+// Load the route config + helper
+include_once(CONFIG_ROOT . 'Route_config.php');
+include_once(HELPER_ROOT . 'Route_function.php');
+
+//include_once(HELPER_ROOT . 'GoogleClient_function.php');
 ?>
 

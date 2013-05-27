@@ -8,6 +8,8 @@
  */
 require_once CONTROLLER_ROOT . 'View_Controller.php';
 require_once MODEL_ROOT . 'Main_Model.php';
+
+require_once CONTROLLER_ROOT . 'GoogleClient_Controller.php';
 /**
  * Class Controller
  */
@@ -19,11 +21,17 @@ class Main_Controller extends View_Controller
     private $db;
 
     /**
+     * @var
+     */
+    private $google_client;
+
+    /**
      * Default constructor, loads the Database_Controller
      */
     public function __construct()
     {
         $this->db = R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME . '', '' . DB_PASS . '');
+        $this->google_client = new GoogleClient_Controller();
     }
 
     /**
@@ -70,5 +78,29 @@ class Main_Controller extends View_Controller
     {
         $model = new Main_Model();
         $this->parse($model);
+    }
+
+    /**
+     * Checks the current session
+     */
+    public function checkAuthentication()
+    {
+        $this->google_client->checkAuthentication(array());
+    }
+
+    /**
+     *
+     */
+    public function auth()
+    {
+        $this->google_client->auth();
+    }
+
+    /**
+     * Logsout the current user.
+     */
+    public function logout()
+    {
+        $this->google_client->logout();
     }
 }
