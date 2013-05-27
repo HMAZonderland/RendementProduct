@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once CONFIG_ROOT . 'Google_API_Client_config.php';
+//require_once CONFIG_ROOT . 'Google_API_Client_config.php';
 
 global $apiConfig;
 
