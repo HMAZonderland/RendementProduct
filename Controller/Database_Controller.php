@@ -19,6 +19,7 @@ class Database_Controller
      */
     public function __construct()
     {
+        Library::load('RedBeanPHP');
         R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME . '', '' . DB_PASS . '');
     }
 }
