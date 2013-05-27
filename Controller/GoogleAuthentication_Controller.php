@@ -7,13 +7,22 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class GoogleAuthentication_Controller
+require_once MODEL_ROOT . 'GoogleAuthentication_Model.php';
+
+class GoogleAuthentication_Controller extends View_Controller
 {
+    public $model;
+
+    public function __construct()
+    {
+        $this->model = new GoogleAuthentication_Model;
+    }
+
     /**
      *
      */
-    public function CheckAuthentication()
+    public function checkAuthentication()
     {
-        echo "Ik heb deze controller ingeladen, whoehoe";
+
     }
 }
