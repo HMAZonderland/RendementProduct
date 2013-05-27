@@ -1,1 +1,3 @@
-Welkom op deze website
+<?php
+echo $model->text;
+?>
