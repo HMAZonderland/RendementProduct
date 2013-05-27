@@ -69,6 +69,7 @@ Library::load('RedBeanPHP');
 include_once(CONFIG_ROOT . 'Google_API_Client_config.php');
 Library::load('Google_API_Client');
 Library::load('Google_Analytics_Service');
+Library::load('Google_Oauth2Service');
 
 // Load the route config + helper
 include_once(CONFIG_ROOT . 'Route_config.php');

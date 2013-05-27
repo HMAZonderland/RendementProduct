@@ -9,6 +9,7 @@
  */
 
 require_once CONTROLLER_ROOT . 'GoogleAnalytics_Controller.php';
+require_once CONTROLLER_ROOT . 'GoogleOauth2_Controller.php';
 
 /**
  * Class GoogleClient_Controller
@@ -20,6 +21,15 @@ class GoogleClient_Controller
      */
     private $google_client;
 
+    /**
+     * @var Google_Oauth2Service
+     */
+    private $google_oauth;
+
+    /**
+     * Link to the Google Analytics Service
+     * @var GoogleAnalytics_Controller
+     */
     private $google_analytics;
 
     /**
@@ -35,10 +45,11 @@ class GoogleClient_Controller
         $this->google_client->setRedirectUri(REDIRECT_URI); // Where to redirect to after authentication
         $this->google_client->setDeveloperKey(DEVELOPER_KEY); // Developer key
 
+        // Set services..
         $this->google_analytics = new GoogleAnalytics_Controller($this->google_client);
+        $this->google_oauth     = new GoogleOauth2_Controller($this->google_client);
 
-        Debug::s('Google Client Lib geladen!');
-
+        // When this user already has a TOKEN, just refresh it..
         if (isset($_SESSION['token'])) { // extract token from session and configure client
             $this->getRefreshToken();
         }
@@ -66,6 +77,11 @@ class GoogleClient_Controller
         $this->google_client->authenticate();
         $_SESSION['token'] = $this->google_client->getAccessToken();
 
+        $user = $this->google_oauth->google_oauth->userinfo->get();
+        $_SESSION['gmail_account'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+        $_SESSION['id'] = filter_var($user['id'], FILTER_SANITIZE_EMAIL);
+        $_SESSION['name'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+
         $this->getRefreshToken();
     }
 
@@ -90,6 +106,7 @@ class GoogleClient_Controller
     public function logout()
     {
         unset($_SESSION['token']);
+        unset($_SESSION['gmail_account']);
         header("Location: index.php");
     }
 }
