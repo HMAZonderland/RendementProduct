@@ -11,6 +11,9 @@
 require_once CONTROLLER_ROOT . 'GoogleAnalytics_Controller.php';
 require_once CONTROLLER_ROOT . 'GoogleOauth2_Controller.php';
 
+require_once CONTROLLER_ROOT . 'GoogleAccount_Controller.php';
+
+
 /**
  * Class GoogleClient_Controller
  */
@@ -51,7 +54,7 @@ class GoogleClient_Controller
 
         // When this user already has a TOKEN, just refresh it..
         if (isset($_SESSION['token'])) { // extract token from session and configure client
-            $this->getRefreshToken();
+            $this->getRefreshToken(null);
         }
     }
 
@@ -78,11 +81,24 @@ class GoogleClient_Controller
         $_SESSION['token'] = $this->google_client->getAccessToken();
 
         $user = $this->google_oauth->google_oauth->userinfo->get();
-        $_SESSION['gmail_account'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
-        $_SESSION['id'] = filter_var($user['id'], FILTER_SANITIZE_EMAIL);
-        $_SESSION['name'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+        $name = (string) filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+        $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+        $refresh_token = $this->getRefreshToken();
 
-        $this->getRefreshToken();
+        $google_account_controller = new GoogleAccount_Controller();
+        $google_account = $google_account_controller->getGoogleAccountByEmail($email);
+
+        if (isset($google_account->id) && $google_account->id != 0)
+        {
+            $google_account_controller->updateRefreshToken($google_account, $refresh_token);
+        }
+        else
+        {
+            $id = $google_account_controller->addGoogleAccount($name, $email, $refresh_token);
+            $google_account = $google_account_controller->getGoogleAccountById($id);
+        }
+
+        return $google_account;
     }
 
     /**
@@ -96,8 +112,9 @@ class GoogleClient_Controller
 
         // Settings object?
         if ($jsonObject->refresh_token) {
-            Debug::p($jsonObject);
+            return $jsonObject->refresh_token;
         }
+        return null;
     }
 
     /**
@@ -106,7 +123,6 @@ class GoogleClient_Controller
     public function logout()
     {
         unset($_SESSION['token']);
-        unset($_SESSION['gmail_account']);
         header("Location: index.php");
     }
 }

@@ -11,24 +11,6 @@ ini_set('log_errors', 1);
 ini_set('error_log', LOG_ROOT . 'error.log');
 ob_start();
 
-// Production/Debug
-define('STATUS', 'development');
-
-// Setting various settings according to status
-switch (STATUS)
-{
-    case 'production': {
-        ini_set('display_errors', 0);
-        define('OUTPUT_DEBUG', false);
-    }
-
-    case 'development': {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        define('OUTPUT_DEBUG', true);
-    }
-}
-
 // Global used variables
 define('WEBSITE_URL',       'http://product.esser-emmerik.hugozonderland.nl/');
 define('DOCUMENT_ROOT',     '/home/ocrtxndf/domains/hugozonderland.nl/public_html/product.esser-emmerik/');
@@ -61,9 +43,31 @@ include_once(HELPER_ROOT . 'Debug_function.php');
 include_once(CONFIG_ROOT . 'Library_config.php');
 include_once(HELPER_ROOT . 'Library_function.php');
 
-// Load the Database config + load the library
+// Load the Database config + load the library + inits + load helper the connection
 include_once(CONFIG_ROOT . 'Db_config.php');
 Library::load('RedBeanPHP');
+R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME . '', '' . DB_PASS . '');
+
+// Production/Debug
+define('STATUS', 'development');
+
+// Setting various settings according to status
+switch (STATUS)
+{
+    case 'production': {
+        ini_set('display_errors', 0);
+        define('OUTPUT_DEBUG', false);
+        R::debug(false);
+        R::freeze(true);
+    }
+
+    case 'development': {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        define('OUTPUT_DEBUG', true);
+        R::debug(true);
+    }
+}
 
 // Load the Google API Client config, library and helper
 include_once(CONFIG_ROOT . 'Google_API_Client_config.php');
@@ -74,7 +78,5 @@ Library::load('Google_Oauth2Service');
 // Load the route config + helper
 include_once(CONFIG_ROOT . 'Route_config.php');
 include_once(HELPER_ROOT . 'Route_function.php');
-
-//include_once(HELPER_ROOT . 'GoogleClient_function.php');
 ?>
 

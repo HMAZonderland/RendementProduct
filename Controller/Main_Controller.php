@@ -16,21 +16,20 @@ require_once CONTROLLER_ROOT . 'GoogleClient_Controller.php';
 class Main_Controller extends View_Controller
 {
     /**
-     * @var void
-     */
-    private $db;
-
-    /**
      * @var
      */
     private $google_client;
 
     /**
-     * Default constructor, loads the Database_Controller
+     * @var
+     */
+    private $google_account;
+
+    /**
+     * Default constructor
      */
     public function __construct()
     {
-        $this->db = R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME . '', '' . DB_PASS . '');
         $this->google_client = new GoogleClient_Controller();
     }
 
@@ -89,11 +88,12 @@ class Main_Controller extends View_Controller
     }
 
     /**
-     *
+     * Authenticates a Google Account
      */
     public function auth()
     {
-        $this->google_client->auth();
+        $this->google_account = $this->google_client->auth();
+        header(WEBSITE_URL . 'dashboard');
     }
 
     /**
