@@ -31,6 +31,7 @@ class Main_Controller extends View_Controller
     public function __construct()
     {
         $this->google_client = new GoogleClient_Controller();
+        if (!isset($_GET['code'])) $this->checkAuthentication(); // dirty redirect loop fix..
     }
 
     /**
@@ -84,7 +85,7 @@ class Main_Controller extends View_Controller
      */
     public function checkAuthentication()
     {
-        $this->google_client->checkAuthentication();
+        $this->google_account = $this->google_client->checkAuthentication();
     }
 
     /**
@@ -92,9 +93,8 @@ class Main_Controller extends View_Controller
      */
     public function auth()
     {
-        $this->google_account = $this->google_client->auth();
-        // When okay redirect to the user's dashboard.
-        header(WEBSITE_URL . 'dashboard');
+        $this->google_client->auth();
+        header('Location: ' . WEBSITE_URL . 'dashboard');
     }
 
     /**

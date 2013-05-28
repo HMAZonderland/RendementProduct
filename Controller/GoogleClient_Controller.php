@@ -11,7 +11,6 @@
 // Controllers
 require_once CONTROLLER_ROOT . 'GoogleAnalytics_Controller.php';
 require_once CONTROLLER_ROOT . 'GoogleOauth2_Controller.php';
-require_once CONTROLLER_ROOT . 'GoogleAccount_Controller.php';
 
 // Models
 require_once MODEL_ROOT . 'GoogleAccount_Model.php';
@@ -24,23 +23,23 @@ class GoogleClient_Controller
     /**
      * @var Google_Client
      */
-    private $google_client;
+    public $google_client;
 
     /**
      * @var Google_Oauth2Service
      */
-    private $google_oauth;
+    public $google_oauth;
 
     /**
      * Link to the Google Analytics Service
      * @var GoogleAnalytics_Controller
      */
-    private $google_analytics;
+    public $google_analytics;
 
     /**
      * @var GoogleAccount_Model
      */
-    private $google_account_model;
+    public $google_account_model;
 
     /**
      * Constructor
@@ -62,23 +61,31 @@ class GoogleClient_Controller
 
         // Set GoogleAccount_Model
         $this->google_account_model = new GoogleAccount_Model();
-
-        // When this user already has a TOKEN, just refresh it..
-        if (isset($_SESSION['token'])) { // extract token from session and configure client
-            $this->getRefreshToken(null);
-        }
     }
 
     /**
-     * Checks if an accesstoken was set, if not, go get one!
+     * Checks if an $_SESSION was set, if not, go get one!
      */
     public function checkAuthentication()
     {
-        if (!$this->google_client->getAccessToken())
+        if (!isset($_SESSION['token']))
         {
             $authUrl = $this->google_client->createAuthUrl();
-            header("Location: " . $authUrl);
+            header('Location: ' . $authUrl);
             die;
+        }
+        else
+        {
+            $this->google_client->setAccessToken($_SESSION['token']);
+            $google_account = $this->getGoogleAccount();
+            if ($google_account != null)
+            {
+                return $google_account;
+            }
+            else
+            {
+                $this->logout();
+            }
         }
     }
 
@@ -91,42 +98,67 @@ class GoogleClient_Controller
         $this->google_client->authenticate();
         $_SESSION['token'] = $this->google_client->getAccessToken();
 
-        // Extract user variables
-        $user = $this->google_oauth->google_oauth->userinfo->get();
-        $name = (string) filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-        $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
-        $refresh_token = $this->getRefreshToken();
-
-        // See if this email is linked to a Google Account in our own database
-        $google_account = $this->google_account_model->getGoogleAccountByEmail($email);
-
-        // When we find something, refresh his token
-        if (isset($google_account->id) && $google_account->id != 0)
-        {
-            $this->google_account_model->updateRefreshToken($google_account, $refresh_token);
-        }
-        // If we do not find anything this means we have to add this user to our database
-        else
-        {
-            $id = $this->google_account_model->addGoogleAccount($name, $email, $refresh_token);
-            $google_account = $this->google_account_model->getGoogleAccountById($id);
-        }
+        // Gets the (new) Google Account
+        $google_account = $this->getGoogleAccount();
 
         // Return the account
         return $google_account;
     }
 
     /**
+     *
+     */
+    public function getGoogleAccount()
+    {
+        if ($this->google_client->getAccessToken())
+        {
+            // Extract user variables
+            $user = $this->google_oauth->google_oauth->userinfo->get();
+            $name = (string) filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+            $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+            $refresh_token = $this->getRefreshToken($this->google_client->getAccessToken());
+
+            $google_account = $this->getGoogleAccountByEmail($email);
+
+            // When we find something, refresh his token
+            if (isset($google_account->id) && $google_account->id != 0)
+            {
+                $this->google_account_model->updateRefreshToken($google_account, $refresh_token);
+            }
+            // If we do not find anything this means we have to add this user to our database
+            else
+            {
+                $id = $this->google_account_model->add($name, $email, $refresh_token);
+                $google_account = $this->google_account_model->getById($id);
+            }
+
+            return $google_account;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @param $email
+     *
+     * @return RedBean_OODBBean
+     */
+    public function getGoogleAccountByEmail($email)
+    {
+        return $google_account = $this->google_account_model->getByEmail($email);
+    }
+
+    /**
      * Gets and stores the fresh token
      */
-    private function getRefreshToken()
+    private function getRefreshToken($token)
     {
-        $token = $_SESSION['token'];
-        $this->google_client->setAccessToken($token);
         $jsonObject = json_decode($token);
 
-        // Settings object?
-        if ($jsonObject->refresh_token) {
+        if ($jsonObject->refresh_token)
+        {
             return $jsonObject->refresh_token;
         }
         return null;

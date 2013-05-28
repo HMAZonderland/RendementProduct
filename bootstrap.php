@@ -6,6 +6,8 @@
  * Time: 16:28
  * Boostrap file. Sets enviroment variables
  */
+session_start();
+
 // We always want logs, we LOVE logs!
 ini_set('log_errors', 1);
 ini_set('error_log', LOG_ROOT . 'error.log');
