@@ -87,26 +87,32 @@ class GoogleClient_Controller
      */
     public function auth()
     {
+        // Authenticate the Google Client and set the TOKEN in session
         $this->google_client->authenticate();
         $_SESSION['token'] = $this->google_client->getAccessToken();
 
+        // Extract user variables
         $user = $this->google_oauth->google_oauth->userinfo->get();
         $name = (string) filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
         $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
         $refresh_token = $this->getRefreshToken();
 
+        // See if this email is linked to a Google Account in our own database
         $google_account = $this->google_account_model->getGoogleAccountByEmail($email);
 
+        // When we find something, refresh his token
         if (isset($google_account->id) && $google_account->id != 0)
         {
             $this->google_account_model->updateRefreshToken($google_account, $refresh_token);
         }
+        // If we do not find anything this means we have to add this user to our database
         else
         {
             $id = $this->google_account_model->addGoogleAccount($name, $email, $refresh_token);
             $google_account = $this->google_account_model->getGoogleAccountById($id);
         }
 
+        // Return the account
         return $google_account;
     }
 
