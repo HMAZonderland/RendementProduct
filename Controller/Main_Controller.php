@@ -18,12 +18,12 @@ class Main_Controller extends View_Controller
     /**
      * @var
      */
-    private $google_client;
+    public $google_client;
 
     /**
      * @var
      */
-    private $google_account;
+    public $google_account;
 
     /**
      * Default constructor
@@ -84,7 +84,7 @@ class Main_Controller extends View_Controller
      */
     public function checkAuthentication()
     {
-        $this->google_client->checkAuthentication(array());
+        $this->google_client->checkAuthentication();
     }
 
     /**
@@ -93,6 +93,7 @@ class Main_Controller extends View_Controller
     public function auth()
     {
         $this->google_account = $this->google_client->auth();
+        // When okay redirect to the user's dashboard.
         header(WEBSITE_URL . 'dashboard');
     }
 

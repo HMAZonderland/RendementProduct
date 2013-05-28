@@ -13,26 +13,6 @@
 class GoogleAccount_Model
 {
     /**
-     * @var
-     */
-    public $id;
-
-    /**
-     * @var
-     */
-    public $name;
-
-    /**
-     * @var
-     */
-    public $email;
-
-    /**
-     * @var
-     */
-    public $refresh_token;
-
-    /**
      * @param $id
      * @param $name
      * @param $email

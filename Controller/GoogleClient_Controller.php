@@ -8,11 +8,13 @@
  * It fetches an access token and refreshes the exsisting refresh token.
  */
 
+// Controllers
 require_once CONTROLLER_ROOT . 'GoogleAnalytics_Controller.php';
 require_once CONTROLLER_ROOT . 'GoogleOauth2_Controller.php';
-
 require_once CONTROLLER_ROOT . 'GoogleAccount_Controller.php';
 
+// Models
+require_once MODEL_ROOT . 'GoogleAccount_Model.php';
 
 /**
  * Class GoogleClient_Controller
@@ -36,10 +38,16 @@ class GoogleClient_Controller
     private $google_analytics;
 
     /**
+     * @var GoogleAccount_Model
+     */
+    private $google_account_model;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        // Setup the Google Client
         $this->google_client = new Google_Client(); // GoogleClient init
         $this->google_client->setAccessType(ACCESS_TYPE); // default: offline
         $this->google_client->setApplicationName(APPLICATION_NAME); // Title
@@ -52,6 +60,9 @@ class GoogleClient_Controller
         $this->google_analytics = new GoogleAnalytics_Controller($this->google_client);
         $this->google_oauth     = new GoogleOauth2_Controller($this->google_client);
 
+        // Set GoogleAccount_Model
+        $this->google_account_model = new GoogleAccount_Model();
+
         // When this user already has a TOKEN, just refresh it..
         if (isset($_SESSION['token'])) { // extract token from session and configure client
             $this->getRefreshToken(null);
@@ -61,9 +72,8 @@ class GoogleClient_Controller
     /**
      * Checks if an accesstoken was set, if not, go get one!
      */
-    public function checkAuthentication(array $params)
+    public function checkAuthentication()
     {
-        Debug::s('Google Client Lib checkAuthentication!');
         if (!$this->google_client->getAccessToken())
         {
             $authUrl = $this->google_client->createAuthUrl();
@@ -85,17 +95,16 @@ class GoogleClient_Controller
         $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
         $refresh_token = $this->getRefreshToken();
 
-        $google_account_controller = new GoogleAccount_Controller();
-        $google_account = $google_account_controller->getGoogleAccountByEmail($email);
+        $google_account = $this->google_account_model->getGoogleAccountByEmail($email);
 
         if (isset($google_account->id) && $google_account->id != 0)
         {
-            $google_account_controller->updateRefreshToken($google_account, $refresh_token);
+            $this->google_account_model->updateRefreshToken($google_account, $refresh_token);
         }
         else
         {
-            $id = $google_account_controller->addGoogleAccount($name, $email, $refresh_token);
-            $google_account = $google_account_controller->getGoogleAccountById($id);
+            $id = $this->google_account_model->addGoogleAccount($name, $email, $refresh_token);
+            $google_account = $this->google_account_model->getGoogleAccountById($id);
         }
 
         return $google_account;
