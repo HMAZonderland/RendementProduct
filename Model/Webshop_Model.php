@@ -12,20 +12,12 @@ class Webshop_Model
     public function getWebshopByEmail($email)
     {
         $q =
-            '
-            SELECT
-            ws.id AS id,
-            ws.name AS name,
-            ws.URL as URL
-
-            FROM webshop ws, webshopgooleaccount wsga
-
-            WHERE wsga.email = \'' . $email . '\'';
-
-        Debug::s($q);
-
+            'SELECT ws.id, ws.name, ga.email
+            FROM webshop ws, webshopgoogleaccount wsga, googleaccount ga
+            WHERE ws.id = wsga.webshop_id
+            AND ga.id = wsga.googleaccount_id
+            AND ga.email = \'' . $email .'\'';
         $result = R::getAll($q);
-
         return R::convertToBeans('webshop', $result);
     }
 }

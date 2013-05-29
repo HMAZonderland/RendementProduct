@@ -25,10 +25,17 @@ class View_Controller
     private $action;
 
     /**
+     * @var
+     */
+    private $model;
+
+    /**
      * @param $model
      */
-    public function parse()
+    public function parse($model = null)
     {
+        $this->model = $model;
+
         $debug = debug_backtrace();
         $this->controller = $debug[1]['class'];
         $this->action = $debug[1]['function'];
