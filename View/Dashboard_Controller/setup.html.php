@@ -1,55 +1,4 @@
-<script type="text/javascript">
-    $(document).ready(function(){
-
-        $("a.google_analytics_profile").click(function(event) {
-
-            event.preventDefault();
-
-            var profile = $(this).data('profile');
-            var property = $(this).data('property');
-            var account = $(this).data('account');
-
-            console.log(profile);
-            console.log(property);
-            console.log(account);
-
-            $("div#magento_form").slideDown('slow', function(){});
-            $("#google_analytics_selector").slideUp('slow', function() {
-                $("a.show_ga").show();
-                $("a.hide_magento").show();
-            });
-
-            $("a.google_analytics_profile").each(function() {
-                $(this).css("font-weight","normal");
-                $(this).css("color","#00B2CC");
-            });
-
-            $(this).css("font-weight","bold");
-            $(this).css("color","red");
-        });
-
-        $("a.show_ga").click(function(event) {
-           event.preventDefault();
-           $(this).hide();
-           $("div#magento_form").slideUp('slow', function() {});
-           $("#google_analytics_selector").slideDown('slow', function() {
-               $("a.hide_ga").show();
-               $("a.hide_magento").hide();
-               $("a.show_magento").hide();
-           });
-        });
-
-        $("a.hide_ga").click(function(event) {
-            event.preventDefault();
-            $(this).hide();
-            $("div#magento_form").slideDown('slow', function() {});
-            $("#google_analytics_selector").slideUp('slow', function() {
-                $("a.show_ga").show();
-                $("a.hide_magento").hide();
-            });
-        });
-    });
-</script>
+<script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>setup.functions.js"></script>
 <section class="onerow full color1">
     <div class="onepcssgrid-1200">
         <table>
@@ -86,7 +35,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><a href="" class="hide_ga">Toon Magento formulier..</a></td>
+                    <td><a href="" class="show_magento">Toon Magento formulier..</a></td>
                 </tr>
             </table>
         </div>
@@ -99,6 +48,9 @@
 
         <div id="magento_form" style="display:none; width:80%">
             <form>
+                <input type="hidden" name="hid_profile" class="profile" />
+                <input type="hidden" name="hid_property" class="property" />
+                <input type="hidden" name="hid_account" class="account" />
             <table width="100%">
                 <tr>
                     <td>Internet adres </td>
