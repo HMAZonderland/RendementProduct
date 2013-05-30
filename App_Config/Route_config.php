@@ -17,6 +17,7 @@ $router->map('/',                   array('controller' => 'Dashboard_Controller'
 $router->map('/auth',               array('controller' => 'Main_Controller',        'action' => 'auth'),    array('methods' => 'GET'));
 $router->map('/logout',             array('controller' => 'Main_Controller',        'action' => 'logout'),  array('methods' => 'GET'));
 
-$router->map('/dashboard',          array('controller' => 'Dashboard_Controller',   'action' => 'index'),   array('methods' => 'GET'));
-$router->map('/dashboard/setup',    array('controller' => 'Dashboard_Controller',   'action' => 'setup'),   array('methods' => 'GET'));
+$router->map('/dashboard',              array('controller' => 'Dashboard_Controller',   'action' => 'index'),   array('methods' => 'GET'));
+$router->map('/dashboard/setup',        array('controller' => 'Dashboard_Controller',   'action' => 'setup'),   array('methods' => 'GET'));
+$router->map('/dashboard/setup',        array('controller' => 'Dashboard_Controller',   'action' => 'save'),    array('methods' => 'POST'));
 ?>

@@ -1,0 +1,33 @@
+.notification {
+   padding: 30px 0 0 0;
+   margin: 0 auto 0 auto;
+   text-align: center;
+}
+
+.error, .warning, .success, .information {
+    padding: 10px 10px 10px 36px;
+    margin: 10px 0;
+    border: solid 1px;
+    display: inline-block;
+    width: auto;
+}
+
+.error {
+    border-color: #DF8F8F;
+    background: #FFD7D7 url('../images/error.png') no-repeat 14px 10px;
+}
+
+.warning {
+    border-color: #E6DB55;
+    background: #FFFBCC url('../images/warning.png') no-repeat 14px 10px;
+}
+
+.success {
+    border-color: #ACDBAD;
+    background: #ECFAE3 url('../images/success.png') no-repeat 14px 10px;
+}
+
+.information {
+    border-color: #357ebf;
+    background: #b0c9e4 url('../images/success.png') no-repeat 14px 10px;
+}

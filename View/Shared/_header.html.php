@@ -15,5 +15,6 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>scope.functions.js"></script>
     <link rel="stylesheet" href="<?=CSS_ROOT?>style_override.css">
+    <link rel="stylesheet" href="<?=CSS_ROOT?>notification_area.css">
     <title>esser-emmerik | Rendements berekening</title>
 </head>

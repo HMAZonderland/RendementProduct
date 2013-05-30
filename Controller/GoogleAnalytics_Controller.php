@@ -72,7 +72,7 @@ class GoogleAnalytics_Controller
     }
 
     /**
-     *    Lists all the accounts/properties and profiles
+     * Lists all the accounts/properties and profiles
      */
     private function listManagementProfiles($propertyId, $accountId)
     {

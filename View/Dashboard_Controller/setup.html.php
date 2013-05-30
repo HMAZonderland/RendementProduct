@@ -47,7 +47,7 @@
         </table>
 
         <div id="magento_form" style="display:none; width:80%">
-            <form>
+            <form action="<?=WEBSITE_URL?>dashboard/setup" name="setup_form" method="post">
                 <input type="hidden" name="hid_profile" class="profile" />
                 <input type="hidden" name="hid_property" class="property" />
                 <input type="hidden" name="hid_account" class="account" />
@@ -63,6 +63,9 @@
                 <tr>
                     <td>API gebruiker key </td>
                     <td><input name="magento_key" required="" type="text" placeholder="bijv. uliehqf78feyuiehgfe78ofy" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="opslaan" /></td>
                 </tr>
             </table>
             </form>

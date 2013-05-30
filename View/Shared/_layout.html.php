@@ -10,6 +10,8 @@
 include SHARED_ROOT . '_header.html.php';
 include SHARED_ROOT . '_navigation.html.php';
 
+if ($this->notification->has()) include SHARED_ROOT . '_notification_area.html.php';
+
 $this->renderView();
 
 include SHARED_ROOT . '_footer.html.php';

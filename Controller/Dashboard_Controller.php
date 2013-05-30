@@ -59,4 +59,17 @@ class Dashboard_Controller extends Main_Controller
         $webshop_setup_model->google_analytics_profiles = $this->google_client->google_analytics->listAllProfiles();
         $this->parse($webshop_setup_model);
     }
+
+    /**
+     *
+     */
+    public function save()
+    {
+        $webshop_setup_model = new WebshopSetup_Model();
+        if (isset($_POST) && !empty($_POST))
+        {
+            $webshop_setup_model->save($_POST, $this->google_account->id);
+        }
+        $this->parse($webshop_setup_model);
+    }
 }
