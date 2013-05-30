@@ -5,7 +5,7 @@
                 <th>Wauw de model wordt ook ingeladen</th>
             </tr>
             <tr>
-                <td><?=$this->model->abc?></td>
+                <td><?=$this->model->msg?>></td>
             </tr>
         </table>
     </div>

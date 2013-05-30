@@ -10,6 +10,8 @@
 require_once MODEL_ROOT . 'Webshop_Model.php';
 require_once MODEL_ROOT . 'WebshopSetup_Model.php';
 
+require_once MODEL_ROOT . 'Dashboard_Model.php';
+
 /**
  * Class Dashboard_Controller
  */
@@ -30,25 +32,40 @@ class Dashboard_Controller extends Main_Controller
     {
         // Check if the Google Account is set so we can fetch the user website(s)
         $webshop_model = new Webshop_Model();
-        $webshops = $webshop_model->getWebshopByEmail($this->google_account->email);
+        $webshop_model->getWebshopByEmail($this->google_account->email);
+        $webshops = $webshop_model->webshops;
 
         // 0 Webshops set one up!
         if (sizeof($webshops) == 0)
         {
-            header('Location: ' . WEBSITE_URL . 'dashboard/setup');
+            $this->setup();
         }
         // 1 webshop, open the dashboard!
         elseif (sizeof($webshops) == 1)
         {
-            $webshop = $webshops[1];
-
+            $this->dashboard($webshops[1]);
         }
         // More than 1, let the user select one
         else
         {
-
+            $this->select($webshop_model);
         }
     }
+
+    private function dashboard($webshop)
+    {
+
+    }
+
+    /**
+     * Webshop selector view
+     * @param $webshops
+     */
+    private function select($webshop_model)
+    {
+        $this->parse($webshop_model);
+    }
+
 
     /**
      *

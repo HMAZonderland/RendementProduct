@@ -19,7 +19,14 @@ class WebshopSetup_Model extends Main_Model
      */
     public function save($post_data, $googleaccount_id)
     {
-        // TODO: propper validation
+        /*
+         * TODO: propper validation
+         * 1. check if the URL is valid
+         * 2. check if the URL does not already exsist in the database
+         * 3. add the website URL form the Google Analytics profile and compare this with the Magento URL
+         * these should be the same (domain)
+         * 4. validate the input (strings etc)
+         */
         $webshop_name   =   $post_data['webshop_name'];
 
         $ga_profile     =   $post_data['hid_profile'];

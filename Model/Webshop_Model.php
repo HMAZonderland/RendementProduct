@@ -7,8 +7,22 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * Class Webshop_Model
+ */
 class Webshop_Model
 {
+
+    /**
+     * @var
+     */
+    public $webshops;
+
+    /**
+     * @param $email
+     *
+     * @return array
+     */
     public function getWebshopByEmail($email)
     {
         $q =
@@ -19,6 +33,6 @@ class Webshop_Model
             AND ga.email = \'' . $email .'\'';
 
         $result = R::getAll($q);
-        return R::convertToBeans('webshop', $result);
+        $this->webshops = R::convertToBeans('webshop', $result);
     }
 }
