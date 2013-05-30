@@ -7,12 +7,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
+require_once MODEL_ROOT . 'NotificationArea_Model.php';
+
 class Main_Model
 {
-    public $text;
 
-    public function __construct()
-    {
-        $this->text = 'Welkom op deze website';
-    }
 }

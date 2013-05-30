@@ -7,6 +7,8 @@
  * View Controller parses all models and loads the required views
  */
 
+require_once MODEL_ROOT . 'NotificationArea_Model.php';
+
 /**
  * Class View_Controller
  */
@@ -30,11 +32,17 @@ class View_Controller
     private $model;
 
     /**
+     * @var NotificationArea_Model
+     */
+    private $notification;
+
+    /**
      * @param $model
      */
     public function parse($model = null)
     {
         $this->model = $model;
+        if (isset($this->model->notification)) $this->notification = $model->notification;
 
         $debug = debug_backtrace();
         $this->controller = $debug[1]['class'];
