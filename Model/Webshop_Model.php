@@ -17,6 +17,7 @@ class Webshop_Model
             WHERE ws.id = wsga.webshop_id
             AND ga.id = wsga.googleaccount_id
             AND ga.email = \'' . $email .'\'';
+
         $result = R::getAll($q);
         return R::convertToBeans('webshop', $result);
     }

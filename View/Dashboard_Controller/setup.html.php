@@ -53,8 +53,12 @@
                 <input type="hidden" name="hid_account" class="account" />
             <table width="100%">
                 <tr>
-                    <td>Internet adres </td>
-                    <td><input name="magento_host" required="" type="text" placeholder="bijv. webwinkel.nl" /></td>
+                    <td>Hoe heet deze webshop?</td>
+                    <td><input name="webshop_name" required="" type="text" placeholder="bijv. Web Winkel" /></td>
+                </tr>
+                <tr>
+                    <td>Internet adres API</td>
+                    <td><input name="magento_host" required="" type="text" placeholder="bijv. http://webwinkel.nl/api/soap/?wsdl" /></td>
                 </tr>
                 <tr>
                     <td>API gebruikersnaam </td>

@@ -7,14 +7,27 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * Class NotificationArea_Model
+ */
 class NotificationArea_Model
 {
+    /**
+     * @var
+     */
     public $notification_type;
+
+    /**
+     * @var
+     */
     public $notification_msg;
 
+    /**
+     * @return bool
+     */
     public function has()
     {
-        return (!empty($this->notification_msg) && !empty($this->notification_type));
+        return (isset($this->notification_msg) && isset($this->notification_type) && !empty($this->notification_msg) && !empty($this->notification_msg));
     }
 
     /**

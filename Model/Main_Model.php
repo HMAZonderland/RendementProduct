@@ -11,5 +11,20 @@ require_once MODEL_ROOT . 'NotificationArea_Model.php';
 
 class Main_Model
 {
+    /**
+     * @var
+     */
 
+    /**
+     * @var NotificationArea_Model
+     */
+    public $notification;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->notification = new NotificationArea_Model();
+    }
 }

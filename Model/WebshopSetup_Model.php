@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class WebshopSetup_Model
+class WebshopSetup_Model extends Main_Model
 {
     /**
      * @var array
@@ -20,6 +20,8 @@ class WebshopSetup_Model
     public function save($post_data, $googleaccount_id)
     {
         // TODO: propper validation
+        $webshop_name   =   $post_data['webshop_name'];
+
         $ga_profile     =   $post_data['hid_profile'];
         $ga_property    =   $post_data['hid_property'];
         $ga_account     =   $post_data['hid_account'];
@@ -29,6 +31,7 @@ class WebshopSetup_Model
         $magento_key    =   $post_data['magento_key'];
 
         $webshop                = R::dispense('webshop');
+        $webshop->name          = $webshop_name;
         $webshop->ga_profile    = $ga_profile;
         $webshop->ga_property   = $ga_property;
         $webshop->ga_account    = $ga_account;

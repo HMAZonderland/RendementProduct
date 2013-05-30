@@ -42,7 +42,11 @@ class View_Controller
     public function parse($model = null)
     {
         $this->model = $model;
-        if (isset($this->model->notification)) $this->notification = $model->notification;
+        if (isset($this->model->notification)) {
+            $this->notification = $model->notification;
+        } else {
+            $this->notification = new NotificationArea_Model();
+        }
 
         $debug = debug_backtrace();
         $this->controller = $debug[1]['class'];
