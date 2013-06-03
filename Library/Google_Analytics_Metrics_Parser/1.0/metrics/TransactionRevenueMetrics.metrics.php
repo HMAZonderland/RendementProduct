@@ -25,18 +25,12 @@ class TransactionRevenueMetrics extends GoogleAnalyticsMetricsParser
     public function __construct(Google_AnalyticsService $service, $profileId, $from, $to)
     {
         // dimensions
-        $dimensions = 'ga:source,ga:medium';
+        $dimensions = 'ga:source';
         $this->_params[] = 'source';
-        $this->_params[] = 'medium';
 
         // metrics
-        $metrics = 'ga:visits,ga:transactionRevenue,ga:transactions,ga:uniquePurchases,ga:transactionShipping,ga:transactionTax';
-        $this->_params[] = 'visits';
+        $metrics = 'ga:transactionRevenue';
         $this->_params[] = 'transactionRevenue';
-        $this->_params[] = 'transactions';
-        $this->_params[] = 'uniquePurchases';
-        $this->_params[] = 'transactionShipping';
-        $this->_params[] = 'transactionTax';
 
         parent::__construct($metrics, $dimensions, $service, $profileId, $from, $to);
         $this->parse();
