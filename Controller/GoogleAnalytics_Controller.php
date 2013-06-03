@@ -39,8 +39,10 @@ class GoogleAnalytics_Controller
         $list = $this->listManagementProfiles($propertyId, $accountId);
         $google_analytics_profiles = array();
 
-        if (sizeof($list['items']) > 0) {
-            foreach ($list['items'] as $item) {
+        if (sizeof($list['items']) > 0)
+        {
+            foreach ($list['items'] as $item)
+            {
 
                 $property = $item['webPropertyId'];
                 $profile = $item['id'];

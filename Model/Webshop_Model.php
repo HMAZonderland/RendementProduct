@@ -10,7 +10,7 @@
 /**
  * Class Webshop_Model
  */
-class Webshop_Model
+class Webshop_Model extends Main_Model
 {
 
     /**
@@ -34,5 +34,14 @@ class Webshop_Model
 
         $result = R::getAll($q);
         $this->webshops = R::convertToBeans('webshop', $result);
+    }
+
+    /**
+     * Returns all webshops from the database
+     * @return array
+     */
+    public function getAll()
+    {
+        return R::findAll('webshop');
     }
 }

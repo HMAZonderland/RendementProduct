@@ -10,7 +10,7 @@
 /**
  * Class GoogleAccount_Model
  */
-class GoogleAccount_Model
+class GoogleAccount_Model extends Main_Model
 {
     /**
      * @param $id
@@ -26,7 +26,9 @@ class GoogleAccount_Model
         $model->name = $name;
         $model->email = $email;
         $model->refreshtoken = $refresh_token;
-        return R::store($model);
+        $id = R::store($model);
+        $this->notification->success('Het Google Account is opgeslagen.');
+        return $id;
     }
 
     /**
@@ -61,5 +63,31 @@ class GoogleAccount_Model
     {
         $google_account->refreshtoken = $refresh_token;
         R::store($google_account);
+    }
+
+    /**
+     * Gets the refreshtoken by webshop_id
+     *
+     * @param $webshop_id
+     *
+     * @return RedBean_OODBBean
+     */
+    public function getRefreshTokenByWebshopId($webshop_id)
+    {
+        $q =    'SELECT ws.id, ga.refreshtoken AS refreshtoken
+                FROM webshop ws, webshopgoogleaccount wsga, googleaccount ga
+                WHERE ws.id = wsga.webshop_id
+                AND ga.id = wsga.googleaccount_id
+                AND ws.id = ' . $webshop_id .'
+                ORDER BY ga.id ASC
+                LIMIT 0, 1';
+
+        $results = R::getAll($q);
+        $result = R::convertToBeans('googleaccount', $results);
+
+        // Ugly buhh return! Not my pride.
+        if (isset($result[1]->refresh_token)) {
+            return $result[1]->refreh_token;
+        }
     }
 }
