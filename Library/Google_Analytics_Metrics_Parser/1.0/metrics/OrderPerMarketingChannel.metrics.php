@@ -24,8 +24,8 @@ class OrderPerMarketingChannel extends GoogleAnalyticsMetricsParser
         $this->_params[] = 'transactionId';
 
         // metrics
-        $metrics = "ga:transactionShipping";
-        $this->_params[] = 'transactionShipping';
+        $metrics = "ga:transactionShipping";            // This metrics is only here because its required
+        $this->_params[] = 'transactionShipping';       // it's not used anywhere
 
         parent::__construct($metrics, $dimensions, $service, $profileId, $from, $to);
         $this->parse();
@@ -57,23 +57,10 @@ class OrderPerMarketingChannel extends GoogleAnalyticsMetricsParser
                     }
                 } elseif ($key == 'transactionId') {
                     $transactionId = $value;
-                    if (!isset($result[$source][$transactionId])) {
-                        $result[$source][$transactionId] = array();
-                    }
-                } elseif ($key == 'productSku') {
-                    $productSku = $value;
-                    if (!isset($result[$source][$transactionId][$productSku])) {
-                        $result[$source][$transactionId][$productSku] = array();
-                    }
-                    $result[$source][$transactionId][$productSku]['productSku'] = $value;
-                } elseif ($key == 'itemRevenue') {
-                    $result[$source][$transactionId][$productSku]['itemRevenue'] = $value;
-                } else {
-                    $result[$source][$transactionId][$productSku]['itemQuantity'] = $value;
+                    array_push($result[$source], $transactionId);
                 }
             }
         }
-
         return $result;
     }
 }
