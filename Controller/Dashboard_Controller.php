@@ -9,7 +9,6 @@
 
 require_once MODEL_ROOT . 'Webshop_Model.php';
 require_once MODEL_ROOT . 'WebshopSetup_Model.php';
-
 require_once MODEL_ROOT . 'Dashboard_Model.php';
 
 /**
@@ -20,30 +19,22 @@ class Dashboard_Controller extends Main_Controller
     /**
      *
      */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     *
-     */
     public function index()
     {
         // Check if the Google Account is set so we can fetch the user website(s)
         $webshop_model = new Webshop_Model();
         $webshop_model->getWebshopByEmail($this->google_account->email);
-        $webshops = $webshop_model->webshops;
+        $webshops = sizeof($webshop_model->webshops);
 
         // 0 Webshops set one up!
-        if (sizeof($webshops) == 0)
+        if ($webshops == 0)
         {
             $this->setup();
         }
         // 1 webshop, open the dashboard!
-        elseif (sizeof($webshops) == 1)
+        elseif ($webshops == 1)
         {
-            $this->dashboard($webshops[1]);
+            $this->dashboard($webshop_model->webshops[1]->id);
         }
         // More than 1, let the user select one
         else
@@ -52,9 +43,14 @@ class Dashboard_Controller extends Main_Controller
         }
     }
 
-    private function dashboard($webshop)
+    /**
+     * The actual dashboard.
+     * @param $webshop_id
+     */
+    public function dashboard($webshop_id)
     {
-
+        $dashboard_model = new Dashboard_Model();
+        $this->parse($dashboard_model);
     }
 
     /**
@@ -68,7 +64,7 @@ class Dashboard_Controller extends Main_Controller
 
 
     /**
-     *
+     * Calls the setup View. Can be used to add a Magento/Analytics configuration
      */
     public function setup()
     {
@@ -78,7 +74,7 @@ class Dashboard_Controller extends Main_Controller
     }
 
     /**
-     *
+     * Fetches the POST request and processes it variables
      */
     public function save()
     {
