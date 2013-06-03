@@ -19,15 +19,13 @@ class OrderPerMarketingChannel extends GoogleAnalyticsMetricsParser
     public function __construct(Google_AnalyticsService $service, $profileId, $from, $to)
     {
         // dimensions
-        $dimensions = 'ga:source,ga:transactionId,ga:productSku';
+        $dimensions = 'ga:source,ga:transactionId';
         $this->_params[] = 'source';
         $this->_params[] = 'transactionId';
-        $this->_params[] = 'productSku';
 
         // metrics
-        $metrics = "ga:itemQuantity,ga:itemRevenue";
-        $this->_params[] = 'itemQuantity';
-        $this->_params[] = 'itemRevenue';
+        $metrics = "ga:transactionShipping";
+        $this->_params[] = 'transactionShipping';
 
         parent::__construct($metrics, $dimensions, $service, $profileId, $from, $to);
         $this->parse();
