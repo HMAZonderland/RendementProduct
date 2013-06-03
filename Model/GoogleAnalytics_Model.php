@@ -16,7 +16,7 @@ class GoogleAnalytics_Model extends Main_Model
         Library::load('OrderPerMarketingChannel_Metrics');
 
         // 24 hour time filter
-        $from = date('Y-m-d', time() - 7 * 24 * 60 * 60);
+        $from = date('Y-m-d', time() - 24 * 60 * 60);
         $to = date('Y-m-d');
 
         // Initiate the metrics, fetch and return the results
