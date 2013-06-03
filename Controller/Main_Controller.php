@@ -28,7 +28,7 @@ class Main_Controller extends View_Controller
     /**
      * Default constructor
      */
-    public function __construct()
+    public function init()
     {
         $this->google_client = new GoogleClient_Controller();
         if (!isset($_GET['code'])) $this->checkAuthentication(); // dirty redirect loop fix..
