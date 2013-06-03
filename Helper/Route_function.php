@@ -25,11 +25,17 @@ if ($route)
     if ($controller_name != 'Main_Controller')
     {
         $controller = $main_controller->loadController($controller_name);
+        $controller->init();
+    }
+    elseif ($controller_name == 'Cronjob_Controller')
+    {
+        $controller = $main_controller->loadController($controller_name);
     }
     else
     {
         // When it is, we have to talk to the Main Controller directly
         $controller = $main_controller;
+        $controller->init();
     }
 }
 else
@@ -39,7 +45,6 @@ else
     $action = 'checkAuthentication';
     $params = array();
 }
-
 
 $controller->$action($params);
 ?>
