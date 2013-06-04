@@ -9,7 +9,7 @@
 
 require_once MODEL_ROOT . 'Webshop_Model.php';
 require_once MODEL_ROOT . 'WebshopSetup_Model.php';
-require_once MODEL_ROOT . 'Dashboard_Model.php';
+require_once MODEL_ROOT . 'ChannelDashboard_Model.php';
 
 /**
  * Class Dashboard_Controller
@@ -49,7 +49,7 @@ class Dashboard_Controller extends Main_Controller
      */
     public function dashboard($webshop_id)
     {
-        $dashboard_model = new Dashboard_Model();
+        $dashboard_model = new ChannelDashboard_Model();
         $this->parse($dashboard_model);
     }
 

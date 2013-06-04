@@ -86,8 +86,10 @@ class GoogleAccount_Model extends Main_Model
         $result = R::convertToBeans('googleaccount', $results);
 
         // Ugly buhh return! Not my pride.
-        if (isset($result[1]->refresh_token)) {
-            return $result[1]->refreh_token;
+        if (isset($result[1]->refreshtoken)) {
+            return $result[1]->refreshtoken;
+        } else {
+            return false;
         }
     }
 }

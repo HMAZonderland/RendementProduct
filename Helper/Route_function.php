@@ -22,7 +22,7 @@ if ($route)
     $main_controller = new Main_Controller();
 
     // When the request controller is NOT the Main Controller we have to load this controller
-    if ($controller_name != 'Main_Controller')
+    if ($controller_name != 'Main_Controller' &&     $controller_name != 'Cronjob_Controller')
     {
         $controller = $main_controller->loadController($controller_name);
         $controller->init();

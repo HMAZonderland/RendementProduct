@@ -72,44 +72,53 @@ class Cronjob_Controller
 
             // Refresh token setting
             $refresh_token = $google_account_model->getRefreshTokenByWebshopId($webshop->id);
-            $this->google_client->google_client->refreshToken($refresh_token);
-
-            // Get the transactions per marketingchannel from Google Analytics.
-            $transactions = $google_analytics_model->getTransactionsPerMarketingChannel($service, $webshop->ga_profile);
-
-            foreach ($transactions as $marketingchannel_name => $transactions)
+            if (is_string($refresh_token))
             {
-                // Find this marketingchannel
-                // add when it doesn't exsist, get it's id when it does
-                $marketingchannel_id = $marketingchannel_model->getIdByName($marketingchannel_name);
+                $this->google_client->google_client->refreshToken($refresh_token);
 
-                // Process the orders within this marketingchannel
-                foreach ($transactions as $order_id)
+                // Get the transactions per marketingchannel from Google Analytics.
+                $transactions = $google_analytics_model->getTransactionsPerMarketingChannel($service, $webshop->ga_profile);
+
+                foreach ($transactions as $marketingchannel_name => $transactions)
                 {
-                    // Get the order details
-                    // define the shipping cost on this order
-                    $order = $magento_client->getSalesOrderDetails($order_id);
-                    $shipping_amount = $order['shipping_amount'];
+                    // Find this marketingchannel
+                    // add when it doesn't exsist, get it's id when it does
+                    $marketingchannel_id = $marketingchannel_model->getIdByName($marketingchannel_name);
 
-                    // Used to add products to the order table
-                    $products_order = array();
-
-                    // Process the items on this order
-                    foreach ($order['items'] as $mProduct)
+                    // Process the orders within this marketingchannel
+                    foreach ($transactions as $order_id)
                     {
-                        // Get the product id
-                        // or add it when we cannot find it.
-                        $product_id = $product_model->getIdBySku($mProduct['sku'], $mProduct['name'], $webshop->id);
-                        $product_model->verifyPrices($mProduct, $product_id);
+                        // Get the order details
+                        // define the shipping cost on this order
+                        $order = $magento_client->getSalesOrderDetails($order_id);
+                        $shipping_amount = $order['shipping_amount'];
 
-                        // Setting values for the product order array.
-                        $product['product_id'] = $product_id;
-                        $product['quantity'] = $mProduct['qty_ordered'];
-                        array_push($products_order, $product);
+                        // Used to add products to the order table
+                        $products_order = array();
+
+                        // Process the items on this order
+                        foreach ($order['items'] as $mProduct)
+                        {
+                            // Get the product id
+                            // or add it when we cannot find it.
+                            $product_id = $product_model->getIdBySku($mProduct['sku'], $mProduct['name'], $webshop->id);
+                            $product_model->verifyPrices($mProduct, $product_id);
+
+                            // Setting values for the product order array.
+                            $product['product_id'] = $product_id;
+                            $product['quantity'] = $mProduct['qty_ordered'];
+                            array_push($products_order, $product);
+                        }
+                        // Store and connect all the pieces
+                        $order_model->add($marketingchannel_id, $webshop->id, $shipping_amount, $order['created_at'], $products_order);
                     }
-                    // Store and connect all the pieces
-                    $order_model->add($marketingchannel_id, $webshop->id, $shipping_amount, $order['created_at'], $products_order);
                 }
+                // Echo output for the cronjob mailer.
+                echo 'Processed ' . $webshop->name . '<br />';
+            }
+            else
+            {
+                echo 'Could not process ' . $webshop->name . '<br />';
             }
         }
     }
