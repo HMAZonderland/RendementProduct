@@ -17,7 +17,7 @@ require_once MODEL_ROOT . 'ChannelDashboard_Model.php';
 class Dashboard_Controller extends Main_Controller
 {
     /**
-     *
+     * TODO: Verify that setup procedure has been completed (ALSO COSTS!!!)
      */
     public function index()
     {
@@ -82,6 +82,10 @@ class Dashboard_Controller extends Main_Controller
         if (isset($_POST) && !empty($_POST))
         {
             $webshop_setup_model->save($_POST, $this->google_account->id);
+        }
+        else
+        {
+            $webshop_setup_model->notification->error('Kon niet opgeslagen worden omdat er geen data is.');
         }
         $this->parse($webshop_setup_model);
     }
