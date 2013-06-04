@@ -7,13 +7,16 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class ChannelDashboard_Model
+class Dashboard_Model extends Main_Model
 {
+
     /**
      *
      */
-    public function getDashboardData()
+    public function __construct()
     {
+        parent::__construct();
+
         // Select from revenue etc etc.
         $this->notification->warning('Er is nog geen data om berekeningen op uit te voeren.');
     }
