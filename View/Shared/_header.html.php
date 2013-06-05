@@ -16,5 +16,9 @@
     <script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>scope.functions.js"></script>
     <link rel="stylesheet" href="<?=CSS_ROOT?>style_override.css">
     <link rel="stylesheet" href="<?=CSS_ROOT?>notification_area.css">
+    <link rel="stylesheet" href="<?=CSS_ROOT?>bootstrap.css">
+    <link rel="stylesheet" href="<?=CSS_ROOT?>bootstrap-responsive.css">
+    <link rel="stylesheet" href="<?=CSS_ROOT?>dashboard.css">
+    <link rel="stylesheet" href="<?=CSS_ROOT?>essy_loading_gif.css">
     <title>esser-emmerik | Rendements berekening</title>
 </head>
