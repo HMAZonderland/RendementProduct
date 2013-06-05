@@ -13,14 +13,18 @@ require_once DOCUMENT_ROOT . 'Model/Route_Model.php';
 $router = new Route_Controller();
 $router->setBasePath('');
 
-$router->map('/',                   array('controller' => 'Dashboard_Controller',   'action' => 'index'),       array('methods' => 'GET'));
-$router->map('/auth',               array('controller' => 'Main_Controller',        'action' => 'auth'),        array('methods' => 'GET'));
-$router->map('/logout',             array('controller' => 'Main_Controller',        'action' => 'logout'),      array('methods' => 'GET'));
+$router->map('/',                       array('controller' => 'Dashboard_Controller',   'action' => 'index'),       array('methods' => 'GET'));
+$router->map('/auth',                   array('controller' => 'Main_Controller',        'action' => 'auth'),        array('methods' => 'GET'));
+$router->map('/logout',                 array('controller' => 'Main_Controller',        'action' => 'logout'),      array('methods' => 'GET'));
 
-$router->map('/dashboard',          array('controller' => 'Dashboard_Controller',   'action' => 'index'),       array('methods' => 'GET'));
-$router->map('/dashboard/setup',    array('controller' => 'Dashboard_Controller',   'action' => 'setup'),       array('methods' => 'GET'));
-$router->map('/dashboard/setup',    array('controller' => 'Dashboard_Controller',   'action' => 'save'),        array('methods' => 'POST'));
-$router->map('/dashboard/:id',      array('controller' => 'Dashboard_Controller',   'action' => 'dashboard'),   array('methods' => 'GET'));
+$router->map('/dashboard',              array('controller' => 'Dashboard_Controller',   'action' => 'index'),       array('methods' => 'GET'));
+$router->map('/dashboard/setup',        array('controller' => 'Dashboard_Controller',   'action' => 'setup'),       array('methods' => 'GET'));
+$router->map('/dashboard/setup',        array('controller' => 'Dashboard_Controller',   'action' => 'save'),        array('methods' => 'POST'));
+$router->map('/dashboard/:id',          array('controller' => 'Dashboard_Controller',   'action' => 'dashboard'),   array('methods' => 'GET'));
 
-$router->map('/cron/import_orders', array('controller' => 'Cronjob_Controller',     'action' => 'process'),     array('methods' => 'GET'));
+$router->map('/dashboard/cost/setup',   array('controller' => 'Cost_Controller',        'action' => 'setup'),       array('methods' => 'GET'));
+$router->map('/dashboard/cost/setup',   array('controller' => 'Cost_Controller',        'action' => 'save'),        array('methods' => 'POST'));
+
+$router->map('/cron',                   array('controller' => 'Cronjob_Controller',     'action' => 'cronjob'),     array('methods' => 'GET'));
+$router->map('/cron/forwebshop/:id',    array('controller' => 'Cronjob_Controller',     'action' => 'forwebshop'),  array('methods' => 'GET'));
 ?>
