@@ -14,7 +14,6 @@ require_once MODEL_ROOT . 'MagentoOrder_Model.php';
 require_once MODEL_ROOT . 'MarketingChannel_Model.php';
 require_once MODEL_ROOT . 'Webshop_Model.php';
 require_once MODEL_ROOT . 'Product_Model.php';
-require_once MODEL_ROOT . 'Order_Model.php';
 
 /**
  * Class Cronjob_Controller
@@ -26,16 +25,34 @@ class Cronjob_Controller
      */
     public $google_client;
 
+    /**
+     * @var Google_AnalyticsService
+     */
     public $service;
 
+    /**
+     * @var GoogleAnalytics_Model
+     */
     public $google_analytics_model;
 
+    /**
+     * @var GoogleAccount_Model
+     */
     public $google_account_model;
 
+    /**
+     * @var MarketingChannel_Model
+     */
     public $marketingchannel_model;
 
+    /**
+     * @var Product_Model
+     */
     public $product_model;
 
+    /**
+     * @var Order_Model
+     */
     public $order_model;
 
     /**
@@ -65,7 +82,7 @@ class Cronjob_Controller
         $this->product_model = new Product_Model();
 
         // Order model
-        $this->order_model = new Order_Model();
+        $this->order_model = new MagentoOrder_Model();
     }
 
     /**
@@ -81,22 +98,13 @@ class Cronjob_Controller
         foreach ($webshops as $webshop)
         {
             // Get the transactions per marketingchannel from past month from Google Analytics.
-            $transactions = $this->google_analytics_model->getTransactionsPerMarketingChannel24Hours($this->service, $webshop->ga_profile);
-
-            if (sizeof($transactions) > 0)
+            if ($this->process($webshop))
             {
-                if ($this->process($webshop, $transactions))
-                {
-                    echo 'Processed ' . $webshop->name . '<br />';
-                }
-                else
-                {
-                    echo 'Could not process ' . $webshop->name . '<br />';
-                }
+                echo 'Processed ' . $webshop->name . '<br />';
             }
             else
             {
-                echo $webshop->name . ' had no orders the past 24 hours.';
+                echo 'Could not process ' . $webshop->name . '<br />';
             }
         }
     }
@@ -104,10 +112,10 @@ class Cronjob_Controller
     /**
      * Processes the the cronjob for a single webshop..
      */
-    public function forwebshop()
+    public function forwebshop($params)
     {
         // Get the ID
-        $id = $_GET['id'];
+        $id = $params['id'];
 
         // Get the webshop assiated
         $webshop = $this->webshop_model->getById($id);
@@ -115,10 +123,7 @@ class Cronjob_Controller
         // We have to be sure..
         if ($webshop != null)
         {
-            // Get the transactions per marketingchannel from past month from Google Analytics.
-            $transactions = $this->google_analytics_model->getTransactionsPerMarketingChannelMonth($this->service, $webshop->ga_profile);
-
-            if ($this->process($webshop, $transactions))
+            if ($this->process($webshop, true))
             {
                 echo 'true';
             }
@@ -129,7 +134,7 @@ class Cronjob_Controller
         }
     }
 
-    private function process($webshop, $transactions)
+    private function process($webshop, $first_run = false)
     {
         // Load the MagentoClient library
         Library::load('MagentoClient');
@@ -141,7 +146,15 @@ class Cronjob_Controller
         $refresh_token = $this->google_account_model->getRefreshTokenByWebshopId($webshop->id);
         if (is_string($refresh_token))
         {
+            // Authenticate using the refresh token.
             $this->google_client->google_client->refreshToken($refresh_token);
+
+            // Get the transactions per marketingchannel from past month from Google Analytics.
+            if ($first_run) {
+                $transactions = $this->google_analytics_model->getTransactionsPerMarketingChannelMonth($this->service, $webshop->ga_profile);
+            } else {
+                $transactions = $this->google_analytics_model->getTransactionsPerMarketingChannel24Hours($this->service, $webshop->ga_profile);
+            }
 
             foreach ($transactions as $marketingchannel_name => $transactions)
             {
@@ -163,18 +176,29 @@ class Cronjob_Controller
                     // Process the items on this order
                     foreach ($order['items'] as $mProduct)
                     {
-                        // Get the product id
-                        // or add it when we cannot find it.
-                        $product_id = $this->product_model->getIdBySku($mProduct['sku'], $mProduct['name'], $webshop->id);
-                        $this->product_model->verifyPrices($mProduct, $product_id);
+                        // TODO: REVIEW!
+                        // Since products used in bundle products have no price, base_cost we cannot use these
+                        // in our calculations. There for they are left out!
+                        if (!preg_match('#^bundle_selection_attributes#', $mProduct['product_options']))
+                        {
+                            // Get the product id
+                            // or add it when we cannot find it.
+                            $product_id = $this->product_model->getIdBySku($mProduct['sku'], $mProduct['name'], $webshop->id);
+                            $this->product_model->verifyPrices($mProduct, $product_id);
 
-                        // Setting values for the product order array.
-                        $product['product_id'] = $product_id;
-                        $product['quantity'] = $mProduct['qty_ordered'];
-                        array_push($products_order, $product);
+                            // Setting values for the product order array.
+                            $product['product_id'] = $product_id;
+                            $product['quantity'] = $mProduct['qty_ordered'];
+                            array_push($products_order, $product);
+                        }
+                        else
+                        {
+                            Debug::s('Left out this product:');
+                            Debug::p($mProduct);
+                        }
                     }
                     // Store and connect all the pieces
-                    $this->order_model->add($marketingchannel_id, $webshop->id, $shipping_amount, $order['created_at'], $products_order);
+                    $this->order_model->add($order_id, $marketingchannel_id, $webshop->id, $shipping_amount, $order['created_at'], $products_order);
                 }
             }
         }

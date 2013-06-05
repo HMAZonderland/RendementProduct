@@ -69,6 +69,6 @@ class MarketingChannel_Model
      */
     public function getAll()
     {
-        return R::getAll('marketingchannel');
+        return R::findAll('marketingchannel');
     }
 }
