@@ -2,14 +2,14 @@
     <div class="onepcssgrid-1200">
         <table>
             <tr>
-                <th>Selecteer een van de webshops</th>
+                <td><h1>Selecteer een van de onderstaande webshops</h1></td>
             </tr>
             <tr>
                 <td>
                     <?php
                     foreach ($this->model->webshops as $webshop)
                     {
-                        echo '<a href="' . WEBSITE_URL . 'dashboard/' . $webshop->id . '">' . $webshop->name . '</a><br />';
+                        echo '<h2><a href="' . WEBSITE_URL . 'dashboard/' . $webshop->id . '">' . $webshop->name . '</a></h2><br />';
                     }
                     ?>
                 </td>

@@ -7,6 +7,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * Class WebshopSetup_Model
+ */
 class WebshopSetup_Model extends Main_Model
 {
     /**
@@ -15,7 +18,8 @@ class WebshopSetup_Model extends Main_Model
     public $google_analytics_profiles = array();
 
     /**
-     * @param $_POST
+     * @param $post_data
+     * @param $googleaccount_id
      */
     public function save($post_data, $googleaccount_id)
     {

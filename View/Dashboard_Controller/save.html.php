@@ -9,6 +9,8 @@
 ?>
 <section class="onerow full color1">
     <div class="onepcssgrid-1200">
-        <a href="<?=WEBSITE_URL?>dashboard">Ga door naar het dashboard</a>
+        Nu de webshop en het Google Analytics profiel gekoppeld zijn moeten kosten gedefineerd worden. Het gaat hier om klikkosten
+        per marketingkanaal en de vaste lasten per maand denk hierbij aan webhosting, huur van pand, personeel en g/w/l gerelateerd aan uw webshop.
+        <a href="<?=WEBSITE_URL?>dashboard/cost/setup">Ga door met de installatie procedure</a>
     </div>
 </section>

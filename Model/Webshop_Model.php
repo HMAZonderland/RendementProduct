@@ -12,7 +12,6 @@
  */
 class Webshop_Model extends Main_Model
 {
-
     /**
      * @var
      */
@@ -26,7 +25,7 @@ class Webshop_Model extends Main_Model
     public function getWebshopByEmail($email)
     {
         $q =
-            'SELECT ws.id, ws.name, ga.email
+            'SELECT ws.id, ws.name, ga.email, ws.ga_profile
             FROM webshop ws, webshopgoogleaccount wsga, googleaccount ga
             WHERE ws.id = wsga.webshop_id
             AND ga.id = wsga.googleaccount_id
@@ -43,5 +42,21 @@ class Webshop_Model extends Main_Model
     public function getAll()
     {
         return R::findAll('webshop');
+    }
+
+    /**
+     * @param $id
+     *
+     * @return RedBean_OODBBean
+     */
+    public function getById($id)
+    {
+        return R::findOne(
+            'webshop',
+            'id = ?',
+            array(
+                $id
+            )
+        );
     }
 }

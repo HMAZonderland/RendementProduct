@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>setup.functions.js"></script>
+<script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>dashboard.setup.functions.js"></script>
 <section class="onerow full color1">
     <div class="onepcssgrid-1200">
         <table>
@@ -40,6 +40,7 @@
             </table>
         </div>
         <p><hr /></p>
+
         <table>
             <tr>
                 <td><h1>2. Voer de Magento API instellingen in.</h1></td>
