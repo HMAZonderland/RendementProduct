@@ -10,7 +10,7 @@
 /**
  * Class Order_Model
  */
-class Order_Model
+class MagentoOrder_Model
 {
     /**
      * Adds an order to the database.
@@ -24,7 +24,7 @@ class Order_Model
      */
     public function add($marketingchannel_id, $webshop_id, $shipping_cost, $date, array $products)
     {
-        $order = R::dispense('order');
+        $order = R::dispense('magentoorder');
         $order->marketingchannel_id = $marketingchannel_id;
         $order->webshop_id = $webshop_id;
         $order->shipping_costs = $shipping_cost;
