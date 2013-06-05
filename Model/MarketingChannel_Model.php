@@ -61,4 +61,14 @@ class MarketingChannel_Model
             return $marketingchannel->id;
         }
     }
+
+    /**
+     * Gets all marketingchannels
+     *
+     * @return array
+     */
+    public function getAll()
+    {
+        return R::getAll('marketingchannel');
+    }
 }
