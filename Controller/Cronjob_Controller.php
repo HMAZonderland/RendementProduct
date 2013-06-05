@@ -113,13 +113,13 @@ class Cronjob_Controller
                         $order_model->add($marketingchannel_id, $webshop->id, $shipping_amount, $order['created_at'], $products_order);
                     }
                 }
-                // Echo output for the cronjob mailer.
-                echo 'Processed ' . $webshop->name . '<br />';
             }
             else
             {
                 echo 'Could not process ' . $webshop->name . '<br />';
             }
+            // Echo output for the cronjob mailer.
+            echo 'Processed ' . $webshop->name . '<br />';
         }
     }
 }
