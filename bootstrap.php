@@ -7,10 +7,6 @@
  * Boostrap file. Sets enviroment variables
  */
 session_start();
-
-// We always want logs, we LOVE logs!
-ini_set('log_errors', 1);
-ini_set('error_log', LOG_ROOT . 'error.log');
 ob_start();
 
 // Global used variables
@@ -19,6 +15,7 @@ define('DOCUMENT_ROOT',     '/home/ocrtxndf/domains/hugozonderland.nl/public_htm
 define('CONFIG_ROOT',        DOCUMENT_ROOT . 'App_Config/');
 define('TMP_ROOT',           DOCUMENT_ROOT . 'Temporary/');
 define('LOG_ROOT',           TMP_ROOT . 'Logs/');
+define('SESSION_ROOT',       TMP_ROOT . 'Sessions');
 
 // Model and controller root
 define('MODEL_ROOT',        DOCUMENT_ROOT . 'Model/');
@@ -31,12 +28,16 @@ define('VIEW_ROOT',         DOCUMENT_ROOT . 'View/');
 define('SHARED_ROOT',       VIEW_ROOT . 'Shared/');
 
 // Includes made from the browser side
-define('CSS_ROOT',          WEBSITE_URL . 'View/Static/css/');
-define('IMAGE_ROOT',        WEBSITE_URL . 'View/Static/images/');
-define('JAVASCRIPT_ROOT',   WEBSITE_URL . 'View/Static/javascript/');
+define('CSS_ROOT',          WEBSITE_URL . 'css/');
+define('IMAGE_ROOT',        WEBSITE_URL . 'images/');
+define('JAVASCRIPT_ROOT',   WEBSITE_URL . 'javascript/');
 
 // Includes made from the server/code side
 define('HTML_ROOT',         DOCUMENT_ROOT . 'Static/html/');
+
+// We always want logs, we LOVE logs!
+ini_set('log_errors', 1);
+ini_set('error_log', LOG_ROOT . 'error.log');
 
 // Load the debug helper first
 include_once(HELPER_ROOT . 'Debug_function.php');
@@ -67,7 +68,7 @@ switch (STATUS)
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         define('OUTPUT_DEBUG', true);
-        //R::debug(true);
+       // R::debug(true);
     }
 }
 
