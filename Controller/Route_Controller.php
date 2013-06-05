@@ -6,14 +6,14 @@
 class Route_Controller {
 
     /**
-    * Array that holds all Route objects
-    * @var array
-    */ 
+     * Array that holds all Route objects
+     * @var array
+     */
     private $routes = array();
 
     /**
      * Array to store named routes in, used for reverse routing.
-     * @var array 
+     * @var array
      */
     private $namedRoutes = array();
 
@@ -22,25 +22,25 @@ class Route_Controller {
      * @var string
      */
     private $basePath = '';
-    
+
     /**
      * Set the base url - gets prepended to all route url's.
-     * @param string $base_url 
+     * @param string $base_url
      */
     public function setBasePath($basePath) {
         $this->basePath = (string) $basePath;
     }
 
     /**
-    * Route factory method
-    *
-    * Maps the given URL to the given target.
-    * @param string $routeUrl string
-    * @param mixed $target The target of this route. Can be anything. You'll have to provide your own method to turn *      this into a filename, controller / action pair, etc..
-    * @param array $args Array of optional arguments.
-    */
+     * Route factory method
+     *
+     * Maps the given URL to the given target.
+     * @param string $routeUrl string
+     * @param mixed $target The target of this route. Can be anything. You'll have to provide your own method to turn *      this into a filename, controller / action pair, etc..
+     * @param array $args Array of optional arguments.
+     */
     public function map($routeUrl, $target = '', array $args = array()) {
-        $route = new Route();
+        $route = new Route_Model();
 
         $route->setUrl($this->basePath . $routeUrl);
 
@@ -62,16 +62,12 @@ class Route_Controller {
             }
         }
 
-        if(isset($args['params'])) {
-            $route->setParameters($args['params']);
-        }
-
         $this->routes[] = $route;
     }
 
     /**
-    * Matches the current request against mapped routes
-    */
+     * Matches the current request against mapped routes
+     */
     public function matchCurrentRequest() {
         $requestMethod = (isset($_POST['_method']) && ($_method = strtoupper($_POST['_method'])) && in_array($_method,array('PUT','DELETE'))) ? $_method : $_SERVER['REQUEST_METHOD'];
         $requestUrl = $_SERVER['REQUEST_URI'];
@@ -85,14 +81,14 @@ class Route_Controller {
     }
 
     /**
-    * Match given request url and request method and see if a route has been defined for it
-    * If so, return route's target
-    * If called multiple times
-    */
+     * Match given request url and request method and see if a route has been defined for it
+     * If so, return route's target
+     * If called multiple times
+     */
     public function match($requestUrl, $requestMethod = 'GET') {
-                        
+
         foreach($this->routes as $route) {
-            
+
             // compare server request method with route's allowed http methods
             if(!in_array($requestMethod, $route->getMethods())) continue;
 
@@ -114,20 +110,20 @@ class Route_Controller {
 
             }
 
-            //$route->setParameters($params);
+            $route->setParameters($params);
 
             return $route;
-            
+
         }
 
         return false;
     }
 
 
-    
+
     /**
      * Reverse route a named route
-     * 
+     *
      * @param string $route_name The name of the route to reverse route.
      * @param array $params Optional array of parameters to use in URL
      * @return string The url to the route
