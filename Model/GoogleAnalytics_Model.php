@@ -53,13 +53,14 @@ class GoogleAnalytics_Model extends Main_Model
         Library::load('Google_Analytics_Metrics_Parser');
         Library::load('OrderPerMarketingChannel_Metrics');
 
-        // 24 hour time filter
+        // time filter
         $from = date('Y-m-d', $from_time);
         $to = date('Y-m-d');
 
         // Initiate the metrics, fetch and return the results
         $order_per_marketing_channel_metrics = new OrderPerMarketingChannel($service, $google_analytics_profile, $from, $to);
         $orders = $order_per_marketing_channel_metrics->getOrdersPerChannel();
+
         return $orders;
     }
 
