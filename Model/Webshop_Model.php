@@ -15,7 +15,7 @@ class Webshop_Model extends Main_Model
     /**
      * @var
      */
-    public $webshops;
+    public $webshops = array();
 
     /**
      * @param $email
@@ -32,7 +32,12 @@ class Webshop_Model extends Main_Model
             AND ga.email = \'' . $email .'\'';
 
         $result = R::getAll($q);
-        $this->webshops = R::convertToBeans('webshop', $result);
+        $webshops = R::convertToBeans('webshop', $result);
+
+        foreach ($webshops as $webshop)
+        {
+            array_push($this->webshops, $webshop);
+        }
     }
 
     /**
