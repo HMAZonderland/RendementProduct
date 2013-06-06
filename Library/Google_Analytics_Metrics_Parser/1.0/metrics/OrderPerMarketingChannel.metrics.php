@@ -44,9 +44,6 @@ class OrderPerMarketingChannel extends GoogleAnalyticsMetricsParser
      */
     public function getOrdersPerChannel()
     {
-        Debug::p($this->_data);
-        Debug::p($this->_results);
-
         $result = array();
         $source = null;
         $transactionId = null;
