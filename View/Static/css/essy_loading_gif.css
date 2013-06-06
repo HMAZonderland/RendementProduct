@@ -1,5 +1,5 @@
 #loading_gif {
-    -webkit-animation: rotaion 2s infinite linear;
+    -webkit-animation: rotation 1s infinite linear;
 }
 
 @-webkit-keyframes rotation {
