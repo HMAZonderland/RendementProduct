@@ -24,8 +24,8 @@ class OrderPerMarketingChannel extends GoogleAnalyticsMetricsParser
         $this->_params[] = 'transactionId';
 
         // metrics
-        $metrics = "ga:transactionShipping";            // This metrics is only here because its required
-        $this->_params[] = 'transactionShipping';       // it's not used anywhere
+        $metrics = "ga:transactions";            // This metrics is only here because its required
+        $this->_params[] = 'transactions';       // it's not used anywhere
 
         parent::__construct($metrics, $dimensions, $service, $profileId, $from, $to);
         $this->parse();
@@ -44,6 +44,9 @@ class OrderPerMarketingChannel extends GoogleAnalyticsMetricsParser
      */
     public function getOrdersPerChannel()
     {
+        Debug::p($this->_data);
+        Debug::p($this->_results);
+
         $result = array();
         $source = null;
         $transactionId = null;
