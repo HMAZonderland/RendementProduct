@@ -151,12 +151,12 @@ class Cronjob_Controller
 
             // Get the transactions per marketingchannel from past month from Google Analytics.
             if ($first_run) {
-                $transactions = $this->google_analytics_model->getTransactionsPerMarketingChannelMonth($this->service, $webshop->ga_profile);
+                $gTransactions = $this->google_analytics_model->getTransactionsPerMarketingChannelMonth($this->service, $webshop->ga_profile);
             } else {
-                $transactions = $this->google_analytics_model->getTransactionsPerMarketingChannel24Hours($this->service, $webshop->ga_profile);
+                $gTransactions = $this->google_analytics_model->getTransactionsPerMarketingChannel24Hours($this->service, $webshop->ga_profile);
             }
 
-            foreach ($transactions as $marketingchannel_name => $transactions)
+            foreach ($gTransactions as $marketingchannel_name => $transactions)
             {
                 // Find this marketingchannel
                 // add when it doesn't exsist, get it's id when it does

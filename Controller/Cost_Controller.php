@@ -37,7 +37,7 @@ class Cost_Controller extends Main_Controller
         elseif ($webshops == 1)
         {
             // Improve readability
-            $webshop = $webshop_model->webshops[1];
+            $webshop = $webshop_model->webshops[0];
 
             // Google Analytics Service
             $service = $this->google_client->google_analytics->google_analytics;
