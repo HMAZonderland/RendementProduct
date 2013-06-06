@@ -38,7 +38,7 @@ class MagentoOrder_Model
             foreach ($products as $product)
             {
                 $productorder = R::dispense('productorder');
-                $productorder->order_id = $order_id;
+                $productorder->magentoorder_id = $order_id;
                 $productorder->product_id = $product['product_id'];
                 $productorder->quantity = $product['quantity'];
                 R::store($productorder);
