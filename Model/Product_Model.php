@@ -121,11 +121,11 @@ class Product_Model
     public function addPrice($mProduct, $product_id)
     {
         $productprice = R::dispense('productprice');
-        $productprice->product_id = $product_id;
-        $productprice->price = $mProduct['price'];
-        $productprice->base_cost = $mProduct['base_cost'];
-        $productprice->tax_amount = $mProduct['tax_amount'];
-        $productprice->date = $mProduct['created_at'];
+        $productprice->product_id   = $product_id;
+        $productprice->price        = $mProduct['price'];
+        $productprice->base_cost    = $mProduct['base_cost'];
+        $productprice->tax_amount   = ($mProduct['tax_amount'] / $mProduct['qty_ordered']); // is total tax..
+        $productprice->date         = $mProduct['created_at'];
         R::store($productprice);
     }
 }
