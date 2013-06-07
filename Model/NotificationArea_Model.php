@@ -36,7 +36,7 @@ class NotificationArea_Model
      */
     public function error($msg)
     {
-        $this->notification_type = 'erorr';
+        $this->notification_type = 'error';
         $this->notification_msg = $msg;
     }
 
