@@ -179,7 +179,8 @@ class Cronjob_Controller
                         // TODO: REVIEW!
                         // Since products used in bundle products have no price, base_cost we cannot use these
                         // in our calculations. There for they are left out!
-                        if (!preg_match('#^bundle_selection_attributes#', $mProduct['product_options']))
+                        // there has to be a price
+                        if (!preg_match('#^bundle_option#', $mProduct['product_options']) && $mProduct['price'] > 0)
                         {
                             // Get the product id
                             // or add it when we cannot find it.
@@ -193,8 +194,11 @@ class Cronjob_Controller
                         }
                         else
                         {
+                            // TODO has to be send by e-mail or w/e
+                            /*
                             Debug::s('Left out this product:');
                             Debug::p($mProduct);
+                            */
                         }
                     }
                     // Store and connect all the pieces

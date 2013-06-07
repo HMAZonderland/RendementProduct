@@ -98,14 +98,18 @@ class Product_Model
         else
         {
             // Check if the product prices need an update
-            $update = (
-                !($lProduct->price        == (double) round($mProduct['price'], 2))        ||
-                !($lProduct->base_cost    == (double) round($mProduct['base_cost'], 2))    ||
-                !($lProduct->tax_amount   == (double) round($mProduct['tax_amount'],2))
+            $same = (
+                ($lProduct->price        ==    round($mProduct['price'], 2))        &&
+                ($lProduct->base_cost    ==    round($mProduct['base_cost'], 2))    &&
+                ($lProduct->tax_amount   ==    round(($mProduct['tax_amount'] / $mProduct['qty_ordered']),2))
             );
 
-            if ($update)
+            if (!$same)
             {
+                Debug::s('De prijs van product: ' . $lProduct->product_id . ' is '.var_dump($same).' gelijk want:');
+                Debug::s(var_dump($lProduct->price  == round($mProduct['price'], 2)) . $lProduct->price . ' ' . round($mProduct['price'], 2));
+                Debug::s(var_dump($lProduct->base_cost  == round($mProduct['base_cost'], 2)) . $lProduct->base_cost . ' ' . round($mProduct['base_cost'], 2));
+                Debug::s(var_dump($lProduct->tax_amount  == round(($mProduct['tax_amount'] / $mProduct['qty_ordered']), 2)) . $lProduct->tax_amount . ' ' . round(($mProduct['tax_amount'] / $mProduct['qty_ordered']), 2));
                 // Update the prices
                 $this->addPrice($mProduct, $product_id);
             }

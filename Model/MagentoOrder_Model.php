@@ -25,7 +25,7 @@ class MagentoOrder_Model
     public function add($mOrder_id, $marketingchannel_id, $webshop_id, $shipping_cost, $date, array $products)
     {
         $existing_order = $this->getByOrderAndWebshopId($mOrder_id, $webshop_id);
-        if ($existing_order == null)
+        if (sizeof($existing_order) == 0)
         {
             $order = R::dispense('magentoorder');
             $order->magento_order_id = $mOrder_id;
@@ -52,13 +52,13 @@ class MagentoOrder_Model
      *
      * @return RedBean_OODBBean
      */
-    public function getByOrderAndWebshopId($order_id, $webshop_id)
+    public function getByOrderAndWebshopId($mOrder_id, $webshop_id)
     {
-       return R::findOne(
+       return R::find(
             'magentoorder',
-            'order_id = :order_id AND webshop_id = :webshop_id',
+            'magento_order_id = :magento_order_id AND webshop_id = :webshop_id',
             array(
-                ':order_id' => $order_id,
+                ':magento_order_id' => $mOrder_id,
                 ':webshop_id' => $webshop_id
             )
         );
