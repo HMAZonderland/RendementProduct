@@ -1,0 +1,11 @@
+.marketing_channels h2{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.marketing_channels .table h2{
+    font-size:40px;
+}
+#marketing_channels .table th, #marketing_channels .table td {
+    border-top: none;
+}
+

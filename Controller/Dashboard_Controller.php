@@ -9,12 +9,24 @@
 
 require_once MODEL_ROOT . 'Webshop_Model.php';
 require_once MODEL_ROOT . 'WebshopSetup_Model.php';
+require_once MODEL_ROOT . 'Dashboard_Model.php';
 
+require_once CONTROLLER_ROOT . 'GoogleChart_Controller.php';
 /**
  * Class Dashboard_Controller
  */
 class Dashboard_Controller extends Main_Controller
 {
+    /**
+     * @var
+     */
+    public $googlechart_controller;
+
+    /**
+     * @var
+     */
+    public $webshop_id;
+
     /**
      * TODO: Verify that setup procedure has been completed (ALSO COSTS!!!)
      */
@@ -33,7 +45,8 @@ class Dashboard_Controller extends Main_Controller
         // 1 webshop, open the dashboard!
         elseif ($webshops == 1)
         {
-            $this->dashboard($webshop_model->webshops[1]->id);
+            $webshop = $webshop_model->webshops[0];
+            $this->dashboard($webshop->id);
         }
         // More than 1, let the user select one
         else
@@ -48,7 +61,16 @@ class Dashboard_Controller extends Main_Controller
      */
     public function dashboard($webshop_id)
     {
-        $this->parse();
+        $this->webshop_id = $webshop_id;
+
+        $dashboard_model = new Dashboard_Model();
+        $dashboard_model->getResultsPerMarketingChannel($webshop_id);
+        $dashboard_model->getTotalRevenue($webshop_id);
+        $dashboard_model->getWebshopCosts($webshop_id);
+
+        $this->googlechart_controller = new GoogleChart_Controller();
+
+        $this->parse($dashboard_model);
     }
 
     /**

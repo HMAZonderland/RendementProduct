@@ -20,5 +20,6 @@
     <link rel="stylesheet" href="<?=CSS_ROOT?>bootstrap-responsive.css">
     <link rel="stylesheet" href="<?=CSS_ROOT?>dashboard.css">
     <link rel="stylesheet" href="<?=CSS_ROOT?>essy_loading_gif.css">
+    <link rel="stylesheet" href="<?=CSS_ROOT?>piechart.css">
     <title>esser-emmerik | Rendements berekening</title>
 </head>

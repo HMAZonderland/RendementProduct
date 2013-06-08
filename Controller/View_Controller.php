@@ -39,7 +39,7 @@ class View_Controller
     /**
      * @param $model
      */
-    public function parse($model = null)
+    public function parse($model = null, $partial = false)
     {
         $this->model = $model;
         if (isset($this->model->notification)) {
@@ -52,8 +52,15 @@ class View_Controller
         $this->controller = $debug[1]['class'];
         $this->action = $debug[1]['function'];
 
-        // Load main template
-        include SHARED_ROOT . '_layout.html.php';
+        if (!$partial)
+        {
+            // Load main template
+            include SHARED_ROOT . '_layout.html.php';
+        }
+        else
+        {
+            $this->renderView();
+        }
     }
 
     /**
