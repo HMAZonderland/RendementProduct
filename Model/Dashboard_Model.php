@@ -113,12 +113,11 @@ class Dashboard_Model extends Main_Model
     {
         $data = R::findOne(
             'webshopcost',
-            'webshop_id = ? ORDER BY date LIMIT 1',
+            'webshop_id = ? ORDER BY date ASC LIMIT 1',
             array(
                 $webshop_id
             )
         );
-
         $this->webshop_costs = $data->cost;
     }
 }

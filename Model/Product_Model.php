@@ -122,9 +122,9 @@ class Product_Model
     {
         $productprice = R::dispense('productprice');
         $productprice->product_id   = $product_id;
-        $productprice->price        = $mProduct['price'];
-        $productprice->base_cost    = $mProduct['base_cost'];
-        $productprice->tax_amount   = ($mProduct['tax_amount'] / $mProduct['qty_ordered']); // is total tax..
+        $productprice->price        = round($mProduct['price'], 2);
+        $productprice->base_cost    = round($mProduct['base_cost'], 2);
+        $productprice->tax_amount   = round($mProduct['tax_amount'] / $mProduct['qty_ordered'], 2); // is total tax..
         $productprice->date         = $mProduct['created_at'];
         R::store($productprice);
     }

@@ -30,28 +30,40 @@ class Dashboard_Controller extends Main_Controller
     /**
      * TODO: Verify that setup procedure has been completed (ALSO COSTS!!!)
      */
-    public function index()
+    public function index($params = null)
     {
         // Check if the Google Account is set so we can fetch the user website(s)
         $webshop_model = new Webshop_Model();
-        $webshop_model->getWebshopByEmail($this->google_account->email);
-        $webshops = sizeof($webshop_model->webshops);
 
-        // 0 Webshops set one up!
-        if ($webshops == 0)
+        if (isset($params['id']))
         {
-            $this->setup();
+            if ($webshop_model->hasAccess($params['id'], $this->google_account->email))
+            {
+                $this->dashboard($params['id']);
+            }
         }
-        // 1 webshop, open the dashboard!
-        elseif ($webshops == 1)
-        {
-            $webshop = $webshop_model->webshops[0];
-            $this->dashboard($webshop->id);
-        }
-        // More than 1, let the user select one
         else
         {
-            $this->select($webshop_model);
+            $webshops = $webshop_model->getWebshopByEmail($this->google_account->email);
+            $webshops_count = sizeof($webshops);
+
+            // 0 Webshops set one up!
+            if ($webshops_count == 0)
+            {
+                $this->setup();
+            }
+            // 1 webshop, open the dashboard!
+            elseif ($webshops_count == 1)
+            {
+                $webshop = $webshops[0];
+                $this->dashboard($webshop->id);
+            }
+            // More than 1, let the user select one
+            else
+            {
+                $webshop_model->webshops = $webshops;
+                $this->select($webshop_model);
+            }
         }
     }
 
@@ -59,18 +71,26 @@ class Dashboard_Controller extends Main_Controller
      * The actual dashboard.
      * @param $webshop_id
      */
-    public function dashboard($webshop_id)
+    public function dashboard($params = null)
     {
-        $this->webshop_id = $webshop_id;
+        if (isset($params['id']))
+        {
+            $webshop_id = $params['id'];
+            $this->webshop_id = $webshop_id;
 
-        $dashboard_model = new Dashboard_Model();
-        $dashboard_model->getResultsPerMarketingChannel($webshop_id);
-        $dashboard_model->getTotalRevenue($webshop_id);
-        $dashboard_model->getWebshopCosts($webshop_id);
+            $dashboard_model = new Dashboard_Model();
+            $dashboard_model->getResultsPerMarketingChannel($webshop_id);
+            $dashboard_model->getTotalRevenue($webshop_id);
+            $dashboard_model->getWebshopCosts($webshop_id);
 
-        $this->googlechart_controller = new GoogleChart_Controller();
+            $this->googlechart_controller = new GoogleChart_Controller();
 
-        $this->parse($dashboard_model);
+            $this->parse($dashboard_model);
+        }
+        else
+        {
+            header('Location:' . WEBSITE_URL . 'dashboard');
+        }
     }
 
     /**

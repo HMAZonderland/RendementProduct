@@ -25,19 +25,31 @@ class Webshop_Model extends Main_Model
     public function getWebshopByEmail($email)
     {
         $q =
-            'SELECT ws.id, ws.name, ga.email, ws.ga_profile
-            FROM webshop ws, webshopgoogleaccount wsga, googleaccount ga
-            WHERE ws.id = wsga.webshop_id
-            AND ga.id = wsga.googleaccount_id
-            AND ga.email = \'' . $email .'\'';
+            '
+            SELECT
+            ws.id,
+            ws.name,
+            ga.email,
+            ws.ga_profile
+
+            FROM googleaccount ga
+
+            JOIN webshopgoogleaccount wsga ON wsga.googleaccount_id = ga.id
+            JOIN webshop ws ON ws.id = wsga.webshop_id
+
+            WHERE
+            ga.email = \'' . $email .'\'';
 
         $result = R::getAll($q);
         $webshops = R::convertToBeans('webshop', $result);
+        $temp_array = array();
 
         foreach ($webshops as $webshop)
         {
-            array_push($this->webshops, $webshop);
+            array_push($temp_array, $webshop);
         }
+
+        return $temp_array;
     }
 
     /**
@@ -63,5 +75,25 @@ class Webshop_Model extends Main_Model
                 $id
             )
         );
+    }
+
+    /**
+     * @param $webshop_id
+     * @param $email
+     *
+     * @return bool
+     */
+    public function hasAccess($webshop_id, $email)
+    {
+        $webshops = $this->getWebshopByEmail($email);
+        $has_access = false;
+        foreach ($webshops as $webshop)
+        {
+            if ($webshop->id == $webshop_id)
+            {
+                $has_access = true;
+            }
+        }
+        return $has_access;
     }
 }
