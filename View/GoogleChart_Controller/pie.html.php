@@ -5,7 +5,10 @@
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script type="text/javascript" src="<?=JAVASCRIPT_ROOT?>googlechart.functions.js"></script>
         <script type="text/javascript">
-            load('<?=$this->model->chart_data?>');
+            var json = '<?=$this->model->chart_data?>';
+            load();
         </script>
     </div>
 </div>
+
+
