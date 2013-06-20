@@ -83,8 +83,6 @@ class Cost_Controller extends Main_Controller
         // Marketingchannel model
         $marketingchannel_model = new MarketingChannel_Model();
 
-        // See if there
-
         // Cost model
         $cost_model = new Cost_Model();
         $cost_model->webshop_id = $webshop->id;
@@ -123,7 +121,6 @@ class Cost_Controller extends Main_Controller
                 // Filll cost model
                 $cost_model->marketing_channels = $marketingchannel_model->getAll();
                 $cost_model->save($_POST);
-                $cost_model->notification->success('Gegevens zijn opgeslagen.');
             }
             else
             {
@@ -138,6 +135,82 @@ class Cost_Controller extends Main_Controller
         }
 
         // parse the model
+        $this->parse($cost_model);
+    }
+
+    /**
+     * @param null $params
+     */
+    public function edit($params = null)
+    {
+        // Cost model
+        $cost_model = new Cost_Model();
+
+        if ($params != null)
+        {
+            // Webshop Model
+            $webshop_model = new Webshop_Model();
+
+            // when we have to get the page..
+            if (empty($_POST))
+            {
+                // Verify the get request
+                if ($webshop_model->hasAccess($params['id'], $this->google_account->email))
+                {
+                    $webshop = $webshop_model->getById($params['id']);
+                    // Google Analytics Service
+                    $service = $this->google_client->google_analytics->google_analytics;
+
+                    // Google Analytics Model
+                    $google_analytics_model = new GoogleAnalytics_Model();
+
+                    // Marketingchannel model
+                    $marketingchannel_model = new MarketingChannel_Model();
+
+                    $cost_model->webshop_id = $webshop->id;
+                    $cost_model->webshop_name = $webshop->name;
+                    $cost_model->webshop_cost = $cost_model->getWebshopCost($webshop->id)->cost;
+
+                    $google_analytics_marketingchannels = $google_analytics_model->getMarketingChannels($service, $webshop->ga_profile);
+                    foreach ($google_analytics_marketingchannels as $google_analytics_marketingchannel)
+                    {
+                        // Dirty thing
+                        $marketingchannel_model->getIdByName($google_analytics_marketingchannel); // just to add missing ones.
+                        $marketingchannel = $marketingchannel_model->getMarketingChannelAndCostByName($google_analytics_marketingchannel);
+                        if ($marketingchannel != null)
+                        {
+                            array_push($cost_model->marketing_channels, $marketingchannel);
+                        }
+                    }
+                }
+                else
+                {
+                    $cost_model->notification->error('Geen toegang tot de instellingen van deze webshop.');
+                }
+            }
+            // when there is post data
+            else
+            {
+                // Verify the post data
+                if ($webshop_model->hasAccess($_POST['webshop_id'], $this->google_account->email))
+                {
+                    // MarketingchannelModel
+                    $marketingchannel_model = new MarketingChannel_Model();
+
+                    // Filll cost model
+                    $cost_model->marketing_channels = $marketingchannel_model->getAll();
+                    $cost_model->save($_POST);
+                }
+                else
+                {
+                    $cost_model->notification->error('De rechten om de instellingen van deze webshop te updaten.');
+                }
+            }
+        }
+        else
+        {
+            $cost_model->notification->error('Geen id gezet.');
+        }
         $this->parse($cost_model);
     }
 }

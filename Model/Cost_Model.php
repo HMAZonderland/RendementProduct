@@ -35,6 +35,11 @@ class Cost_Model extends Main_Model
     public $webshop_name;
 
     /**
+     * @var
+     */
+    public $webshop_cost;
+
+    /**
      * Stores the cost form submitted
      *
      * @param $post_data
@@ -110,5 +115,21 @@ class Cost_Model extends Main_Model
     public function getByWebshopId($webshop_id)
     {
         return R::Load('webshopcost', $webshop_id);
+    }
+
+    /**
+     * @param $webshop_id
+     *
+     * @return RedBean_OODBBean
+     */
+    public function getWebshopCost($webshop_id)
+    {
+        return R::findOne(
+            'webshopcost',
+            'webshop_id = :webshop_id ORDER BY date DESC LIMIT 0,1',
+            array(
+                ':webshop_id' => $webshop_id
+            )
+        );
     }
 }

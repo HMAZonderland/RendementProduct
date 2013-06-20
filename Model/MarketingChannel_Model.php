@@ -27,6 +27,42 @@ class MarketingChannel_Model
         );
     }
 
+    public function getMarketingChannelAndCostByName($name)
+    {
+        $q =
+            '
+            SELECT
+            mc.id AS id,
+            mc.name AS name,
+            mcc.cost AS cost
+
+            FROM
+            marketingchannel mc
+
+            JOIN
+            marketingchannelcost mcc ON mcc.marketingchannel_id = mc.id
+
+            WHERE
+            mc.name = \'' . $name . '\'';
+
+        $rows = R::getAll($q);
+        $marketingchannels = R::convertToBeans('marketingchannelcost', $rows);
+
+        $tmp = array();
+
+        // Pushes the found products into the local array which will be sent on to the view
+        foreach ($marketingchannels as $marketingchannel)
+        {
+            array_push($tmp, $marketingchannel);
+        }
+
+        if (array_key_exists(0, $tmp))
+        {
+            return $tmp[0];
+        }
+        return null;
+    }
+
     /**
      * Adds a marketingchannel object
      *

@@ -28,7 +28,7 @@
                 {
                 ?>
                     <tr>
-                        <td><a href="<?=WEBSITE_URL . 'dashboard/edit/' . $webshop->id?>"><?=$webshop->name?></a></td>
+                        <td><a href="<?=WEBSITE_URL . 'dashboard/cost/edit/' . $webshop->id?>"><?=$webshop->name?></a></td>
                     </tr>
                 <?php
                 }
