@@ -22,11 +22,11 @@ $router->map('/dashboard/setup',            array('controller' => 'Dashboard_Con
 $router->map('/dashboard/setup',            array('controller' => 'Dashboard_Controller',       'action' => 'save'),        array('methods' => 'POST'));
 $router->map('/dashboard/:id',              array('controller' => 'Dashboard_Controller',       'action' => 'dashboard'),   array('methods' => 'GET', 'filters' => array('id' => '(\d+)')));
 
-$router->map('/dashboard/cost/setup',       array('controller' => 'Cost_Controller',            'action' => 'setup'),       array('methods' => 'GET'));
-$router->map('/dashboard/cost/setup',       array('controller' => 'Cost_Controller',            'action' => 'save'),        array('methods' => 'POST'));
+$router->map('/dashboard/cost/setup/:id',   array('controller' => 'Cost_Controller',            'action' => 'setup'),       array('methods' => 'GET', 'filters' => array('id' => '(\d+)')));
+$router->map('/dashboard/cost/setup/',      array('controller' => 'Cost_Controller',            'action' => 'save'),        array('methods' => 'POST'));
 
 $router->map('/cron',                       array('controller' => 'Cronjob_Controller',         'action' => 'cronjob'),     array('methods' => 'GET'));
 $router->map('/cron/forwebshop/:id',        array('controller' => 'Cronjob_Controller',         'action' => 'forwebshop'),  array('methods' => 'GET', 'filters' => array('id' => '(\d+)')));
 
-$router->map('/dashboard/channel/:id',      array('controller' => 'ChannelDashboard_Controller','action' => 'dashboard'),  array('methods' => 'GET', 'filters' => array('id' => '(\d+)')));
+$router->map('/dashboard/channel/:id/:marketingchannel_id',      array('controller' => 'ChannelDashboard_Controller','action' => 'dashboard'),  array('methods' => 'GET', 'filters' => array('id' => '(\d+)', 'marketingchannel_id' => '(\d+)')));
 ?>

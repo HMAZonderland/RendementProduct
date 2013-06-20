@@ -80,6 +80,7 @@ class Product_Model
      */
     public function verifyPrices($mProduct, $product_id)
     {
+        // TODO: debug this query!
         // localProduct
         $lProduct = R::findOne(
             'productprice',

@@ -30,6 +30,9 @@ class ChannelDashboard_Model
     public $ratio;
 
     /**
+     * Fetches the products sold trough the given marketingchannel and webshop.
+     * It calculates the revenue made, the total cost (except for marketingchannel cost and webshopcosts, these are added later.
+     *
      * @param $webshop_id
      * @param $marketingchannel_id
      */
@@ -56,17 +59,20 @@ class ChannelDashboard_Model
 
             WHERE
             mo.webshop_id = ' . $webshop_id . ' AND
-            mo.marketingchannel_id = ' . $marketingchannel_id . '
+            mo.marketingchannel_id = ' . $marketingchannel_id . ' AND
+            pp.date = mo.date
+
 
             GROUP BY
             p.name';
 
-        Debug::s($q);
+        Debug::p($q);
 
         // Data
         $rows = R::getAll($q);
         $products = R::convertToBeans('productresults', $rows);
 
+        // Pushes the found products into the local array which will be sent on to the view
         foreach ($products as $product)
         {
             array_push($this->products_per_marketingchannel, $product);
@@ -74,6 +80,8 @@ class ChannelDashboard_Model
     }
 
     /**
+     * Fetches and calculates how many products where sold trough a marketingchannel
+     *
      * @param $webshop_id
      * @param $marketingchannel_id
      */
@@ -96,6 +104,8 @@ class ChannelDashboard_Model
         $rows = R::getAll($q);
         $results = R::convertToBeans('productquantity', $rows);
 
+        // There will be 1 result only, but still get fetched as array
+        // TODO:: other query type, see RedBeanPHP documentation
         foreach ($results as $result)
         {
             $this->sold_products = $result->quantity;
@@ -103,43 +113,58 @@ class ChannelDashboard_Model
     }
 
     /**
+     * Determens how much the revenue ratio is this marktingchannel has generated
+     *
      * @param $webshop_id
      * @param $marketingchannel_id
      */
     public function ratio($webshop_id, $marketingchannel_id)
     {
-        $q = 'SELECT
-        p.id,
-        ROUND(SUM((pp.price + pp.tax_amount) * po.quantity), 2) + mo.shipping_costs as total,
-        (SELECT
-        ROUND(SUM((pp.price + pp.tax_amount) * po.quantity), 2) + mo.shipping_costs
-        FROM
-        product p
+        $q =
+            'SELECT
+            p.id,
+            ROUND(SUM((pp.price + pp.tax_amount) * po.quantity), 2) + mo.shipping_costs as total,
+            (
+                SELECT
+                ROUND(SUM((pp.price + pp.tax_amount) * po.quantity), 2) + mo.shipping_costs
+                FROM
+                product p
 
-        JOIN productprice pp ON pp.product_id = p.id
-        JOIN productorder po ON po.product_id = p.id
-        JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
+                JOIN productprice pp ON pp.product_id = p.id
+                JOIN productorder po ON po.product_id = p.id
+                JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
 
-        WHERE
-        p.webshop_id = ' . $webshop_id . ' AND mo.marketingchannel_id = ' . $marketingchannel_id . ') as marketingchannel_revenue
+                WHERE
+                p.webshop_id = ' . $webshop_id . ' AND mo.marketingchannel_id = ' . $marketingchannel_id . '
+            ) as marketingchannel_revenue
 
-        FROM
-        product p
+            FROM
+            product p
 
-        JOIN productprice pp ON pp.product_id = p.id
-        JOIN productorder po ON po.product_id = p.id
-        JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
+            JOIN productprice pp ON pp.product_id = p.id
+            JOIN productorder po ON po.product_id = p.id
+            JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
 
-        WHERE
-        p.webshop_id = ' . $webshop_id;
+            WHERE
+            p.webshop_id = ' . $webshop_id;
 
         // Data
         $rows = R::getAll($q);
         $results = R::convertToBeans('revenueratio', $rows);
 
+        // There will be 1 result only, but still get fetched as array
+        // TODO:: other query type, see RedBeanPHP documentation
         foreach ($results as $result)
         {
             $this->ratio = $result->marketingchannel_revenue / $result->total;
         }
     }
 }
+/*
+SELECT p.name, p.sku, pp.price, pp.base_cost, pp.tax_amount, SUM( po.quantity ) hoeveelheid, pp.date AS prijsdatum
+FROM productorder po
+JOIN product p ON p.id = po.product_id
+JOIN productprice pp ON pp.product_id = po.product_id
+GROUP BY pp.date, p.name
+ORDER BY p.name
+ */

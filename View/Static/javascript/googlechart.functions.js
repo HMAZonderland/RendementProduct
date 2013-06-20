@@ -1,13 +1,13 @@
-function load(json_objects)
+function load()
 {
     // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', {'packages': ['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(drawchart(json_objects));
+    google.setOnLoadCallback(drawchart, true);
 }
 
-function drawchart(json_objects)
+function drawchart()
 {
     // Create the data table.
     var data = new google.visualization.DataTable();
@@ -15,7 +15,7 @@ function drawchart(json_objects)
     data.addColumn('number', 'Omzet in Euro');
 
     // parse em JSON!
-    var piedata = JSON.parse(json_objects);
+    var piedata = JSON.parse(json);
     jQuery.each(piedata, function(marketingchannel, revenue) {
         data.addRow([marketingchannel, parseFloat(revenue)]);
     });
@@ -31,13 +31,13 @@ function drawchart(json_objects)
     // Set chart options
     var options = {
         'height' : '400',
-        'width' : '600',
+        'width' : '400',
         'chartArea' : {
-            'width' : '75%',
-            'height' : '75%'
+            'width' : '90%',
+            'height' : '90%'
         },
         'legend': {
-            'position': 'bottom'
+            'position': 'right'
         },
         'allowHtml': 'true',
         'showRowNumber': 'true'

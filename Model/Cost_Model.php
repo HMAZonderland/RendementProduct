@@ -18,6 +18,11 @@ class Cost_Model extends Main_Model
     public $marketing_channels = array();
 
     /**
+     * @var array
+     */
+    public $marketing_channel_costs = array();
+
+    /**
      * webshop.id
      * @var int
      */
@@ -30,6 +35,8 @@ class Cost_Model extends Main_Model
     public $webshop_name;
 
     /**
+     * Stores the cost form submitted
+     *
      * @param $post_data
      * @param $google_account_id
      */
@@ -47,9 +54,6 @@ class Cost_Model extends Main_Model
         $webshop_cost->date         =   date("Y-m-d H:i:s");        // can vary per month
         R::store($webshop_cost);
 
-        Debug::s($this->marketing_channels);
-
-
         // Process the marketingchannels
         if (isset($this->marketing_channels) && sizeof($this->marketing_channels) > 0)
         {
@@ -57,23 +61,19 @@ class Cost_Model extends Main_Model
             {
                 if (isset($marketing_channel->name))
                 {
-                    // Noone will have additional cost to direct trafic.
-                    if ($marketing_channel->name != '(direct)')
-                    {
-                        // Define the field names on the view
-                        $fieldname = str_replace('.', '_', $marketing_channel->name);
-                        $fieldname = $fieldname . '_cost';
+                    // Define the field names on the view
+                    $fieldname = str_replace('.', '_', $marketing_channel->name);
+                    $fieldname = $fieldname . '_cost';
 
-                        // There has to be data!
-                        if (array_key_exists($fieldname, $post_data))
-                        {
-                            $marketing_channel_cost = R::dispense('marketingchannelcost');
-                            $marketing_channel_cost->marketingchannel_id    =   $marketing_channel->id;
-                            $marketing_channel_cost->webshop_id             =   $post_data['webshop_id'];   // specific per webshop
-                            $marketing_channel_cost->cost                   =   $post_data[$fieldname];
-                            $marketing_channel_cost->date                   =   date("Y-m-d H:i:s");        // may vary per month
-                            R::store($marketing_channel_cost);
-                        }
+                    // There has to be data!
+                    if (array_key_exists($fieldname, $post_data))
+                    {
+                        $marketing_channel_cost = R::dispense('marketingchannelcost');
+                        $marketing_channel_cost->marketingchannel_id    =   $marketing_channel->id;
+                        $marketing_channel_cost->webshop_id             =   $post_data['webshop_id'];   // specific per webshop
+                        $marketing_channel_cost->cost                   =   $post_data[$fieldname];
+                        $marketing_channel_cost->date                   =   date("Y-m-d H:i:s");        // may vary per month
+                        R::store($marketing_channel_cost);
                     }
                 }
             }
@@ -81,6 +81,24 @@ class Cost_Model extends Main_Model
         // Berichtgeving
         $this->notification->success('Vaste lasten & kosten per marketingkanaal zijn opgeslagen!');
     }
+
+    /**
+     * Gets the cost of a marketingchannel (clicks)
+     *
+     * @param $webshop_id
+     */
+    public function getMarketingChannelCostByWebshopId($webshop_id)
+    {
+        $rows = R::findAll('marketingchannelcost',
+            'SELECT DISTINCT mc.name, mcc.cost, mcc.date
+            FROM marketingchannelcost mcc
+            JOIN marketingchannel mc ON mc.id = mcc.marketingchannel_id
+            WHERE mcc.webshop_id = ' . $webshop_id . '
+            ORDER BY mcc.date ASC');
+
+        Debug::p($rows);
+    }
+
 
     /**
      * Finds webshop cost by webshop id.
@@ -91,6 +109,6 @@ class Cost_Model extends Main_Model
      */
     public function getByWebshopId($webshop_id)
     {
-        return R::Load('webshopcot', $webshop_id);
+        return R::Load('webshopcost', $webshop_id);
     }
 }

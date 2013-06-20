@@ -103,7 +103,7 @@ class Cost_Controller extends Main_Controller
     }
 
     /**
-     *
+     * Save function, verifies the current user + saves the form data submitted
      */
     public function save()
     {
@@ -113,24 +113,23 @@ class Cost_Controller extends Main_Controller
         // We do need POST vars
         if (isset($_POST) && !empty($_POST))
         {
-            // Google Analytics Service
-            $service = $this->google_client->google_analytics->google_analytics;
-
-            // Google Analytics Model
-            $google_analytics_model = new GoogleAnalytics_Model();
-
-            // Webshop Model
+            // Webshop Model to verify the current user + action
             $webshop_model = new Webshop_Model();
-            $webshop = $webshop_model->getById($_POST['webshop_id']);
+            if ($webshop_model->hasAccess($_POST['webshop_id'], $this->google_account->email))
+            {
+                // MarketingchannelModel
+                $marketingchannel_model = new MarketingChannel_Model();
 
-            // MarketingchannelModel
-            $marketingchannel_model = new MarketingChannel_Model();
-
-            // Filll cost model
-            $cost_model->marketing_channels = $marketingchannel_model->getAll();
-            $cost_model->save($_POST);
-
-            $cost_model->notification->success('Gegevens zijn opgeslagen.');
+                // Filll cost model
+                $cost_model->marketing_channels = $marketingchannel_model->getAll();
+                $cost_model->save($_POST);
+                $cost_model->notification->success('Gegevens zijn opgeslagen.');
+            }
+            else
+            {
+                // No access, output an error.
+                $cost_model->notification->error('Geen toegang tot deze functie!');
+            }
         }
         else
         {

@@ -34,15 +34,12 @@
                 <?php
                     foreach ($this->model->marketing_channels as $channel)
                     {
-                        if ($channel != '(direct)')
-                        {
-                            ?>
-                            <tr>
-                                <td style="width: 50%"><?=$channel?></td>
-                                <td style="width: 50%"><input type="number" name="<?=$channel?>_cost" required placeholder="bijv. &euro;250" /></td>
-                            </tr>
-                            <?php
-                        }
+                        ?>
+                        <tr>
+                            <td style="width: 50%"><?=$channel?></td>
+                            <td style="width: 50%"><input type="number" name="<?=$channel?>_cost" required placeholder="bijv. &euro;250" /></td>
+                        </tr>
+                        <?php
                     }
                 ?>
                 </table>
