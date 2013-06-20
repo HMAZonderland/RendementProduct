@@ -6,6 +6,7 @@
     <link rel="shortcut icon" href="http://www.presteren.nu/wp-content/themes/creolio-child/favicon.ico">
     <link href="http://fonts.googleapis.com/css?family=Quattrocento:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet" type="text/css">
+
     <link rel="stylesheet" href="http://www.presteren.nu/wp-content/themes/creolio-child/style.css">
     <!--[if IE 8]>
     <link rel="stylesheet" href="http://www.presteren.nu/wp-content/themes/creolio/assets/core/libs/css/ie8.css">

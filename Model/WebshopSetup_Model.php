@@ -41,22 +41,47 @@ class WebshopSetup_Model extends Main_Model
         $magento_user   =   $post_data['magento_user'];
         $magento_key    =   $post_data['magento_key'];
 
-        $webshop                = R::dispense('webshop');
-        $webshop->name          = $webshop_name;
-        $webshop->ga_profile    = $ga_profile;
-        $webshop->ga_property   = $ga_property;
-        $webshop->ga_account    = $ga_account;
-        $webshop->magento_host  = $magento_host;
-        $webshop->magento_user  = $magento_user;
-        $webshop->magento_key   = $magento_key;
+        $webshop_id = $this->create_webshop($webshop_name, $ga_profile, $ga_property, $ga_account, $magento_host, $magento_user, $magento_key);
 
-        $webshop_id = R::store($webshop);
-
-        $webshop_google_account                     = R::dispense('webshopgoogleaccount');
-        $webshop_google_account->webshop_id         = $webshop_id;
-        $webshop_google_account->googleaccount_id   = $googleaccount_id;
-        R::store($webshop_google_account);
+        $this->createOrUpdate_analytics($googleaccount_id, $webshop_id);
 
         $this->notification->success('De webshop is toegevoegd.');
+    }
+
+    /**
+     * @param $googleaccount_id
+     * @param $webshop_id
+     */
+    public function createOrUpdate_analytics($googleaccount_id, $webshop_id)
+    {
+        $webshop_google_account = R::dispense('webshopgoogleaccount');
+        $webshop_google_account->webshop_id = $webshop_id;
+        $webshop_google_account->googleaccount_id = $googleaccount_id;
+        R::store($webshop_google_account);
+    }
+
+    /**
+     * @param $webshop_name
+     * @param $ga_profile
+     * @param $ga_property
+     * @param $ga_account
+     * @param $magento_host
+     * @param $magento_user
+     * @param $magento_key
+     * @return int
+     */
+    public function create_webshop($webshop_name, $ga_profile, $ga_property, $ga_account, $magento_host, $magento_user, $magento_key)
+    {
+        $webshop = R::dispense('webshop');
+        $webshop->name = $webshop_name;
+        $webshop->ga_profile = $ga_profile;
+        $webshop->ga_property = $ga_property;
+        $webshop->ga_account = $ga_account;
+        $webshop->magento_host = $magento_host;
+        $webshop->magento_user = $magento_user;
+        $webshop->magento_key = $magento_key;
+
+        $webshop_id = R::store($webshop);
+        return $webshop_id;
     }
 }

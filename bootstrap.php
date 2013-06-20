@@ -10,30 +10,30 @@ session_start();
 ob_start();
 
 // Global used variables
-define('WEBSITE_URL',       'http://product.esser-emmerik.hugozonderland.nl/');
-define('DOCUMENT_ROOT',     '/home/ocrtxndf/domains/hugozonderland.nl/public_html/product.esser-emmerik/');
-define('CONFIG_ROOT',        DOCUMENT_ROOT . 'App_Config/');
-define('TMP_ROOT',           DOCUMENT_ROOT . 'Temporary/');
-define('LOG_ROOT',           TMP_ROOT . 'Logs/');
-define('SESSION_ROOT',       TMP_ROOT . 'Sessions');
+define('WEBSITE_URL', 'http://product.esser-emmerik.hugozonderland.nl/');
+define('DOCUMENT_ROOT', '/home/ocrtxndf/domains/hugozonderland.nl/public_html/product.esser-emmerik/');
+define('CONFIG_ROOT', DOCUMENT_ROOT . 'App_Config/');
+define('TMP_ROOT', DOCUMENT_ROOT . 'Temporary/');
+define('LOG_ROOT', TMP_ROOT . 'Logs/');
+define('SESSION_ROOT', TMP_ROOT . 'Sessions');
 
 // Model and controller root
-define('MODEL_ROOT',        DOCUMENT_ROOT . 'Model/');
-define('CONTROLLER_ROOT',   DOCUMENT_ROOT . 'Controller/');
-define('LIBRARY_ROOT',      DOCUMENT_ROOT . 'Library/');
-define('HELPER_ROOT',       DOCUMENT_ROOT . 'Helper/');
+define('MODEL_ROOT', DOCUMENT_ROOT . 'Model/');
+define('CONTROLLER_ROOT', DOCUMENT_ROOT . 'Controller/');
+define('LIBRARY_ROOT', DOCUMENT_ROOT . 'Library/');
+define('HELPER_ROOT', DOCUMENT_ROOT . 'Helper/');
 
 // Used for the templates
-define('VIEW_ROOT',         DOCUMENT_ROOT . 'View/');
-define('SHARED_ROOT',       VIEW_ROOT . 'Shared/');
+define('VIEW_ROOT', DOCUMENT_ROOT . 'View/');
+define('SHARED_ROOT', VIEW_ROOT . 'Shared/');
 
 // Includes made from the browser side
-define('CSS_ROOT',          WEBSITE_URL . 'css/');
-define('IMAGE_ROOT',        WEBSITE_URL . 'images/');
-define('JAVASCRIPT_ROOT',   WEBSITE_URL . 'javascript/');
+define('CSS_ROOT', WEBSITE_URL . 'css/');
+define('IMAGE_ROOT', WEBSITE_URL . 'images/');
+define('JAVASCRIPT_ROOT', WEBSITE_URL . 'javascript/');
 
 // Includes made from the server/code side
-define('HTML_ROOT',         DOCUMENT_ROOT . 'Static/html/');
+define('HTML_ROOT', DOCUMENT_ROOT . 'Static/html/');
 
 // We always want logs, we LOVE logs!
 ini_set('log_errors', 1);
@@ -55,16 +55,17 @@ R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . '', '' . DB_USERNAME .
 define('STATUS', 'development');
 
 // Setting various settings according to status
-switch (STATUS)
-{
-    case 'production': {
+switch (STATUS) {
+    case 'production':
+    {
         ini_set('display_errors', 0);
         define('OUTPUT_DEBUG', false);
         R::debug(false);
         R::freeze(true);
     }
 
-    case 'development': {
+    case 'development':
+    {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         define('OUTPUT_DEBUG', true);

@@ -10,6 +10,7 @@
 require_once MODEL_ROOT . 'Webshop_Model.php';
 require_once MODEL_ROOT . 'WebshopSetup_Model.php';
 require_once MODEL_ROOT . 'Dashboard_Model.php';
+require_once MODEL_ROOT . 'WebshopSettings_Model.php';
 
 require_once CONTROLLER_ROOT . 'GoogleChart_Controller.php';
 /**
@@ -35,32 +36,23 @@ class Dashboard_Controller extends Main_Controller
         // Check if the Google Account is set so we can fetch the user website(s)
         $webshop_model = new Webshop_Model();
 
-        if (isset($params['id']))
-        {
-            if ($webshop_model->hasAccess($params['id'], $this->google_account->email))
-            {
+        if (isset($params['id'])) {
+            if ($webshop_model->hasAccess($params['id'], $this->google_account->email)) {
                 $this->dashboard($params['id']);
             }
-        }
-        else
-        {
+        } else {
             $webshops = $webshop_model->getWebshopByEmail($this->google_account->email);
             $webshops_count = sizeof($webshops);
 
             // 0 Webshops set one up!
-            if ($webshops_count == 0)
-            {
+            if ($webshops_count == 0) {
                 $this->setup();
-            }
-            // 1 webshop, open the dashboard!
-            elseif ($webshops_count == 1)
-            {
+            } // 1 webshop, open the dashboard!
+            elseif ($webshops_count == 1) {
                 $webshop = $webshops[0];
                 $this->dashboard($webshop->id);
-            }
-            // More than 1, let the user select one
-            else
-            {
+            } // More than 1, let the user select one
+            else {
                 $webshop_model->webshops = $webshops;
                 $this->select($webshop_model);
             }
@@ -73,8 +65,7 @@ class Dashboard_Controller extends Main_Controller
      */
     public function dashboard($params = null)
     {
-        if (isset($params['id']))
-        {
+        if (isset($params['id'])) {
             $webshop_id = $params['id'];
             $this->webshop_id = $webshop_id;
 
@@ -86,9 +77,7 @@ class Dashboard_Controller extends Main_Controller
             $this->googlechart_controller = new GoogleChart_Controller();
 
             $this->parse($dashboard_model);
-        }
-        else
-        {
+        } else {
             header('Location:' . WEBSITE_URL . 'dashboard');
         }
     }
@@ -113,17 +102,33 @@ class Dashboard_Controller extends Main_Controller
     }
 
     /**
+     * Calls the setup View. Can be used to add a Magento/Analytics configuration
+     */
+    public function settings($params = null)
+    {
+        if (isset($params['id'])) {
+            $webshop_model = new Webshop_Model();
+            $webshopSetttings_model = new WebshopSettings_Model($webshop_model->getById($params['id']));
+            if (isset($_POST) && !empty($_POST) && $_POST['settings'] == "opslaan") {
+                $webshopSetttings_model->name = $_POST['webshop_name'];
+                $webshopSetttings_model->magento_key = $_POST['magento_key'];
+                $webshopSetttings_model->magento_user = $_POST['magento_user'];
+                $webshopSetttings_model->magento_host = $_POST['magento_host'];
+                $webshopSetttings_model->updateWebshopSettings();
+            }
+            $this->parse($webshopSetttings_model);
+        }
+    }
+
+    /**
      * Fetches the POST request and processes it variables
      */
     public function save()
     {
         $webshop_setup_model = new WebshopSetup_Model();
-        if (isset($_POST) && !empty($_POST))
-        {
+        if (isset($_POST) && !empty($_POST)) {
             $webshop_setup_model->save($_POST, $this->google_account->id);
-        }
-        else
-        {
+        } else {
             $webshop_setup_model->notification->error('Kon niet opgeslagen worden omdat er geen data is.');
         }
         $this->parse($webshop_setup_model);
