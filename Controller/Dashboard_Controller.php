@@ -97,48 +97,40 @@ class Dashboard_Controller extends Main_Controller
     public function setup()
     {
         $webshop_setup_model = new WebshopSetup_Model();
-        $webshop_setup_model->google_analytics_profiles = $this->google_client->google_analytics->listAllProfiles();
+
+        if (isset($_POST) && !empty($_POST))
+        {
+            $webshop_setup_model->save($_POST, $this->google_account->id);
+            $webshop_setup_model = null;
+        }
+        else
+        {
+            $webshop_setup_model->google_analytics_profiles = $this->google_client->google_analytics->listAllProfiles();
+        }
+        $this->parse($webshop_setup_model);
+    }
+
+    /**
+     * Calls the 'save' view because that view loads the Magento + Analytics data for the first time.
+     * @param $webshop_setup_model
+     */
+    public function save($webshop_setup_model)
+    {
         $this->parse($webshop_setup_model);
     }
 
     /**
      * Calls the setup View. Can be used to add a Magento/Analytics configuration
      */
-    public function settings($params = null)
+    public function edit($params = null)
     {
         if (isset($params['id'])) {
             $webshop_model = new Webshop_Model();
             $webshopSetttings_model = new WebshopSettings_Model($webshop_model->getById($params['id']));
             if (isset($_POST) && !empty($_POST) && $_POST['settings'] == "opslaan") {
-                $webshopSetttings_model->name = $_POST['webshop_name'];
-                $webshopSetttings_model->magento_key = $_POST['magento_key'];
-                $webshopSetttings_model->magento_user = $_POST['magento_user'];
-                $webshopSetttings_model->magento_host = $_POST['magento_host'];
-                $webshopSetttings_model->updateWebshopSettings();
+                $webshopSetttings_model->updateWebshopSettings($_POST);
             }
             $this->parse($webshopSetttings_model);
         }
-    }
-
-    /**
-     * Fetches the POST request and processes it variables
-     */
-    public function save()
-    {
-        $webshop_setup_model = new WebshopSetup_Model();
-        if (isset($_POST) && !empty($_POST)) {
-            $webshop_setup_model->save($_POST, $this->google_account->id);
-        } else {
-            $webshop_setup_model->notification->error('Kon niet opgeslagen worden omdat er geen data is.');
-        }
-        $this->parse($webshop_setup_model);
-    }
-
-    /**
-     * @param $params
-     */
-    public function edit($params)
-    {
-
     }
 }
