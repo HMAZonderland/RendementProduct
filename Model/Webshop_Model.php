@@ -68,13 +68,6 @@ class Webshop_Model extends Main_Model
      */
     public function getById($id)
     {
-        /*return R::findOne(
-            'webshop',
-            'id = ?',
-            array(
-                $id
-            )
-        );*/
         return R::load('webshop', $id);
     }
 

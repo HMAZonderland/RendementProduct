@@ -35,18 +35,21 @@ class WebshopSettings_Model extends Main_Model
     }
 
     /**
-     *
+     * @param $post_data
      */
-    public function updateWebshopSettings()
+    public function updateWebshopSettings($post_data)
     {
         parent::__construct();
 
         $webshop = R::load('webshop', $this->id);
-        $webshop->name = $this->name;
-        $webshop->magento_key = $this->API_key;
-        $webshop->magento_user = $this->API_username;
-        $webshop->magento_host = $this->API_URL;
+        $webshop->name = $post_data['webshop_name'];
+        $webshop->magento_key = $post_data['magento_key'];
+        $webshop->magento_user = $post_data['magento_user'];
+        $webshop->magento_host = $post_data['magento_host'];
         R::store($webshop);
+
+        self::__construct($webshop);
+
         $this->notification->success('De instellingen zijn aangepast.');
     }
 }
