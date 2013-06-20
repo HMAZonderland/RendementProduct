@@ -26,6 +26,7 @@ if ($route)
     {
         $controller = $main_controller->loadController($controller_name);
         $controller->init();
+        $controller->checkAuthentication();
     }
     elseif ($controller_name == 'Cronjob_Controller')
     {
@@ -36,15 +37,17 @@ if ($route)
         // When it is, we have to talk to the Main Controller directly
         $controller = $main_controller;
         $controller->init();
+        $controller->checkAuthentication();
     }
 }
 else
 {
+    // Niet bestaande
     $controller = new Main_Controller();
-    //$controller->checkAuthentication();
-    $action = 'checkAuthentication';
+    $controller->init();
+    $controller->checkAuthentication();
+    $action = 'not_found';
     $params = array();
 }
-
 $controller->$action($params);
 ?>
