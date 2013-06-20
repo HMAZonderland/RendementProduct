@@ -68,7 +68,17 @@ class GoogleClient_Controller
      */
     public function checkAuthentication()
     {
-        if (!isset($_SESSION['token']))
+        if (isset($_COOKIE['refresh_token']) && !isset($_SESSION['token']))
+        {
+            $refresh_token = $_COOKIE['refresh_token'];
+            $this->google_client->refreshToken($refresh_token);
+            $google_account = $this->getGoogleAccount();
+            if ($google_account != null)
+            {
+                return $google_account;
+            }
+        }
+        else if (!isset($_SESSION['token']) || !isset($_COOKIE['refresh_token']))
         {
             $authUrl = $this->google_client->createAuthUrl();
             header('Location: ' . $authUrl);
@@ -117,16 +127,19 @@ class GoogleClient_Controller
             $name = (string) filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
             $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
             $refresh_token = $this->getRefreshToken($this->google_client->getAccessToken());
-
             $google_account = $this->getGoogleAccountByEmail($email);
 
             // When we find something, refresh his token
-            if (isset($google_account->id) && $google_account->id != 0)
+            if (isset($google_account->id) && $google_account->id != 0 && !empty($refresh_token))
             {
+                // update the refresh token
                 $this->google_account_model->updateRefreshToken($google_account, $refresh_token);
+
+                // set a cookie with the refresh token
+                setcookie('refresh_token', $refresh_token);
             }
             // If we do not find anything this means we have to add this user to our database
-            else
+            else if ($google_account->id == 0)
             {
                 $id = $this->google_account_model->add($name, $email, $refresh_token);
                 $google_account = $this->google_account_model->getById($id);
@@ -157,11 +170,10 @@ class GoogleClient_Controller
     {
         $jsonObject = json_decode($token);
 
-        if ($jsonObject->refresh_token)
+        if (!empty($jsonObject->refresh_token))
         {
             return $jsonObject->refresh_token;
         }
-        return null;
     }
 
     /**

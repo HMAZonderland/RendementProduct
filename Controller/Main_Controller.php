@@ -10,6 +10,7 @@ require_once CONTROLLER_ROOT . 'View_Controller.php';
 require_once MODEL_ROOT . 'Main_Model.php';
 
 require_once CONTROLLER_ROOT . 'GoogleClient_Controller.php';
+require_once MODEL_ROOT . 'Webshop_Model.php';
 /**
  * Class Controller
  */
@@ -112,5 +113,15 @@ class Main_Controller extends View_Controller
     public function logout()
     {
         $this->google_client->logout();
+    }
+
+    /**
+     * Show settings page.
+     */
+    public function settings()
+    {
+        $webshop_model = new Webshop_Model();
+        $webshop_model->webshops = $webshop_model->getWebshopByEmail($this->google_account->email);
+        $this->parse($webshop_model);
     }
 }
