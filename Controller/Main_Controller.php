@@ -81,6 +81,15 @@ class Main_Controller extends View_Controller
     }
 
     /**
+     * Not found function
+     */
+    public function not_found()
+    {
+        $model = new Main_Model();
+        $this->parse($model);
+    }
+
+    /**
      * Checks the current session
      */
     public function checkAuthentication()

@@ -2,7 +2,7 @@
     <div class="onepcssgrid-1200">
         <table>
             <tr>
-                <th>Welkom!</th>
+                <th>Deze pagina bestaat niet..</th>
             </tr>
             <tr>
                 <td><a href="<?=WEBSITE_URL?>dashboard">Ga naar het dashboard</a></td>
