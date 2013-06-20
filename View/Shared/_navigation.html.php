@@ -1,38 +1,11 @@
-<body class="page page-id-49 page-template-default theme1 ie">
-<header class="onerow color2">
-    <div class="onepcssgrid-1200">
-        <div class="col4 iconic icon-ok">
-            <div class="title">
-                <a href="http://www.presteren.nu">esser-emmerik</a>
-            </div>
-            <div>online verkoop experts</div>
-            <div class="phone icon-phone" onclick="location.href='tel:0357009703';">
-                <span><a href="tel:0357009703">035 - 7009 703</a></span>
-            </div>
-        </div>
-        <nav class="col8 last">
-            <div>
-                <ul id="mainnav">
-                    <?php
-                    $path = parse_url($_SERVER['REQUEST_URI']);
-                    $path = substr($path['path'], 1, strlen($path['path']));
-                    ?>
-                    <li id="menu-item-48">
-                        <a href="<?=WEBSITE_URL . $path?>" onclick="clickDay();">Dag niveau</a>
-                    </li>
-                    <li id="menu-item-288">
-                        <a href="<?=WEBSITE_URL . $path?>" onclick="clickWeek();">Week niveau</a>
-                    </li>
-                    <li id="menu-item-288">
-                        <a href="<?=WEBSITE_URL . $path?>" onclick="clickMonth();">Maand niveau</a>
-                    </li>
-                    <li id="menu-item-48">
-                        <a href="<?=WEBSITE_URL?>settings">Instellingen</a>
-                    </li>
-                </ul>
-                <i class="selnav icon-align-justify"></i>
-            </div>
-        </nav>
-        <div class="arrow"></div>
+<nav class="col8 last">
+    <div>
+        <ul id="mainnav">
+            <?php
+            $this->model->navigation->get();
+            ?>
+        </ul>
+        <i class="selnav icon-align-justify"></i>
     </div>
-</header>
+</nav>
+<div class="arrow"></div>

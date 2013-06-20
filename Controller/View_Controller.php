@@ -8,6 +8,7 @@
  */
 
 require_once MODEL_ROOT . 'NotificationArea_Model.php';
+require_once CONTROLLER_ROOT . 'Navigation_Controller.php';
 
 /**
  * Class View_Controller
@@ -36,11 +37,15 @@ class View_Controller
      */
     private $notification;
 
+
+    private $navigation;
+
     /**
      * @param $model
      */
     public function parse($model = null, $partial = false)
     {
+        $this->navigation = new Navigation_Controller();
         $this->model = $model;
         if (isset($this->model->notification)) {
             $this->notification = $model->notification;
