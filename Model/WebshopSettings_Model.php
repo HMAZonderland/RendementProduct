@@ -22,6 +22,9 @@ class WebshopSettings_Model extends Main_Model
      */
     public $API_key;
 
+    /**
+     * @param $model
+     */
     public function __construct($model)
     {
         $this->name = $model->name;
@@ -31,6 +34,9 @@ class WebshopSettings_Model extends Main_Model
         $this->id = $model->id;
     }
 
+    /**
+     *
+     */
     public function updateWebshopSettings()
     {
         parent::__construct();

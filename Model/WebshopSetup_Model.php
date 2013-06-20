@@ -42,9 +42,7 @@ class WebshopSetup_Model extends Main_Model
         $magento_key    =   $post_data['magento_key'];
 
         $webshop_id = $this->create_webshop($webshop_name, $ga_profile, $ga_property, $ga_account, $magento_host, $magento_user, $magento_key);
-
         $this->createOrUpdate_analytics($googleaccount_id, $webshop_id);
-
         $this->notification->success('De webshop is toegevoegd.');
     }
 
