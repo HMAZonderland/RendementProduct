@@ -8,12 +8,14 @@
  */
 
 require_once MODEL_ROOT . 'NotificationArea_Model.php';
+require_once MODEL_ROOT . 'Navigation_Model.php';
 
 class Main_Model
 {
     /**
      * @var
      */
+    public $navigation;
 
     /**
      * @var NotificationArea_Model
@@ -35,6 +37,7 @@ class Main_Model
      */
     public function __construct()
     {
+        $this->navigation = new Navigation_Model();
         $this->notification = new NotificationArea_Model();
 
         /**
