@@ -14,7 +14,8 @@ function clickWeek() {
 }
 
 function clickMonth() {
-    setCookie('scope', 31);
+   var date = new Date();
+   setCookie('scope', new Date(date.getYear(), date.getMonth(), 0).getDate());
 }
 
 function setCookie(name, value) {

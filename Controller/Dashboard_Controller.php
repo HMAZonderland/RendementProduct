@@ -102,7 +102,6 @@ class Dashboard_Controller extends Main_Controller
         $this->parse($webshop_model);
     }
 
-
     /**
      * Calls the setup View. Can be used to add a Magento/Analytics configuration
      */
@@ -128,5 +127,13 @@ class Dashboard_Controller extends Main_Controller
             $webshop_setup_model->notification->error('Kon niet opgeslagen worden omdat er geen data is.');
         }
         $this->parse($webshop_setup_model);
+    }
+
+    /**
+     * @param $params
+     */
+    public function edit($params)
+    {
+
     }
 }

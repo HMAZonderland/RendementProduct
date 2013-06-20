@@ -6,15 +6,16 @@
                     <thead>
                     <tr>
                         <th>Naam</th>
-                        <th>Verkoopprijs</th>
-                        <th>Inkoopprijs</th>
-                        <th>Verzendkosten</th>
+                        <th>Verkoop prijs</th>
+                        <th>Inkoop prijs</th>
+                        <th>Verzend kosten</th>
                         <th>BTW</th>
                         <th>Aantal</th>
                         <th>Omzet</th>
-                        <th>Totale kosten</th>
+                        <th>Product kosten</th>
                         <th>Bruto winst</th>
                         <th>Vaste lasten</th>
+                        <th>Klik kosten</th>
                         <th>Totale kosten</th>
                         <th>Winst</th>
                         <th>Rendement</th>
@@ -27,8 +28,9 @@
                     {
                         foreach ($this->model->products_per_marketingchannel as $data)
                         {
+                            $clickcost = ($data->marketingchannelcost / $this->model->sold_products) * $data->quantity;
                             $cost = (($this->model->webshop_costs * $this->model->ratio) / $this->model->sold_products) * $data->quantity;
-                            $costs = $cost + $data->costs;
+                            $costs = $cost + $data->costs + $clickcost;
                             $profit = $data->grossprofit - $cost - $data->cost;
                             $efficiency = round($profit / $data->revenue * 100, 2);
 
@@ -44,6 +46,7 @@
                                 <td>&euro;<?=round($data->costs, 2)?></td>
                                 <td>&euro;<?=round($data->grossprofit, 2)?></td>
                                 <td>&euro;<?=round($cost, 2)?></td>
+                                <td>&euro;<?=round($clickcost, 2)?></td>
                                 <td>&euro;<?=round($costs,2)?></td>
                                 <td>&euro;<?=round($profit,2)?></td>
                                 <td><?=$efficiency?>%</td>
@@ -60,7 +63,7 @@
                     ?>
                     </tbody>
                 </table>
-                <a href="<?=WEBSITE_URL?>index.php">Terug naar de marketingkanalen</a>
+                <a href="<?=WEBSITE_URL?>dashboard">Terug naar de marketingkanalen</a>
             </div>
         </div>
     </div>

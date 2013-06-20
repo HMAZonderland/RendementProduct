@@ -45,6 +45,5 @@ else
     $action = 'checkAuthentication';
     $params = array();
 }
-
 $controller->$action($params);
 ?>

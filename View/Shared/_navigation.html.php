@@ -13,10 +13,22 @@
         <nav class="col8 last">
             <div>
                 <ul id="mainnav">
-                    <li id="menu-item-48"><a href="<?= $_SERVER['PHP_SELF'] ?><?= isset($_REQUEST['id']) ? "?id=".$_REQUEST['id']: "";?>" onclick="clickDay();">Dag niveau</a></li>
-                    <li id="menu-item-288"><a href="<?= $_SERVER['PHP_SELF'] ?><?= isset($_REQUEST['id']) ? "?id=".$_REQUEST['id']: "";?>" onclick="clickWeek();">Week niveau</a></li>
-                    <li id="menu-item-288"><a href="<?= $_SERVER['PHP_SELF'] ?><?= isset($_REQUEST['id']) ? "?id=".$_REQUEST['id']: "";?>" onclick="clickMonth();">Maand niveau</a></li>
-                    <li id="menu-item-48"><a href="settings.php">Instellingen</a></li>
+                    <?php
+                    $path = parse_url($_SERVER['REQUEST_URI']);
+                    $path = substr($path['path'], 1, strlen($path['path']));
+                    ?>
+                    <li id="menu-item-48">
+                        <a href="<?=WEBSITE_URL . $path?>" onclick="clickDay();">Dag niveau</a>
+                    </li>
+                    <li id="menu-item-288">
+                        <a href="<?=WEBSITE_URL . $path?>" onclick="clickWeek();">Week niveau</a>
+                    </li>
+                    <li id="menu-item-288">
+                        <a href="<?=WEBSITE_URL . $path?>" onclick="clickMonth();">Maand niveau</a>
+                    </li>
+                    <li id="menu-item-48">
+                        <a href="<?=WEBSITE_URL?>settings">Instellingen</a>
+                    </li>
                 </ul>
                 <i class="selnav icon-align-justify"></i>
             </div>

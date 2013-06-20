@@ -37,27 +37,43 @@ class Dashboard_Model extends Main_Model
         // TODO: time filter => month, week, day
         $q =
             '
-             SELECT
+            SELECT
             mc.id as id,
             mc.name as marketingchannel,
             ROUND(SUM((pp.price + pp.tax_amount) * po.quantity) + SUM(mo.shipping_costs) , 2) as revenue,
             ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity), 2) + SUM(mo.shipping_costs) as costs,
             ROUND(SUM((pp.price + pp.tax_amount - pp.tax_amount - pp.base_cost) * po.quantity), 2) as grossprofit,
-            mcc.cost as marketingchannelcost
+            (
+                SELECT
+                ((mcc.cost / day(last_day(NOW())) ) * DATEDIFF(\'' . $this->to . '\', \'' . $this->from . '\')) AS cost
+
+                FROM
+                marketingchannelcost mcc
+
+                WHERE
+                marketingchannel_id = mo.marketingchannel_id
+
+                ORDER BY mcc.date DESC
+                LIMIT 0,1
+
+            ) as marketingchannelcost
 
             FROM
             product p
 
-            JOIN productprice pp ON pp.product_id = p.id
+            JOIN productprice pp ON pp.product_id = p.id AND pp.id = (SELECT id FROM productprice WHERE product_id = p.id ORDER BY ABS(DATEDIFF(mo.date, date)) LIMIT 0,1)
             JOIN productorder po ON po.product_id = p.id
             JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
             JOIN marketingchannel mc ON mc.id = mo.marketingchannel_id
-            LEFT JOIN marketingchannelcost mcc ON mcc.marketingchannel_id = mo.marketingchannel_id
 
             WHERE
-            p.webshop_id = ' . $webshop_id . '
+            p.webshop_id = ' . $webshop_id . ' AND
+            mo.date >= \'' . $this->from . '\' AND
+            mo.date <= \'' . $this->to . '\'
 
             GROUP BY mc.name';
+
+        //Debug::p($q);
 
         // Data
         $rows = R::getAll($q);
@@ -74,6 +90,7 @@ class Dashboard_Model extends Main_Model
      *
      * @param $webshop_id
      */
+    # TODO: duplicate code.
     public function getTotalRevenue($webshop_id)
     {
         $q =
@@ -90,7 +107,10 @@ class Dashboard_Model extends Main_Model
             JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
 
             WHERE
-            p.webshop_id = ' . $webshop_id;
+            p.webshop_id = ' . $webshop_id . ' AND
+
+            mo.date >= \'' . $this->from . '\' AND
+            mo.date <= \'' . $this->to . '\'';
 
         $rows = R::getAll($q);
 
@@ -105,7 +125,7 @@ class Dashboard_Model extends Main_Model
     }
 
     /**
-     * Gets the cost of the webshop per month
+     * Gets the most recent cost of the webshop + calculates it on day/week/month base
      *
      * @param $webshop_id
      */
@@ -113,12 +133,26 @@ class Dashboard_Model extends Main_Model
     {
         $data = R::findOne(
             'webshopcost',
-            'webshop_id = ? ORDER BY date ASC LIMIT 1',
+            'webshop_id = ? ORDER BY date DESC LIMIT 1',
             array(
                 $webshop_id
             )
         );
-        $this->webshop_costs = $data->cost;
+
+        $now = new DateTime();
+        $from = new DateTime($this->from);
+
+        $difftime = $now->diff($from);
+        $diff = $difftime->days;
+
+        if ($diff == 1) { // day
+            $this->webshop_costs = $data->cost / cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+        } else if ($diff == 7) { // week
+            $weeks = ceil((cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) + date("N", mktime(0,0,0,date('m'),date('d'),date('Y')))) / 7);
+            $this->webshop_costs = $data->cost / $weeks;
+        } else { // month
+            $this->webshop_costs = $data->cost;
+        }
     }
 }
 
@@ -133,8 +167,8 @@ pp.base_cost,
 pp.tax_amount,
 SUM(po.quantity) as hoeveelheid,
 SUM(pp.price * po.quantity) as omzet,
-SUM((pp.base_cost + pp.tax_amount) * po.quantity) as kosten,
-SUM((pp.price - pp.base_cost - pp.tax_amount) * po.quantity) as winst
+ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity), 2) as kosten,
+ROUND(SUM((pp.price - pp.base_cost - pp.tax_amount) * po.quantity),2) as winst
 
 FROM
 product p

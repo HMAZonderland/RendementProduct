@@ -94,7 +94,7 @@ class Cost_Model extends Main_Model
             FROM marketingchannelcost mcc
             JOIN marketingchannel mc ON mc.id = mcc.marketingchannel_id
             WHERE mcc.webshop_id = ' . $webshop_id . '
-            ORDER BY mcc.date ASC');
+            ORDER BY mcc.date DESC');
 
         Debug::p($rows);
     }
