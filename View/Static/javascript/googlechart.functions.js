@@ -1,5 +1,4 @@
-function load()
-{
+function load() {
     // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', {'packages': ['corechart']});
 
@@ -7,8 +6,7 @@ function load()
     google.setOnLoadCallback(drawchart, true);
 }
 
-function drawchart()
-{
+function drawchart() {
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Marketing Kanaal');
@@ -16,9 +14,11 @@ function drawchart()
 
     // parse em JSON!
     var piedata = JSON.parse(json);
-    jQuery.each(piedata, function(marketingchannel, revenue) {
-        data.addRow([marketingchannel, parseFloat(revenue)]);
-    });
+
+    var index = piedata['marketing_channels'].length
+    while (index--) {
+        data.addRow([piedata['marketing_channels'][index]['name'], parseFloat(piedata['marketing_channels'][index]['revenue'])]);
+    }
 
     // Add a number formatter.
     var formatter = new google.visualization.NumberFormat(
@@ -28,13 +28,17 @@ function drawchart()
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
 
+    // add select listener, when you click a slice it wil load the channel dashboard.
+    google.visualization.events.addListener(chart, 'select',
+        selectSlice);
+
     // Set chart options
     var options = {
-        'height' : '400',
-        'width' : '400',
-        'chartArea' : {
-            'width' : '90%',
-            'height' : '90%'
+        'height': '400',
+        'width': '400',
+        'chartArea': {
+            'width': '90%',
+            'height': '90%'
         },
         'legend': {
             'position': 'right'
@@ -42,6 +46,18 @@ function drawchart()
         'allowHtml': 'true',
         'showRowNumber': 'true'
     };
+
+    function selectSlice() {
+        var selectedData = chart.getSelection();
+        var row = selectedData[0].row;
+        var channel = data.getValue(row, 0);
+        var index = piedata['marketing_channels'].length
+        while (index--) {
+            if (channel === piedata['marketing_channels'][index]['name']) {
+                window.location = window.location.origin+'/dashboard/channel/'+ piedata['webshop_id'] + '/' + piedata['marketing_channels'][index]['id'];
+            }
+        }
+    }
 
     // Pie -em
     chart.draw(data, options);

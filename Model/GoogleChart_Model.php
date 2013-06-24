@@ -17,14 +17,20 @@ class GoogleChart_Model extends Main_Model
     /**
      * @param $marketingchannels
      */
-    public function setChartData($marketingchannels)
+    public function setChartData($webshop_id, $marketingchannels)
     {
         $json_object = array();
+        $json_object['webshop_id'] = $webshop_id;
+        $json_object['marketing_channels'] = array();
 
         // GoogleChart Model parses JSON
         foreach ($marketingchannels as $marketingchannel)
         {
-            $json_object[$marketingchannel->marketingchannel] = $marketingchannel->revenue;
+            $obj = array();
+            $obj['id'] = $marketingchannel->id;
+            $obj['name'] = $marketingchannel->marketingchannel;
+            $obj['revenue'] = $marketingchannel->revenue;
+            array_push($json_object['marketing_channels'], $obj);
         }
         $this->chart_data = json_encode($json_object);
     }

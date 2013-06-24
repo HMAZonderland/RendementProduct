@@ -29,7 +29,7 @@ class GoogleChart_Controller extends Main_Controller
         $dashboard_model->getResultsPerMarketingChannel($webshop_id);
 
         $googlechart_model = new GoogleChart_Model();
-        $googlechart_model->setChartData($dashboard_model->results_per_marketingchannel);
+        $googlechart_model->setChartData($webshop_id, $dashboard_model->results_per_marketingchannel);
         $this->parse($googlechart_model, true);
     }
 }
