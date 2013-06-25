@@ -1,3 +1,8 @@
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
 Options +FollowSymLinks
 
 RewriteEngine On
@@ -6,4 +11,3 @@ RewriteRule !\.(js|ico|gif|jpg|png|css|html|swf|flv|xml)$ index.php [QSA,L]
 RewriteRule ^css/(.*)$ http://product.esser-emmerik.hugozonderland.nl/View/Static/css/$1 [L]
 RewriteRule ^javascript/(.*)$ http://product.esser-emmerik.hugozonderland.nl/View/Static/javascript/$1 [L]
 RewriteRule ^images/(.*)$ http://product.esser-emmerik.hugozonderland.nl/View/Static/images/$1 [L]
-

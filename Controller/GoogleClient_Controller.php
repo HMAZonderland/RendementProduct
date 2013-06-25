@@ -68,7 +68,7 @@ class GoogleClient_Controller
      */
     public function checkAuthentication()
     {
-        if (isset($_COOKIE['refresh_token']) && !isset($_SESSION['token']))
+        if ((isset($_COOKIE['refresh_token']) && !empty($_COOKIE['refresh_token']) )&& !isset($_SESSION['token']))
         {
             $refresh_token = $_COOKIE['refresh_token'];
             $this->google_client->refreshToken($refresh_token);
@@ -182,6 +182,7 @@ class GoogleClient_Controller
     public function logout()
     {
         unset($_SESSION['token']);
+        setcookie('refresh_token', '');
         header("Location: index.php");
     }
 }
