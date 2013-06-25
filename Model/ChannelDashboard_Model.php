@@ -57,28 +57,27 @@ class ChannelDashboard_Model extends Main_Model
             pp.base_cost as base_cost,
             pp.tax_amount as tax_amount,
             SUM(po.quantity) as quantity,
-            SUM(mo.shipping_costs /
-            (
-                SELECT SUM(quantity)
-
-                FROM productorder
-                WHERE magentoorder_id = mo.id)
-
-            ) / po.quantity as shipping_costs,
-            ROUND(SUM((pp.price + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs /
+            SUM(mo.shipping_costs) / SUM(
             (
                 SELECT SUM(quantity)
                 FROM productorder
-                WHERE magentoorder_id = mo.id)
-
-            ) / po.quantity) , 2) as revenue,
-            ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs /
+                WHERE magentoorder_id = mo.id
+            )
+            ) * SUM(po.quantity) as shipping_costs,
+            ROUND(SUM((pp.price + pp.tax_amount) * po.quantity) + (SUM(mo.shipping_costs) / SUM(
             (
                 SELECT SUM(quantity)
                 FROM productorder
-                WHERE magentoorder_id = mo.id)
-
-            ) / po.quantity), 2) as productcosts,
+                WHERE magentoorder_id = mo.id
+            )
+            ) * SUM(po.quantity)) , 2) as revenue,
+            ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity) + (SUM(mo.shipping_costs) / SUM(
+            (
+                SELECT SUM(quantity)
+                FROM productorder
+                WHERE magentoorder_id = mo.id
+            )
+            ) * SUM(po.quantity)), 2) as productcosts,
             (
                 SELECT
                 ((mcc.cost / day(last_day(NOW())) ) * DATEDIFF(\'' . $this->to . '\', \'' . $this->from . '\')) AS cost
@@ -116,7 +115,7 @@ class ChannelDashboard_Model extends Main_Model
             GROUP BY
             p.name';
 
-       // Debug::p($q);
+        //Debug::p($q);
 
         // Data
         $rows = R::getAll($q);
