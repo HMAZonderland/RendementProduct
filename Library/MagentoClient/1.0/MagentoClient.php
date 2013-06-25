@@ -44,7 +44,6 @@ class MagentoClient
      */
     public function __construct($apiUser, $apiKey, $host)
     {
-
         $this->_apiUser = $apiUser;
         $this->_apiKey = $apiKey;
         $this->_magentoHost = $host;

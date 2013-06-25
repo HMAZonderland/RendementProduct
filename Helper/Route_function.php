@@ -6,8 +6,6 @@
  * Time: 16:55
  * Fetches the URL and checks if the URL matches a defined route in the Route_config.php
  */
-require CONTROLLER_ROOT . 'Main_Controller.php';
-
 $route = $router->matchCurrentRequest();
 
 if ($route)

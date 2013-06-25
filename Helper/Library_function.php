@@ -24,7 +24,7 @@ class Library
             $location = $library[$lib];
             if (file_exists($location))
             {
-                include $location;
+                include_once $location;
             }
             else
             {

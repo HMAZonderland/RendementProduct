@@ -79,8 +79,13 @@ Library::load('Google_API_Client');
 Library::load('Google_Analytics_Service');
 Library::load('Google_Oauth2Service');
 
-// Load the route config + helper
+// Load the route config + helper + controller
+include_once(CONTROLLER_ROOT . 'Route_Controller.php');
+include_once(MODEL_ROOT . 'Route_Model.php');
 include_once(CONFIG_ROOT . 'Route_config.php');
 include_once(HELPER_ROOT . 'Route_function.php');
+
+// Main_Controller
+include_once CONTROLLER_ROOT . 'Main_Controller.php';
 ?>
 

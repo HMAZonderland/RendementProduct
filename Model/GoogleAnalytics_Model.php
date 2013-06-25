@@ -13,6 +13,15 @@
 class GoogleAnalytics_Model extends Main_Model
 {
     /**
+     * Loads the metrics parser class
+     */
+    public function __construct()
+    {
+        Library::load('Google_Analytics_Metrics_Parser');
+    }
+
+
+    /**
      * Returns the orders of the past 24 hours
      *
      * @param $service
@@ -49,8 +58,7 @@ class GoogleAnalytics_Model extends Main_Model
      */
     private function getTransactionsPerMarketingChannel($service, $google_analytics_profile, $from_time)
     {
-        // Load the Google Analytics Metrics parser + OrderPerMarketingChannel metrics
-        Library::load('Google_Analytics_Metrics_Parser');
+        // Load OrderPerMarketingChannel metrics
         Library::load('OrderPerMarketingChannel_Metrics');
 
         // time filter
@@ -64,7 +72,6 @@ class GoogleAnalytics_Model extends Main_Model
         return $orders;
     }
 
-
     /**
      * @param $service
      * @param $google_analytics_profile
@@ -73,8 +80,7 @@ class GoogleAnalytics_Model extends Main_Model
      */
     public function getMarketingChannels($service, $google_analytics_profile)
     {
-        // Load the Google Analytics Metrics parser + OrderPerMarketingChannel metrics
-        Library::load('Google_Analytics_Metrics_Parser');
+        // Load the MarketingChannel metrics
         Library::load('MarketingChannel_Metrics');
 
         // 1 month hour time filter

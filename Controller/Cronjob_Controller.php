@@ -6,14 +6,14 @@
  * Time: 10:14
  * To change this template use File | Settings | File Templates.
  */
-require_once CONTROLLER_ROOT . 'GoogleClient_Controller.php';
+include_once CONTROLLER_ROOT . 'GoogleClient_Controller.php';
 
-require_once MODEL_ROOT . 'GoogleAnalytics_Model.php';
-require_once MODEL_ROOT . 'GoogleAccount_Model.php';
-require_once MODEL_ROOT . 'MagentoOrder_Model.php';
-require_once MODEL_ROOT . 'MarketingChannel_Model.php';
-require_once MODEL_ROOT . 'Webshop_Model.php';
-require_once MODEL_ROOT . 'Product_Model.php';
+include_once MODEL_ROOT . 'GoogleAnalytics_Model.php';
+include_once MODEL_ROOT . 'GoogleAccount_Model.php';
+include_once MODEL_ROOT . 'MagentoOrder_Model.php';
+include_once MODEL_ROOT . 'MarketingChannel_Model.php';
+include_once MODEL_ROOT . 'Webshop_Model.php';
+include_once MODEL_ROOT . 'Product_Model.php';
 
 /**
  * Class Cronjob_Controller
@@ -83,6 +83,9 @@ class Cronjob_Controller
 
         // Order model
         $this->order_model = new MagentoOrder_Model();
+
+        // Load the MagentoClient library
+        Library::load('MagentoClient');
     }
 
     /**
@@ -136,9 +139,6 @@ class Cronjob_Controller
 
     private function process($webshop, $first_run = false)
     {
-        // Load the MagentoClient library
-        Library::load('MagentoClient');
-
         // Magento Client, needs to be reinitated for each webshop
         $magento_client = new MagentoClient($webshop->magento_user, $webshop->magento_key, $webshop->magento_host);
 

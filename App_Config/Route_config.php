@@ -7,9 +7,6 @@
  * This file is used to map URL's to controllers and actions.
  */
 
-require_once DOCUMENT_ROOT . 'Controller/Route_Controller.php';
-require_once DOCUMENT_ROOT . 'Model/Route_Model.php';
-
 $router = new Route_Controller();
 $router->setBasePath('');
 
