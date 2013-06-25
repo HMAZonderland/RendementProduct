@@ -18,6 +18,7 @@
                         <th>Totale kosten</th>
                         <th>Winst</th>
                         <th>Rendement</th>
+                        <th>ROI</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,6 +37,7 @@
                             $costs = $webshop_cost + $data->productcosts + $clickcost;
                             $profit = $data->revenue - $costs - $data->cost;
                             $efficiency = round($profit / $data->revenue * 100, 2);
+                            $roi = round($profit / $costs * 100, 2);
 
                             /*Debug::s($this->model->marketingchannel_revenue);
                             Debug::s($marketingchannel_cost);
@@ -59,6 +61,7 @@
                                 <td>&euro;<?=round($costs,2)?></td>
                                 <td>&euro;<?=round($profit,2)?></td>
                                 <td><?=$efficiency?>%</td>
+                                <td><?=$roi?>%</td>
                             </tr>
                         <?php
                         }
@@ -72,7 +75,7 @@
                     ?>
                     </tbody>
                 </table>
-                <a href="<?=WEBSITE_URL?>dashboard">Terug naar de marketingkanalen</a>
+                <a href="<?=WEBSITE_URL?>dashboard/<?=$this->model->webshop_id?>">Terug naar de marketingkanalen</a>
             </div>
         </div>
     </div>

@@ -40,6 +40,11 @@ class ChannelDashboard_Model extends Main_Model
     public $marketingchannel_revenue;
 
     /**
+     * @var
+     */
+    public $webshop_id;
+
+    /**
      * Fetches the products sold trough the given marketingchannel and webshop.
      * It calculates the revenue made, the total cost (except for marketingchannel cost and webshopcosts, these are added later.
      *
@@ -91,7 +96,8 @@ class ChannelDashboard_Model extends Main_Model
                 ORDER BY mcc.date DESC
                 LIMIT 0,1
 
-            ) as marketingchannelcost
+            ) as marketingchannelcost,
+            mo.webshop_id AS webshop_id
 
             FROM magentoorder mo
 
@@ -115,8 +121,6 @@ class ChannelDashboard_Model extends Main_Model
             GROUP BY
             p.name';
 
-        //Debug::p($q);
-
         // Data
         $rows = R::getAll($q);
         $products = R::convertToBeans('productresults', $rows);
@@ -125,6 +129,7 @@ class ChannelDashboard_Model extends Main_Model
         foreach ($products as $product)
         {
             array_push($this->products_per_marketingchannel, $product);
+            $this->webshop_id = $product->webshop_id;
         }
     }
 
@@ -218,53 +223,3 @@ class ChannelDashboard_Model extends Main_Model
         }
     }
 }
-/*
-SELECT p.name, p.sku, pp.price, pp.base_cost, pp.tax_amount, SUM( po.quantity ) hoeveelheid, pp.date AS prijsdatum
-FROM productorder po
-JOIN product p ON p.id = po.product_id
-JOIN productprice pp ON pp.product_id = po.product_id
-GROUP BY pp.date, p.name
-ORDER BY p.name
-
-SELECT
-p.id,
-p.name AS name,
-pp.price as price,
-pp.base_cost as base_cost,
-pp.tax_amount as tax_amount,
-SUM(po.quantity) as quantity,
-SUM(mo.shipping_costs / (SELECT SUM(quantity) FROM productorder WHERE magentoorder_id = mo.id)) / po.quantity as shipping_costs,
-ROUND(SUM((pp.price + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs / (SELECT SUM(quantity) FROM productorder WHERE magentoorder_id = mo.id)) / po.quantity) , 2) as revenue,
-ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs / (SELECT SUM(quantity) FROM productorder WHERE magentoorder_id = mo.id)) / po.quantity), 2) as costs,
-ROUND(SUM(pp.price + pp.tax_amount - pp.tax_amount - pp.base_cost * po.quantity), 2) as grossprofit,
-(
-    SELECT
-    ((cost / day(last_day(NOW())) ) * DATEDIFF('2013-06-20 14:04:24', '2013-04-19')) AS cost
-
-    FROM
-    marketingchannelcost
-
-    WHERE
-    marketingchannel_id = mo.marketingchannel_id
-
-    ORDER BY date DESC
-    LIMIT 0,1
-
-) as marketingchannelcost
-
-FROM magentoorder mo
-
-JOIN productorder po ON po.magentoorder_id = mo.id
-JOIN product p ON p.id = po.product_id
-JOIN productprice pp ON pp.product_id = p.id
-
-WHERE
-mo.webshop_id = 3 AND
-mo.marketingchannel_id = 10 AND
-mo.date >= '2013-04-19' AND
-mo.date <= '2013-06-20 14:04:24'
-
-GROUP BY
-p.name
-
- */

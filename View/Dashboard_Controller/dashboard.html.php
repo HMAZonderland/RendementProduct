@@ -18,6 +18,7 @@
                         <th>Totale kosten</th>
                         <th>Winst</th>
                         <th>Rendement</th>
+                        <th>ROI</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,6 +32,7 @@
                             $totalcost = $cost + $data->costs + $data->marketingchannelcost;
                             $profit = $data->revenue - $totalcost;
                             $efficiency = round($profit / $data->revenue * 100, 2);
+                            $roi = round($profit / $totalcost * 100, 2);
 
                             ?>
                             <tr class="<?= ($efficiency > 0) ? 'success' : 'error' ?>">
@@ -42,6 +44,7 @@
                                 <td>&euro;<?=round($totalcost, 2)?></td>
                                 <td>&euro;<?=round($profit, 2)?></td>
                                 <td><?=$efficiency?>%</td>
+                                <td><?=$roi?>%</td>
                             </tr>
                         <?php
                         }
