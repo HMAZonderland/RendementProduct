@@ -20,7 +20,7 @@ class Navigation_Model
                 <a href="<?=WEBSITE_URL?>dashboard">Dashboard</a>
             </li>
             <?php
-            if (strpos($path, 'dashboard') !== false)
+            if (preg_match('#dashboard/(\d+)#', $path) || preg_match('#dashboard/channel/(\d+)/(\d)#', $path))
             {
                 ?>
                 <li id="menu-item-48">
