@@ -77,12 +77,15 @@ class GoogleClient_Controller
             {
                 return $google_account;
             }
+            else
+            {
+                // Cannot find anything, so authenticate this user again
+                $this->authenticate();
+            }
         }
         else if (!isset($_SESSION['token']) || !isset($_COOKIE['refresh_token']))
         {
-            $authUrl = $this->google_client->createAuthUrl();
-            header('Location: ' . $authUrl);
-            die;
+            $this->authenticate();
         }
         else
         {
@@ -97,6 +100,16 @@ class GoogleClient_Controller
                 $this->logout();
             }
         }
+    }
+
+    /**
+     * Sends the user to the Google Authenication page.
+     */
+    private function authenticate()
+    {
+        $authUrl = $this->google_client->createAuthUrl();
+        header('Location: ' . $authUrl);
+        die;
     }
 
     /**

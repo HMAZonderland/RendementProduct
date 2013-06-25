@@ -13,7 +13,6 @@
                         <th>Aantal</th>
                         <th>Omzet</th>
                         <th>Product kosten</th>
-                        <th>Bruto winst</th>
                         <th>Vaste lasten</th>
                         <th>Klik kosten</th>
                         <th>Totale kosten</th>
@@ -28,11 +27,22 @@
                     {
                         foreach ($this->model->products_per_marketingchannel as $data)
                         {
+                            //Debug::p($data);
+
                             $clickcost = ($data->marketingchannelcost / $this->model->sold_products) * $data->quantity;
-                            $cost = (($this->model->webshop_costs * $this->model->ratio) / $this->model->sold_products) * $data->quantity;
-                            $costs = $cost + $data->costs + $clickcost;
-                            $profit = $data->grossprofit - $cost - $data->cost;
+                            $marketingchannel_cost = $this->model->webshop_costs * $this->model->ratio;
+                            $costratio = $data->revenue / $this->model->marketingchannel_revenue;
+                            $webshop_cost = $marketingchannel_cost * $costratio ;
+                            $costs = $webshop_cost + $data->productcosts + $clickcost;
+                            $profit = $data->revenue - $costs - $data->cost;
                             $efficiency = round($profit / $data->revenue * 100, 2);
+
+                            /*Debug::s($this->model->marketingchannel_revenue);
+                            Debug::s($marketingchannel_cost);
+                            Debug::s($cost);
+                            Debug::s($costratio);
+                            Debug::s($cost);
+                            Debug::s('');*/
 
                             ?>
                             <tr class="<?= ($profit > 0) ? 'success' : 'error' ?>">
@@ -43,9 +53,8 @@
                                 <td>&euro;<?=round($data->tax_amount, 2)?></td>
                                 <td><?=$data->quantity?></td>
                                 <td>&euro;<?=round($data->revenue, 2)?></td>
-                                <td>&euro;<?=round($data->costs, 2)?></td>
-                                <td>&euro;<?=round($data->grossprofit, 2)?></td>
-                                <td>&euro;<?=round($cost, 2)?></td>
+                                <td>&euro;<?=round($data->productcosts, 2)?></td>
+                                <td>&euro;<?=round($webshop_cost, 2)?></td>
                                 <td>&euro;<?=round($clickcost, 2)?></td>
                                 <td>&euro;<?=round($costs,2)?></td>
                                 <td>&euro;<?=round($profit,2)?></td>

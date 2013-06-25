@@ -36,7 +36,7 @@ class Dashboard_Controller extends Main_Controller
         // Check if the Google Account is set so we can fetch the user website(s)
         $webshop_model = new Webshop_Model();
 
-        if (isset($params['id'])) {
+        if (isset($params['id']) && !empty($params['id'])) {
             if ($webshop_model->hasAccess($params['id'], $this->google_account->email)) {
                 $this->dashboard($params['id']);
             }

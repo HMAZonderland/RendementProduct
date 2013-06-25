@@ -35,6 +35,11 @@ class ChannelDashboard_Model extends Main_Model
     public $marketingchannel_cost;
 
     /**
+     * @var
+     */
+    public $marketingchannel_revenue;
+
+    /**
      * Fetches the products sold trough the given marketingchannel and webshop.
      * It calculates the revenue made, the total cost (except for marketingchannel cost and webshopcosts, these are added later.
      *
@@ -44,17 +49,36 @@ class ChannelDashboard_Model extends Main_Model
     public function productsByMarketingChannelAndWebshopId($webshop_id, $marketingchannel_id)
     {
         $q =
-            'SELECT
+            '
+            SELECT
             p.id,
             p.name AS name,
             pp.price as price,
             pp.base_cost as base_cost,
             pp.tax_amount as tax_amount,
             SUM(po.quantity) as quantity,
-            SUM(mo.shipping_costs / (SELECT SUM(quantity) FROM productorder WHERE magentoorder_id = mo.id)) / po.quantity as shipping_costs,
-            ROUND(SUM((pp.price + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs / (SELECT SUM(quantity) FROM productorder WHERE magentoorder_id = mo.id)) / po.quantity) , 2) as revenue,
-            ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs / (SELECT SUM(quantity) FROM productorder WHERE magentoorder_id = mo.id)) / po.quantity), 2) as costs,
-            ROUND(SUM(pp.price + pp.tax_amount - pp.tax_amount - pp.base_cost * po.quantity), 2) as grossprofit,
+            SUM(mo.shipping_costs /
+            (
+                SELECT SUM(quantity)
+
+                FROM productorder
+                WHERE magentoorder_id = mo.id)
+
+            ) / po.quantity as shipping_costs,
+            ROUND(SUM((pp.price + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs /
+            (
+                SELECT SUM(quantity)
+                FROM productorder
+                WHERE magentoorder_id = mo.id)
+
+            ) / po.quantity) , 2) as revenue,
+            ROUND(SUM((pp.base_cost + pp.tax_amount) * po.quantity) + SUM((mo.shipping_costs /
+            (
+                SELECT SUM(quantity)
+                FROM productorder
+                WHERE magentoorder_id = mo.id)
+
+            ) / po.quantity), 2) as productcosts,
             (
                 SELECT
                 ((mcc.cost / day(last_day(NOW())) ) * DATEDIFF(\'' . $this->to . '\', \'' . $this->from . '\')) AS cost
@@ -74,7 +98,14 @@ class ChannelDashboard_Model extends Main_Model
 
             JOIN productorder po ON po.magentoorder_id = mo.id
             JOIN product p ON p.id = po.product_id
-            JOIN productprice pp ON pp.product_id = p.id AND pp.id = (SELECT id FROM productprice WHERE product_id = p.id ORDER BY ABS(DATEDIFF(mo.date, date)) LIMIT 0,1)
+            JOIN productprice pp ON pp.product_id = p.id AND pp.id =
+            (
+                SELECT id
+                FROM productprice
+                WHERE product_id = p.id
+                ORDER BY ABS(DATEDIFF(mo.date, date))
+                LIMIT 0,1
+            )
 
             WHERE
             mo.webshop_id = ' . $webshop_id . ' AND
@@ -85,7 +116,7 @@ class ChannelDashboard_Model extends Main_Model
             GROUP BY
             p.name';
 
-        //Debug::p($q);
+       // Debug::p($q);
 
         // Data
         $rows = R::getAll($q);
@@ -156,7 +187,8 @@ class ChannelDashboard_Model extends Main_Model
                 JOIN magentoorder mo ON mo.id = po.magentoorder_id AND mo.webshop_id = p.webshop_id
 
                 WHERE
-                p.webshop_id = ' . $webshop_id . ' AND mo.marketingchannel_id = ' . $marketingchannel_id . ' AND
+                p.webshop_id = ' . $webshop_id . ' AND
+                mo.marketingchannel_id = ' . $marketingchannel_id . ' AND
                 mo.date >= \'' . $this->from . '\' AND
                 mo.date <= \'' . $this->to . '\'
 
@@ -183,6 +215,7 @@ class ChannelDashboard_Model extends Main_Model
         foreach ($results as $result)
         {
             $this->ratio = $result->marketingchannel_revenue / $result->total;
+            $this->marketingchannel_revenue = $result->marketingchannel_revenue;
         }
     }
 }

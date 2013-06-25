@@ -26,8 +26,8 @@
                     {
                         foreach ($this->model->results_per_marketingchannel as $data)
                         {
-                            $ratio = round($data->revenue / $this->model->total_revenue, 2);
-                            $cost = round($this->model->webshop_costs * $ratio, 2);
+                            $ratio = $data->revenue / $this->model->total_revenue;
+                            $cost = $this->model->webshop_costs * $ratio;
                             $totalcost = $cost + $data->costs + $data->marketingchannelcost;
                             $profit = $data->revenue - $totalcost;
                             $efficiency = round($profit / $data->revenue * 100, 2);
