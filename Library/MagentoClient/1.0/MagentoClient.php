@@ -137,6 +137,18 @@ class MagentoClient
     }
 
     /**
+     * Returns all sales orders specified in the multi_array
+     *
+     * @param $multi_array
+     *
+     * @return mixed
+     */
+    public function getSalesOrderDetails_multicall($multi_array)
+    {
+        return $this->_client->multiCall($this->_session, $multi_array);
+    }
+
+    /**
      * Returns the items from a sales order by its Id
      *
      * @param $salesOrderId
