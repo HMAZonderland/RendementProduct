@@ -14,10 +14,13 @@ function clickWeek() {
 }
 
 function clickMonth() {
-   var date = new Date();
-   setCookie('scope', new Date(date.getYear(), date.getMonth(), 0).getDate());
+    var date = new Date();
+    setCookie('scope', new Date(date.getYear(), date.getMonth(), 0).getDate());
 }
 
 function setCookie(name, value) {
-    document.cookie = name + "=" + value;
+    var date = new Date();
+    date.setTime(date.getTime() + (20 * 365 * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + date.toGMTString();
+    document.cookie = name + "=" + value + ';' + expires + 'path=/';
 }

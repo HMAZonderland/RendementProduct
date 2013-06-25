@@ -57,7 +57,7 @@ class GoogleClient_Controller
 
         // Set services..
         $this->google_analytics = new GoogleAnalytics_Controller($this->google_client);
-        $this->google_oauth     = new GoogleOauth2_Controller($this->google_client);
+        $this->google_oauth = new GoogleOauth2_Controller($this->google_client);
 
         // Set GoogleAccount_Model
         $this->google_account_model = new GoogleAccount_Model();
@@ -66,39 +66,16 @@ class GoogleClient_Controller
     /**
      * Checks if an $_SESSION was set, if not, go get one!
      */
-    public function checkAuthentication()
-    {
-        if ((isset($_COOKIE['refresh_token']) && !empty($_COOKIE['refresh_token']) )&& !isset($_SESSION['token']))
-        {
+    public function checkAuthentication() {
+        if(isset($_SESSION['token'])) {
+            $this->google_client->setAccessToken($_SESSION['token']);
+            return $google_account = $this->getGoogleAccount();
+        } else if(isset($_COOKIE['refresh_token']) && !empty($_COOKIE['refresh_token'])) {
             $refresh_token = $_COOKIE['refresh_token'];
             $this->google_client->refreshToken($refresh_token);
-            $google_account = $this->getGoogleAccount();
-            if ($google_account != null)
-            {
-                return $google_account;
-            }
-            else
-            {
-                // Cannot find anything, so authenticate this user again
-                $this->authenticate();
-            }
-        }
-        else if (!isset($_SESSION['token']) || !isset($_COOKIE['refresh_token']))
-        {
+           return $this->getGoogleAccount();
+        } else {
             $this->authenticate();
-        }
-        else
-        {
-            $this->google_client->setAccessToken($_SESSION['token']);
-            $google_account = $this->getGoogleAccount();
-            if ($google_account != null)
-            {
-                return $google_account;
-            }
-            else
-            {
-                $this->logout();
-            }
         }
     }
 
@@ -133,35 +110,29 @@ class GoogleClient_Controller
      */
     public function getGoogleAccount()
     {
-        if ($this->google_client->getAccessToken())
-        {
+        if ($this->google_client->getAccessToken()) {
             // Extract user variables
             $user = $this->google_oauth->google_oauth->userinfo->get();
-            $name = (string) filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-            $email = (string) filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+            $name = (string)filter_var($user['name'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+            $email = (string)filter_var($user['email'], FILTER_SANITIZE_EMAIL);
             $refresh_token = $this->getRefreshToken($this->google_client->getAccessToken());
             $google_account = $this->getGoogleAccountByEmail($email);
 
             // When we find something, refresh his token
-            if (isset($google_account->id) && $google_account->id != 0 && !empty($refresh_token))
-            {
+            if (isset($google_account->id) && $google_account->id != 0 && !empty($refresh_token)) {
                 // update the refresh token
                 $this->google_account_model->updateRefreshToken($google_account, $refresh_token);
 
-                // set a cookie with the refresh token
-                setcookie('refresh_token', $refresh_token);
-            }
-            // If we do not find anything this means we have to add this user to our database
-            else if ($google_account->id == 0)
-            {
+                // set a cookie with the refresh token for 30 days
+                setcookie('refresh_token', $refresh_token, time() + 60 * 60 * 24 * 30, '/');
+            } // If we do not find anything this means we have to add this user to our database
+            else if ($google_account->id == 0) {
                 $id = $this->google_account_model->add($name, $email, $refresh_token);
                 $google_account = $this->google_account_model->getById($id);
             }
 
             return $google_account;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -183,8 +154,7 @@ class GoogleClient_Controller
     {
         $jsonObject = json_decode($token);
 
-        if (!empty($jsonObject->refresh_token))
-        {
+        if (!empty($jsonObject->refresh_token)) {
             return $jsonObject->refresh_token;
         }
     }
@@ -195,7 +165,7 @@ class GoogleClient_Controller
     public function logout()
     {
         unset($_SESSION['token']);
-        setcookie('refresh_token', '');
+        setcookie('refresh_token', '', time() + 30, '/');
         header("Location: index.php");
     }
 }

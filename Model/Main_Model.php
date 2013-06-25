@@ -10,8 +10,7 @@
 require_once MODEL_ROOT . 'NotificationArea_Model.php';
 require_once MODEL_ROOT . 'Navigation_Model.php';
 
-class Main_Model
-{
+class Main_Model {
     /**
      * @var
      */
@@ -32,25 +31,18 @@ class Main_Model
      */
     public $to;
 
-    /**
-     *
-     */
-    public function __construct()
-    {
+    public function __construct() {
         $this->navigation = new Navigation_Model();
         $this->notification = new NotificationArea_Model();
 
         /**
          * Add scope, when there is no cookie, create it and set it default to 7.
          */
-        if (isset($_COOKIE['scope']) && !empty($_COOKIE['scope']))
-        {
+        if (isset($_COOKIE['scope']) && !empty($_COOKIE['scope'])) {
             $scope = $_COOKIE['scope'];
-        }
-        else
-        {
+        } else {
             $scope = 7;
-            setcookie('scope', $scope);
+            setcookie('scope', $scope, time() + 60 * 60 * 24 * 365 * 20, '/');
         }
         $this->from = date('Y-m-d', time() - $scope * 24 * 60 * 60);
         $this->to = date('Y-m-d H:i:s', time());
