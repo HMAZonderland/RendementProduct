@@ -163,11 +163,14 @@ class Cronjob_Controller
                 $marketingchannel_id = $this->marketingchannel_model->getIdByName($marketingchannel_name);
 
                 // Process the orders within this marketingchannel
-                foreach ($transactions as $order_id)
-                {
-                    // Get the order details
-                    // define the shipping cost on this order
-                    $order = $magento_client->getSalesOrderDetails($order_id);
+                $methods = array();
+                foreach ($transactions as $order_id) {
+                    $method = array('sales_order.info', $order_id);
+                    array_push($methods, $method);
+                }
+                $orders = $magento_client->getSalesOrderDetails_multicall($methods);
+
+                foreach ($orders as $order) {
                     $shipping_amount = $order['shipping_amount'];
 
                     // Used to add products to the order table
