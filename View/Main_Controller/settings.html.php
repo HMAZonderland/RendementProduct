@@ -1,6 +1,6 @@
 <section class="onerow full color1">
     <div class="onepcssgrid-1200">
-        <div class="col6">
+        <div class="col6" style="border-right: 1px #000 solid;">
             <table>
                 <tr>
                     <td><h1>Webshop instellingen wijzigen</h1></td>
@@ -35,5 +35,6 @@
                 ?>
             </table>
         </div>
+
     </div>
 </section>
