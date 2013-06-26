@@ -34,11 +34,11 @@ function drawchart() {
 
     // Set chart options
     var options = {
-        'height': '400',
-        'width': '400',
+        'height': '250',
+        'width': '250',
         'chartArea': {
-            'width': '90%',
-            'height': '90%'
+            'width': '95%',
+            'height': '95%'
         },
         'legend': {
             'position': 'right'

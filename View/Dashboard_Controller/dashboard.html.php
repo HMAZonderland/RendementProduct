@@ -1,12 +1,12 @@
 <section class="onerow full color1">
     <div class="onepcssgrid-1200">
-        <div id='dashboard'>
-            <?php
-            if (sizeof($this->model->results_per_marketingchannel) > 0) {
-                $this->googlechart_controller->pie($this->webshop_id);
-            }
-            ?>
+        <div id="dashboard">
             <div id="marketing_channel_tables">
+                <?php
+                if (sizeof($this->model->results_per_marketingchannel) > 0) {
+                    $this->googlechart_controller->pie($this->webshop_id);
+                }
+                ?>
                 <table class="table table-hover">
                     <thead>
                     <tr>
