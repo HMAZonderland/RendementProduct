@@ -16,26 +16,26 @@ class Navigation_Model
         if (strpos($path, 'setup') === false)
         {
             ?>
-            <li id="menu-item-48">
+            <li id="menu-item-48" class="<?= preg_match('/^dashboard$/', $path) || preg_match('#dashboard/(\d+)#', $path) || preg_match('#dashboard/channel/(\d+)/(\d)#', $path)? 'active' : '';?>">
                 <a href="<?=WEBSITE_URL?>dashboard">Dashboard</a>
             </li>
             <?php
             if (preg_match('#dashboard/(\d+)#', $path) || preg_match('#dashboard/channel/(\d+)/(\d)#', $path))
             {
                 ?>
-                <li id="menu-item-48">
+                <li id="menu-item-48" class="<?= $_COOKIE['scope'] == 1 ? 'active': '';?>">
                     <a href="<?=WEBSITE_URL . $path?>" onclick="clickDay();">Dag niveau</a>
                 </li>
-                <li id="menu-item-288">
+                <li id="menu-item-288" class="<?= $_COOKIE['scope'] == 7 ? 'active': '';?>">
                     <a href="<?=WEBSITE_URL . $path?>" onclick="clickWeek();">Week niveau</a>
                 </li>
-                <li id="menu-item-288">
+                <li id="menu-item-288" class="<?= $_COOKIE['scope'] == 28 || $_COOKIE['scope'] == 29 || $_COOKIE['scope'] == 30 || $_COOKIE['scope'] == 31 ? 'active': '';?>">
                     <a href="<?=WEBSITE_URL . $path?>" onclick="clickMonth();">Maand niveau</a>
                 </li>
                 <?php
             }
             ?>
-            <li id="menu-item-48">
+            <li id="menu-item-48" class="<?= preg_match('#dashboard/edit/(\d+)#', $path) || preg_match('#settings#', $path) || preg_match('#dashboard/cost/edit/(\d+)#', $path)? 'active' : '';?>">
                 <a href="<?=WEBSITE_URL?>settings">Instellingen</a>
             </li>
         <?php
